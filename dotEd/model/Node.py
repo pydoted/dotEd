@@ -10,8 +10,8 @@ class Node:
         '''
         Constructor
         '''
-        self.name = []
-        self.label = []
+        self.name = ""
+        self.label = ""
         #self.shape enum ?
         #self.color enum ?
         self.neighbours = []
