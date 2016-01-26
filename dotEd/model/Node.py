@@ -6,12 +6,12 @@ class Node:
     '''
 
 
-    def __init__(self):
+    def __init__(self, label = ""):
         '''
         Constructor
         '''
-        self.name = ""
-        self.label = ""
+        self.id = ""
+        self.label = label
         #self.shape enum ?
         #self.color enum ?
         self.neighbours = []

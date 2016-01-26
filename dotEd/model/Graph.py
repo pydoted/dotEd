@@ -6,50 +6,34 @@ class Graph:
     '''
 
 
-    def __init__(self):
+    def __init__(self, directed = False):
         '''
         Constructor
         '''
-        self.nodes = []
-        self.edges = []
-        self.subgraph = []
-        self.directed = False
+        self.nodes = {}
+        self.edges = {}
+        self.directed = directed
 
     def addNode(self, node):
         '''
         addNode (to complete)
         '''
-        self.nodes.append(node)
+        self.nodes[node.id] = node
     
-    def removeNode(self, node):
+    def removeNode(self, idNode):
         '''
         removeNode (to complete)
         '''
-        self.nodes.remove(node)
+        self.nodes.pop(idNode)
     
     def addEdgde(self, edge):
         '''
         addEdgde (to complete)
         '''
-        self.edges.append(edge)
+        self.edges[edge.id] = edge
     
-    def removeEdgde(self, edge):
+    def removeEdgde(self, idEdge):
         '''
         removeEdgde (to complete)
         '''
-        self.edges.remove(edge)
-
-    @property
-    def directed(self):
-        '''
-        directed (to complete)
-        '''
-        return self.directed
-    
-    @directed.setter
-    def directed(self, directed):
-        '''
-        directed (to complete)
-        '''
-        self.directed = directed
-    
+        self.edges.pop(idEdge)

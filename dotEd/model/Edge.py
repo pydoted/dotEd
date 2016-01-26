@@ -10,6 +10,7 @@ class Edge:
         '''
         Constructor
         '''
+        self.id = ""
         self.source = source  # Source node
         self.dest = dest      # Dest node
         #self.color enum ?
