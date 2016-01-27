@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QGraphicsView
 
 
 
+
 class AbstractView(QGraphicsView):
     '''
     classdocs
