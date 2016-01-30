@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-class Graph:
+from observer import Sujet
+
+class Graph(Sujet):
     '''
     classdocs
     '''
