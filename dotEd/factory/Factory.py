@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from model import Node
+from model import Edge
 
 class Factory:
     '''
     classdocs
     '''
-
-    @staticmethod
-    def newGraph(directed = False):
-        return Graph(directed)
     
     @staticmethod
     def newNode(label = ""):
@@ -17,3 +15,4 @@ class Factory:
     @staticmethod
     def newEdge(source, dest):
         return Edge(source, dest)
+    

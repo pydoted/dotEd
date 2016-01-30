@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
 from PyQt5.QtWidgets import QMainWindow, QWidget, QSizePolicy, QLabel, QFrame,\
     QVBoxLayout
+    
+from view.View import View
 
 
-class MainWindow(QMainWindow):
+class MainWindow(View, QMainWindow):
     '''
     classdocs
     '''
-    
 
     def __init__(self):
         '''
         Constructor
         '''
+        
+        View.__init__(self)
         QMainWindow.__init__(self)
         widget = QWidget()
         #setCentralWigdet(widget)

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 class Sujet:
-	 '''
-	classdocs
+	'''
+    classdocs
 	'''
 	
-    def __init__(self):
+	def __init__(self):
 		'''
 		Constructor
 		'''
@@ -21,5 +21,5 @@ class Sujet:
 		'''
 		notify (to complete)
 		'''
-		for obs in observateurs:
+		for obs in self.observateurs:
 			obs.actualise() 

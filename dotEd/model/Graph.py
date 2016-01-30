@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from observer import Sujet
+from observer.Sujet import Sujet
 
 class Graph(Sujet):
     '''
@@ -12,6 +12,7 @@ class Graph(Sujet):
         '''
         Constructor
         '''
+        Sujet.__init__(self)
         self.nodes = {}
         self.edges = {}
         self.directed = directed
