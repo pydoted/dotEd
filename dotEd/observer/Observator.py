@@ -9,7 +9,7 @@ class Observator:
         '''
         Constructor
         '''
-        self.sujet = subject
+        self.subject = subject
         self.subject.addObservator(self)
     
     def update(self):
