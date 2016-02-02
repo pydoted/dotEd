@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from PyQt5.Qt import Qt
-from PyQt5.QtWidgets import QMainWindow, QWidget, QToolBar, QHBoxLayout
+from PyQt5.QtWidgets import QMainWindow, QWidget, QToolBar, QHBoxLayout, QAction
 
 from view.View import View
 
@@ -33,8 +33,6 @@ class MainWindow(View, QMainWindow):
         # Layout which will contain all views
         self.layout = QHBoxLayout()
         self.mainWidget.setLayout(self.layout)
-
-        self.show()
     
     def createMenu(self):
         self.menuBar().addAction("File")
@@ -42,7 +40,11 @@ class MainWindow(View, QMainWindow):
     
     def createToolBar(self):
         toolBar = QToolBar()
-        toolBar.addAction("Node")
+        createNodeAction = QAction("Node", self)
+        # Just a test
+        createNodeAction.triggered.connect(self.showMaximized)
+        toolBar.addAction(createNodeAction)
+        
         toolBar.addAction("Edge")
         toolBar.setFloatable(False)
         self.addToolBar(Qt.TopToolBarArea, toolBar)
