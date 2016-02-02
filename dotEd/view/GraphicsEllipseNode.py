@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from PyQt5.QtWidgets import QGraphicsEllipseNode
+from PyQt5.QtWidgets import QGraphicsEllipseItem
+from view.GraphicsAbstractNode import GraphicsAbstractNode
 
 
 class GraphicsEllipseNode(GraphicsAbstractNode, QGraphicsEllipseItem):

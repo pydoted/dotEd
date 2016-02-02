@@ -8,7 +8,7 @@ class Graph(Sujet):
     '''
 
 
-    def __init__(self, directed = False):
+    def __init__(self, directed=False):
         '''
         Constructor
         '''

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from PyQt5.QtWidgets import QMainWindow, QWidget, QSizePolicy, QLabel, QFrame,\
-    QVBoxLayout
-    
+from PyQt5.Qt import Qt
+from PyQt5.QtCore import QSize
+from PyQt5.QtWidgets import QMainWindow, QWidget, QToolBar, QHBoxLayout
+
 from view.View import View
 
 
@@ -14,41 +15,38 @@ class MainWindow(View, QMainWindow):
         '''
         Constructor
         '''
-        
+        # Parent constructors
         View.__init__(self)
         QMainWindow.__init__(self)
-        widget = QWidget()
-        #setCentralWigdet(widget)
         
-        topFiller = QWidget()
-        topFiller.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # Main widget
+        self.mainWidget = QWidget(self)
+        self.setCentralWidget(self.mainWidget)
+        self.setWindowTitle("dotEd")
         
-        self.infoLabel = QLabel("Info label")
-        self.infoLabel.setFrameStyle(QFrame.StyledPanel | QFrame.Sunken)
-        #self.infoLabel.setAlignment(Qt.AlignCenter)
+        # Menu + ToolBar
+        self.createMenu()
+        self.createToolBar()
         
-        bottomFiller = QWidget()
-        bottomFiller.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # Status bar just for a test
+        self.statusBar().showMessage("Status bar")
         
-        layout = QVBoxLayout()
-        #layout.setMargin(5)
-        layout.addWidget(topFiller)
-        layout.addWidget(self.infoLabel)
-        layout.addWidget(bottomFiller)
-        widget.setLayout(layout)
-        
-        self.__createActions()
-        self.__createMenu()
-        
-        self.statusBar().showMessage("msg")
-        
-        self.setWindowTitle("Status bar")
-        self.setMinimumSize(160, 160)
-        self.resize(480, 320)
-        
-    def __createActions(self):
-        pass
+        # Layout which will contain all views
+        self.layout = QHBoxLayout()
+        self.mainWidget.setLayout(self.layout)
+
+        self.show()
     
-    def __createMenu(self):
-        pass
-        
+    def createMenu(self):
+        self.menuBar().addAction("File")
+        self.menuBar().addAction("Help")
+    
+    def createToolBar(self):
+        toolBar = QToolBar()
+        toolBar.addAction("Node")
+        toolBar.addAction("Edge")
+        toolBar.setFloatable(False)
+        self.addToolBar(Qt.TopToolBarArea, toolBar)
+
+    def addWidget(self, widget):
+        self.layout.addWidget(widget)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from model import Node
-from model import Edge
+from model.Node import Node
+from model.Edge import Edge
 
 class Factory:
     '''
@@ -9,7 +9,7 @@ class Factory:
     '''
     
     @staticmethod
-    def newNode(label = ""):
+    def newNode(label=""):
         return Node(label)
     
     @staticmethod
