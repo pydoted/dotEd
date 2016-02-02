@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-from abc import ABCMeta
 
 
-class GraphicsAbstractEdge:
+class GraphicsSuperEdge:
     '''
     classdocs
     '''
-    __metaclass__ = ABCMeta
 
 
     def __init__(self):

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from PyQt5.QtWidgets import QGraphicsLineItem
 
-from view.GraphicsAbstractEdge import GraphicsAbstractEdge
+from view.GraphicsSuperEdge import GraphicsSuperEdge
 
 
-class GraphicsLineEdge(GraphicsAbstractEdge, QGraphicsLineItem):
+class GraphicsLineEdge(GraphicsSuperEdge, QGraphicsLineItem):
     '''
     classdocs
     '''

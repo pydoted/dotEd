@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from PyQt5.QtWidgets import QGraphicsEllipseItem
-from view.GraphicsAbstractNode import GraphicsAbstractNode
+from view.GraphicsSuperNode import GraphicsSuperNode
 
 
-class GraphicsEllipseNode(GraphicsAbstractNode, QGraphicsEllipseItem):
+class GraphicsEllipseNode(GraphicsSuperNode, QGraphicsEllipseItem):
     '''
     classdocs
     '''
