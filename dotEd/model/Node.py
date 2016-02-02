@@ -6,7 +6,7 @@ class Node:
     '''
 
 
-    def __init__(self, label = ""):
+    def __init__(self, label=""):
         '''
         Constructor
         '''

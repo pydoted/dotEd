@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
+
+from view.View import View
 
 
-class GraphicsGraph:
+class GraphicsGraph(View, QGraphicsView):
     '''
     classdocs
     '''
@@ -11,5 +14,11 @@ class GraphicsGraph:
         '''
         Constructor
         '''
-    self.nodes = []
-    self.edges = []
+        View.__init__(self)
+        QGraphicsView.__init__(self)
+
+        self.nodes = []
+        self.edges = []
+        
+        self.scene = QGraphicsScene()
+        self.setScene(self.scene)

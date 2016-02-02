@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from observer.Observateur import Observateur
+from observer.Observator import Observator
 
-class Controller(Observateur):
+class Controller(Observator):
     '''
     classdocs
     '''
@@ -10,7 +10,7 @@ class Controller(Observateur):
         '''
         Constructor
         '''
-        Observateur.__init__(self, model)
+        Observator.__init__(self, model)
         self.view = view
         view.setController(self)
     

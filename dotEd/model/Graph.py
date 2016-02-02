@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from observer.Sujet import Sujet
+from observer.Subject import Subject
 
-class Graph(Sujet):
+class Graph(Subject):
     '''
     classdocs
     '''
 
 
-    def __init__(self, directed = False):
+    def __init__(self, directed=False):
         '''
         Constructor
         '''
-        Sujet.__init__(self)
+        Subject.__init__(self)
         self.nodes = {}
         self.edges = {}
         self.directed = directed

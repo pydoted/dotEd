@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class Sujet:
+class Subject:
 	'''
     classdocs
 	'''
@@ -9,17 +9,17 @@ class Sujet:
 		'''
 		Constructor
 		'''
-		self.observateurs = []
+		self.observators = []
 		
-	def addObservateur(self, observateur):
+	def addObservator(self, obs):
 		'''
 		addObservateur (to complete)
 		'''
-		self.observateurs.append(observateur)
+		self.observators.append(obs)
 		
 	def notify(self):
 		'''
 		notify (to complete)
 		'''
-		for obs in self.observateurs:
+		for obs in self.observators:
 			obs.actualise() 
