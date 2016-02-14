@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+
 from PyQt5.Qt import Qt
 from PyQt5.QtWidgets import QMainWindow, QWidget, QToolBar, QHBoxLayout, QAction
-
-from view.View import View
+from view.widget.View import View
 
 
 class MainWindow(View, QMainWindow):
@@ -10,13 +10,13 @@ class MainWindow(View, QMainWindow):
     classdocs
     '''
 
-    def __init__(self):
+    def __init__(self, *args, **kargs):
         '''
         Constructor
         '''
         # Parent constructors
         View.__init__(self)
-        QMainWindow.__init__(self)
+        QMainWindow.__init__(self, *args, **kargs)
         
         # Main widget
         self.mainWidget = QWidget(self)
@@ -42,7 +42,7 @@ class MainWindow(View, QMainWindow):
         toolBar = QToolBar()
         createNodeAction = QAction("Node", self)
         # Just a test
-        createNodeAction.triggered.connect(self.showMaximized)
+        createNodeAction.triggered.connect(self.onCreateNode)
         toolBar.addAction(createNodeAction)
         
         toolBar.addAction("Edge")
@@ -51,3 +51,6 @@ class MainWindow(View, QMainWindow):
 
     def addWidget(self, widget):
         self.layout.addWidget(widget)
+
+    def onCreateNode(self):
+        self.controller.onCreateNode()

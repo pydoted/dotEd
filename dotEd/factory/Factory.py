@@ -3,6 +3,7 @@
 from model.Node import Node
 from model.Edge import Edge
 
+
 class Factory:
     '''
     classdocs
@@ -15,4 +16,3 @@ class Factory:
     @staticmethod
     def newEdge(source, dest):
         return Edge(source, dest)
-    

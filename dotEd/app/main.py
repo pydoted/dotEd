@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
+
 import sys
-
 from PyQt5.QtWidgets import QApplication
-
 from app.Doted import Doted
 
 

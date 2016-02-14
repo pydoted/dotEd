@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 from observer.Observator import Observator
+
 
 class Controller(Observator):
     '''
@@ -14,8 +16,8 @@ class Controller(Observator):
         self.view = view
         view.setController(self)
     
-    def actualise(self):
+    def updateView(self):
         '''
-        actualise (to complete)
+        updateView (to complete)
         '''
-        pass
+        self.view.update()

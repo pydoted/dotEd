@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-from controller.ControllerMainWindow import ControllerMainWindow
+
+from controller.GraphicsGraphController import GraphicsGraphController
+from controller.MainWindowController import MainWindowController
+from controller.TextGraphController import TextGraphController
 from model.Graph import Graph
-from factory.Factory import Factory
-from view.MainWindow import MainWindow 
-from view.GraphicsGraph import GraphicsGraph
-from view.TextGraph import TextGraph
-from view.PropertiesView import PropertiesView
+from view.widget.GraphicsGraphView import GraphicsGraphView
+from view.widget.MainWindow import MainWindow
+from view.widget.TextGraphView import TextGraphView
+
 
 class Doted:
     '''
@@ -17,23 +19,24 @@ class Doted:
         '''
         Constructor
         '''
-        # Initialisation
-        model = Graph()
-        nodeA = Factory.newNode("A")
-        nodeB = Factory.newNode("B")
-        model.addNode(nodeA)
-        model.addNode(nodeB)
-    
+        # Model
+        graphModel = Graph()
+        
+        # Views
+        graphicsGraphView = GraphicsGraphView()
+        textGraphView = TextGraphView()
+
+        # Controllers
+        GraphicsGraphController(graphModel, graphicsGraphView)
+        TextGraphController(graphModel, textGraphView)
+
+        # Main window
         self.mainWindow = MainWindow()
-        controllerMain = ControllerMainWindow(model, self.mainWindow)
+        MainWindowController(graphModel, self.mainWindow)
         
-        graphicsGraph = GraphicsGraph()
-        textGraph = TextGraph()
-        propertiesView = PropertiesView()
-        
-        self.mainWindow.addWidget(propertiesView)
-        self.mainWindow.addWidget(graphicsGraph)
-        self.mainWindow.addWidget(textGraph)
+        # Adding views to main window
+        self.mainWindow.addWidget(graphicsGraphView)
+        self.mainWindow.addWidget(textGraphView)
 
     def run(self):
         self.mainWindow.show()

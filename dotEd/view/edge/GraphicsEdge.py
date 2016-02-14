@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-class GraphicsSuperEdge:
+class GraphicsEdge:
     '''
     classdocs
     '''

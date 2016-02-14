@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 class Node:
     '''
     classdocs
@@ -10,7 +11,7 @@ class Node:
         '''
         Constructor
         '''
-        self.id = ""
+        self.id = "ID"
         self.label = label
         #self.shape enum ?
         #self.color enum ?

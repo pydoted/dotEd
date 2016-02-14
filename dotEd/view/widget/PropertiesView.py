@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from PyQt5.QtWidgets import QTreeView
-from PyQt5.QtGui import QStandardItemModel
 
-from view.View import View
+from PyQt5.QtGui import QStandardItemModel
+from PyQt5.QtWidgets import QTreeView
+from view.widget.View import View
 
 
 class PropertiesView(View, QTreeView):

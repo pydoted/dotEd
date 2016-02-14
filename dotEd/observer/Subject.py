@@ -22,4 +22,4 @@ class Subject:
 		notify (to complete)
 		'''
 		for obs in self.observators:
-			obs.actualise() 
+			obs.updateView() 

@@ -5,15 +5,15 @@ class Observator:
     classdocs
     '''
     
-    def __init__(self, subject):
+    def __init__(self, model):
         '''
         Constructor
         '''
-        self.subject = subject
-        self.subject.addObservator(self)
+        self.model = model
+        self.model.addObservator(self)
     
-    def update(self):
+    def updateView(self):
         '''
-        update (to complete)
+        updateView (to complete)
         '''
         pass

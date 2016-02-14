@@ -2,6 +2,7 @@
 
 from observer.Subject import Subject
 
+
 class Graph(Subject):
     '''
     classdocs
