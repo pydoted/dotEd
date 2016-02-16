@@ -4,20 +4,25 @@ from observer.Observator import Observator
 
 
 class Controller(Observator):
-    '''
-    classdocs
+    '''Base class for controllers.
+    
+    
+    Argument(s):
+    model (Subject): Model of the controller
+    view (View): View of the controller
+    
+    Attribute(s):
+    view (View): View of the controller
     '''
 
+
     def __init__(self, model, view):
-        '''
-        Constructor
-        '''
+        # Parent constructor(s)
         Observator.__init__(self, model)
+        
         self.view = view
-        view.setController(self)
+        self.view.setController(self)
     
     def updateView(self):
-        '''
-        updateView (to complete)
-        '''
+        '''Update the view.'''
         self.view.update()

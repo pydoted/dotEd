@@ -1,16 +1,24 @@
 # -*- coding: utf-8 -*-
 
+
 class Edge:
     '''
-    classdocs
+    Model of an edge.
+    
+    
+    Argument(s):
+    source (Node): Source node
+    dest (Node): Destionation node
+    
+    Attribute(s):
+    id (int): ID
+    source (Node): Source node
+    dest (Node): Destionation node
     '''
 
 
     def __init__(self, source, dest):
-        '''
-        Constructor
-        '''
         self.id = ""
-        self.source = source  # Source node
-        self.dest = dest      # Dest node
+        self.source = source
+        self.dest = dest
         #self.color enum ?

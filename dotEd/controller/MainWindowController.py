@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
 
 from controller.Controller import Controller
-from model.Node import Node
 
 
 class MainWindowController(Controller):
-    '''
-    classdocs
+    '''Controller to manage a MainWindow.
+    
+    
+    Argument(s):
+    model (Model): Model of the controller
+    view (View): View of the controller    
     '''
 
 
     def __init__(self, model, view):
-        '''
-        Constructor
-        '''
+        # Parent constructor(s)
         Controller.__init__(self, model, view)
     
     def onCreateNode(self):
-        node = Node()
-        self.model.addNode(node)
+        '''Callback function when creating a node.'''
+        self.model.addNode("A")
         self.model.notify()

@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*-
 
-class Observator:
-    '''
-    classdocs
+
+class Observator(object):
+    '''Represent an observator. 
+    
+    
+    Argument(s):
+    model (Subject): Subject
+    
+    Attribute(s):
+    model (Subject): Subject
     '''
     
+    
     def __init__(self, model):
-        '''
-        Constructor
-        '''
         self.model = model
         self.model.addObservator(self)
     
     def updateView(self):
-        '''
-        updateView (to complete)
-        '''
+        '''Update the view.'''
         pass

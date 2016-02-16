@@ -1,22 +1,25 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5.Qt import Qt
-from PyQt5.QtWidgets import QMainWindow, QWidget, QToolBar, QHBoxLayout, QAction
+from PyQt5.QtWidgets import QMainWindow, QWidget, QToolBar, QHBoxLayout, \
+                            QAction
+
 from view.widget.View import View
 
 
 class MainWindow(View, QMainWindow):
-    '''
-    classdocs
+    '''Main view of the application.
+    
+    
+    Attribute(s):
+    mainWidget (QWidget): Central widget containing all other widgets
+    layout (QHBoxLayout): Layout of the central widget
     '''
 
-    def __init__(self, *args, **kargs):
-        '''
-        Constructor
-        '''
+    def __init__(self):
         # Parent constructors
         View.__init__(self)
-        QMainWindow.__init__(self, *args, **kargs)
+        QMainWindow.__init__(self)
         
         # Main widget
         self.mainWidget = QWidget(self)
@@ -35,22 +38,33 @@ class MainWindow(View, QMainWindow):
         self.mainWidget.setLayout(self.layout)
     
     def createMenu(self):
+        '''Create the menu bar.'''
         self.menuBar().addAction("File")
         self.menuBar().addAction("Help")
     
     def createToolBar(self):
+        '''Create the toolbar.'''
+        # Toolbar initialisation
         toolBar = QToolBar()
-        createNodeAction = QAction("Node", self)
-        # Just a test
-        createNodeAction.triggered.connect(self.onCreateNode)
-        toolBar.addAction(createNodeAction)
-        
-        toolBar.addAction("Edge")
         toolBar.setFloatable(False)
         self.addToolBar(Qt.TopToolBarArea, toolBar)
+        
+        # Create a node
+        createNodeAction = QAction("Node", self)
+        createNodeAction.triggered.connect(self.createNode)
+        toolBar.addAction(createNodeAction)
+        
+        # Create an edge
+        toolBar.addAction("Edge")
 
     def addWidget(self, widget):
+        '''Add a widget to the layout.
+        
+        Arguments:
+        widget (QWidget): Widget to add to the layout
+        '''
         self.layout.addWidget(widget)
 
-    def onCreateNode(self):
+    def createNode(self):
+        '''Callback funtion when creating a node.'''
         self.controller.onCreateNode()

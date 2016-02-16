@@ -1,41 +1,40 @@
 # -*- coding: utf-8 -*-
 
-from controller.GraphicsGraphController import GraphicsGraphController
-from controller.MainWindowController import MainWindowController
-from controller.TextGraphController import TextGraphController
 from model.Graph import Graph
-from view.widget.GraphicsGraphView import GraphicsGraphView
-from view.widget.MainWindow import MainWindow
-from view.widget.TextGraphView import TextGraphView
+from factory.ControllerFactory import ControllerFactory
+from factory.ViewFactory import ViewFactory
 
-class Doted:
-    '''
-    classdocs
+
+class Doted(object):
+    '''Represent the main application.
+    
+    
+    Attribute(s):
+    mainWindow (MainWindow) -- Application view
     '''
 
 
     def __init__(self):
-        '''
-        Constructor
-        '''
         # Model
         graphModel = Graph()
         
         # Views
-        graphicsGraphView = GraphicsGraphView()
-        textGraphView = TextGraphView()
+        graphicsGraphView = ViewFactory.newGraphicsGraphView()
+        textGraphView = ViewFactory.newTextGraphView()
 
         # Controllers
-        GraphicsGraphController(graphModel, graphicsGraphView)
-        TextGraphController(graphModel, textGraphView)
+        ControllerFactory.newGraphicsGraphController(graphModel,
+                                                     graphicsGraphView)
+        ControllerFactory.newTextGraphController(graphModel, textGraphView)
 
         # Main window
-        self.mainWindow = MainWindow()
-        MainWindowController(graphModel, self.mainWindow)
+        self.mainWindow = ViewFactory.newMainWindow()
+        ControllerFactory.newMainWindowController(graphModel, self.mainWindow)
         
         # Adding views to main window
         self.mainWindow.addWidget(graphicsGraphView)
         self.mainWindow.addWidget(textGraphView)
 
     def run(self):
+        '''Run the application.'''
         self.mainWindow.show()

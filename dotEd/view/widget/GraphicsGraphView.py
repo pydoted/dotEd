@@ -1,20 +1,24 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
+
 from view.node.GraphicsEllipseNode import GraphicsEllipseNode
 from view.widget.View import View
 
 
 class GraphicsGraphView(View, QGraphicsView):
-    '''
-    classdocs
+    '''Graphical representation of a Graph.
+    
+    
+    Attribute(s):
+    nodes (Dictionary[GraphicNode]): All nodes (views)
+    edges (Dictionary[GraphicEdge]): All edges (views)
+    scene (QGraphicsScene): Scene to show items (nodes and edges)
     '''
     
 
     def __init__(self):
-        '''
-        Constructor
-        '''
+        # Parent constructor(s)
         View.__init__(self)
         QGraphicsView.__init__(self)
 
@@ -26,6 +30,7 @@ class GraphicsGraphView(View, QGraphicsView):
         self.show()
 
     def update(self):
+        '''Update the scene.'''
         nodeId = "ID"
         if nodeId not in self.nodes:
             self.nodes[nodeId] = GraphicsEllipseNode(nodeId, "A", 0.0, 0.0, 100, 100)
