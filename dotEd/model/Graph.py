@@ -28,7 +28,7 @@ class Graph(Subject):
     def addNode(self, label):
         '''Add a Node to the graph.
         
-        Arguments:
+        Argument(s):
         label (str): Label of the node
         '''
         node = ModelFactory.newNode(label)
@@ -37,7 +37,7 @@ class Graph(Subject):
     def removeNode(self, idNode):
         '''Remove a Node from the graph.
         
-        Arguments:
+        Argument(s):
         idNode (int): ID of the node to remove
         '''
         self.nodes.pop(idNode)
@@ -45,7 +45,7 @@ class Graph(Subject):
     def addEdgde(self, idSourceNode, idDestNode):
         '''Add an Edge to the graph.
         
-        Arguments:
+        Argument(s):
         idSourceNode (int): ID of the source node
         idDestNode (int): ID of the destination node
         '''
@@ -56,7 +56,7 @@ class Graph(Subject):
     def removeEdgde(self, idEdge):
         '''Remove an Edge from the graph.
         
-        Arguments:
+        Argument(s):
         idEdge (int): ID of the edge to remove
         '''
         self.edges.pop(idEdge)

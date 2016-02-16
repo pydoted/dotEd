@@ -60,7 +60,7 @@ class MainWindow(View, QMainWindow):
     def addWidget(self, widget):
         '''Add a widget to the layout.
         
-        Arguments:
+        Argument(s):
         widget (QWidget): Widget to add to the layout
         '''
         self.layout.addWidget(widget)
