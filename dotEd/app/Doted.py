@@ -8,7 +8,6 @@ from view.widget.GraphicsGraphView import GraphicsGraphView
 from view.widget.MainWindow import MainWindow
 from view.widget.TextGraphView import TextGraphView
 
-
 class Doted:
     '''
     classdocs
