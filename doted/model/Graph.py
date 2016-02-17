@@ -25,11 +25,11 @@ class Graph(Subject):
         self.edges = {}
         self.directed = directed
 
-    def addNode(self, label):
+    def addNode(self, label=""):
         '''Add a Node to the graph.
         
         Argument(s):
-        label (str): Label of the node
+        label (str): Label of the node (default "")
         '''
         node = ModelFactory.newNode(label)
         self.nodes[node.id] = node

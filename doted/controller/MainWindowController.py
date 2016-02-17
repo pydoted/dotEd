@@ -19,5 +19,5 @@ class MainWindowController(Controller):
     
     def onCreateNode(self):
         '''Callback function when creating a node.'''
-        self.model.addNode("A")
+        self.model.addNode()
         self.model.notify()
