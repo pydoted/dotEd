@@ -2,7 +2,7 @@
 
 from PyQt5.QtCore import QMarginsF
 
-from view.node.GraphicsTextNode import GraphicsTextNode
+from doted.view.node.GraphicsTextNode import GraphicsTextNode
 
 
 class GraphicsNode(object):

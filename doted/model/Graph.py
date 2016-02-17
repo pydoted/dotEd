@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from factory.ModelFactory import ModelFactory
-from observer.Subject import Subject
+from doted.factory.ModelFactory import ModelFactory
+from doted.observer.Subject import Subject
 
 
 class Graph(Subject):

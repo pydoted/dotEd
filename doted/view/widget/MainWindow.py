@@ -4,7 +4,7 @@ from PyQt5.Qt import Qt
 from PyQt5.QtWidgets import QMainWindow, QWidget, QToolBar, QHBoxLayout, \
                             QAction
 
-from view.widget.View import View
+from doted.view.widget.View import View
 
 
 class MainWindow(View, QMainWindow):
@@ -24,7 +24,7 @@ class MainWindow(View, QMainWindow):
         # Main widget
         self.mainWidget = QWidget(self)
         self.setCentralWidget(self.mainWidget)
-        self.setWindowTitle("dotEd")
+        self.setWindowTitle("doted")
         
         # Menu + ToolBar
         self.createMenu()

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from model.Node import Node
-from model.Edge import Edge
+from doted.model.Node import Node
+from doted.model.Edge import Edge
 
 
 class ModelFactory(object):

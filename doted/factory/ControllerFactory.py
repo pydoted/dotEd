@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from controller.GraphicsGraphController import GraphicsGraphController
-from controller.MainWindowController import MainWindowController
-from controller.TextGraphController import TextGraphController
+from doted.controller.GraphicsGraphController import GraphicsGraphController
+from doted.controller.MainWindowController import MainWindowController
+from doted.controller.TextGraphController import TextGraphController
 
 
 class ControllerFactory(object):

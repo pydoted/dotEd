@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from model.Graph import Graph
-from factory.ControllerFactory import ControllerFactory
-from factory.ViewFactory import ViewFactory
+from doted.model.Graph import Graph
+from doted.factory.ControllerFactory import ControllerFactory
+from doted.factory.ViewFactory import ViewFactory
 
 
 class Doted(object):
@@ -37,4 +37,4 @@ class Doted(object):
 
     def run(self):
         '''Run the application.'''
-        self.mainWindow.show()
+        self.mainWindow.showMaximized()

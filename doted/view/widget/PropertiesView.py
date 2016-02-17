@@ -3,7 +3,7 @@
 from PyQt5.QtGui import QStandardItemModel
 from PyQt5.QtWidgets import QTreeView
 
-from view.widget.View import View
+from doted.view.widget.View import View
 
 
 class PropertiesView(View, QTreeView):

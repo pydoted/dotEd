@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from controller.Controller import Controller
+from doted.controller.Controller import Controller
 
 
 class TextGraphController(Controller):

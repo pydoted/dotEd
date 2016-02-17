@@ -2,7 +2,7 @@
 
 from PyQt5.QtWidgets import QTextEdit
 
-from view.widget.View import View
+from doted.view.widget.View import View
 
 
 class TextGraphView(View, QTextEdit):
