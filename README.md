@@ -1,4 +1,5 @@
 # dotEd
 
 Run project :
-	- Windows : double click on dotEd.bat 
+	- Windows : run dotEd.bat
+	- Linux : run dotEd.sh
