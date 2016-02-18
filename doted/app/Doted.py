@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from doted.model.Graph import Graph
 from doted.factory.ControllerFactory import ControllerFactory
 from doted.factory.ViewFactory import ViewFactory
 from doted.factory.ModelFactory import ModelFactory
@@ -13,7 +12,6 @@ class Doted(object):
     Attribute(s):
     mainWindow (MainWindow) -- Application view
     '''
-
 
 
     def __init__(self):
