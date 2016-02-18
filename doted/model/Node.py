@@ -7,6 +7,7 @@ class Node:
     
     Argument(s):
     label (str): Label (default "") 
+    id (int): ID
     
     Attribute(s):
     id (int): ID
@@ -14,9 +15,9 @@ class Node:
     '''
 
 
-    def __init__(self, id):
-        self.id = id
-        self.label = "n"+str(id)
+    def __init__(self, idNode):
+        self.id = idNode
+        self.label = "n" + str(self.id)
         #self.shape enum ?
         #self.color enum ?
         #self.neighbours = [] subgraph ?
