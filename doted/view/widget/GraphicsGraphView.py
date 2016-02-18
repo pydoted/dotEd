@@ -33,5 +33,5 @@ class GraphicsGraphView(View, QGraphicsView):
         '''Update the scene.'''
         nodeId = "ID"
         if nodeId not in self.nodes:
-            self.nodes[nodeId] = GraphicsEllipseNode(nodeId, "A", 0.0, 0.0, 100, 100)
+            self.nodes[nodeId] = GraphicsEllipseNode(nodeId, "A")
             self.scene.addItem(self.nodes[nodeId])
