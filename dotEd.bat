@@ -1,0 +1,1 @@
+python .\dotEd\main.py
