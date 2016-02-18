@@ -2,7 +2,7 @@
 
 from PyQt5.QtWidgets import QGraphicsLineItem
 
-from doted.view.edge.GraphicsEdge import GraphicsEdge
+from view.edge.GraphicsEdge import GraphicsEdge
 
 
 class GraphicsLineEdge(GraphicsEdge, QGraphicsLineItem):

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-: Victor
 
-from doted.view.edge.GraphicsLineEdge import GraphicsLineEdge
-from doted.view.node.GraphicsEllipseNode import GraphicsEllipseNode
-from doted.view.widget.GraphicsGraphView import GraphicsGraphView
-from doted.view.widget.MainWindow import MainWindow
-from doted.view.widget.PropertiesView import PropertiesView
-from doted.view.widget.TextGraphView import TextGraphView
+from view.edge.GraphicsLineEdge import GraphicsLineEdge
+from view.node.GraphicsEllipseNode import GraphicsEllipseNode
+from view.widget.GraphicsGraphView import GraphicsGraphView
+from view.widget.MainWindow import MainWindow
+from view.widget.PropertiesView import PropertiesView
+from view.widget.TextGraphView import TextGraphView
 
 
 class ViewFactory(object):

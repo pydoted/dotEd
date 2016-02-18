@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from doted.observer.Observator import Observator
+from observer.Observator import Observator
 
 
 class Controller(Observator):

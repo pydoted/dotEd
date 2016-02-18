@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from doted.factory.ControllerFactory import ControllerFactory
-from doted.factory.ViewFactory import ViewFactory
-from doted.factory.ModelFactory import ModelFactory
+from factory.ControllerFactory import ControllerFactory
+from factory.ViewFactory import ViewFactory
+from factory.ModelFactory import ModelFactory
 
 
 class Doted(object):

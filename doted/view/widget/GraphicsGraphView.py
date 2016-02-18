@@ -2,8 +2,8 @@
 
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
-from doted.view.node.GraphicsEllipseNode import GraphicsEllipseNode
-from doted.view.widget.View import View
+from view.node.GraphicsEllipseNode import GraphicsEllipseNode
+from view.widget.View import View
 
 
 class GraphicsGraphView(View, QGraphicsView):

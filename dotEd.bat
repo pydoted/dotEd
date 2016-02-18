@@ -1,1 +1,1 @@
-python .\dotEd\main.py
+python .\doted\main.py

@@ -3,7 +3,7 @@
 from PyQt5.QtCore import QMarginsF
 from PyQt5.QtWidgets import QGraphicsEllipseItem, QGraphicsItem
 
-from doted.view.node.GraphicsNode import GraphicsNode
+from view.node.GraphicsNode import GraphicsNode
 
 
 class GraphicsEllipseNode(GraphicsNode, QGraphicsEllipseItem):

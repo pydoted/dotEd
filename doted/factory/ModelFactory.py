@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from doted.model.Edge import Edge
-from doted.model.Node import Node
+from model.Edge import Edge
+from model.Node import Node
 
 
 class ModelFactory(object):
@@ -16,7 +16,7 @@ class ModelFactory(object):
         directed (boolean): Graph directed or not (default False)
         '''
         # Import done here to prevent circular import
-        from doted.model.Graph import Graph
+        from model.Graph import Graph
         return Graph(directed)
     
     @staticmethod
