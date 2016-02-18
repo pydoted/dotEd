@@ -1,12 +1,23 @@
 # -*- coding: utf-8 -*-
 
-from doted.model.Node import Node
 from doted.model.Edge import Edge
+from doted.model.Node import Node
 
 
 class ModelFactory(object):
     '''Factory to create models.'''
     
+    
+    @staticmethod
+    def newGraph(directed=False):
+        '''Create and return a Graph.
+        
+        Argument(s):
+        directed (boolean): Graph directed or not (default False)
+        '''
+        # Import done here to prevent circular import
+        from doted.model.Graph import Graph
+        return Graph(directed)
     
     @staticmethod
     def newNode(label=""):

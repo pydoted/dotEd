@@ -3,6 +3,7 @@
 from doted.model.Graph import Graph
 from doted.factory.ControllerFactory import ControllerFactory
 from doted.factory.ViewFactory import ViewFactory
+from doted.factory.ModelFactory import ModelFactory
 
 
 class Doted(object):
@@ -16,7 +17,7 @@ class Doted(object):
 
     def __init__(self):
         # Model
-        graphModel = Graph()
+        graphModel = ModelFactory.newGraph()
         
         # Views
         graphicsGraphView = ViewFactory.newGraphicsGraphView()
