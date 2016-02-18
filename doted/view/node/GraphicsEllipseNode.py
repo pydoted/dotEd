@@ -13,17 +13,13 @@ class GraphicsEllipseNode(GraphicsNode, QGraphicsEllipseItem):
     Argument(s):
     nodeId (int): ID of the node
     nodeLabel (str): Label of the node
-    x (float): x coordinate for the rectangle of the ellipse
-    y (float): y coordinate for the rectangle of the ellipse
-    width (float): width for the rectangle of the ellipse
-    height (float): height for the rectangle of the ellipse
     '''
 
 
-    def __init__(self, nodeId, nodeLabel, x, y, width, height):
+    def __init__(self, nodeId, nodeLabel):
         # Parent constructor(s)
         GraphicsNode.__init__(self, nodeId, nodeLabel)
-        QGraphicsEllipseItem.__init__(self, x, y, width, height)
+        QGraphicsEllipseItem.__init__(self)
         
         self.graphicsTextNode.setParentItem(self)
         self.setFlag(QGraphicsItem.ItemIsMovable)
