@@ -15,6 +15,7 @@ class Doted(object):
     '''
 
 
+
     def __init__(self):
         # Model
         graphModel = ModelFactory.newGraph()
