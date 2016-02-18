@@ -12,7 +12,6 @@ class MainWindowController(Controller):
     view (View): View of the controller    
     '''
 
-
     def __init__(self, model, view):
         # Parent constructor(s)
         Controller.__init__(self, model, view)
@@ -20,4 +19,7 @@ class MainWindowController(Controller):
     def onCreateNode(self):
         '''Callback function when creating a node.'''
         self.model.addNode()
-        self.model.notify()
+    
+    def onCreateEdge(self):
+        '''Callback function when creating an edge.'''
+        self.model.addEdgde()

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from factory.ModelFactory import ModelFactory
 from observer.Subject import Subject
-
+from model.Node import *
+from model.Edge import *
 
 class Graph(Subject):
     '''Model of a graph.
@@ -14,6 +14,8 @@ class Graph(Subject):
     Attribute(s):
     nodes (Dictionary[Node]): All nodes
     edges (Dictionary[Edge]): All edges
+    nbNodes (Dictionary[Edge]): number of nodes
+    nbEdges (Dictionary[Edge]): number of edges
     directed (boolean): Graph directed or not
     '''
 
@@ -23,17 +25,18 @@ class Graph(Subject):
         
         self.nodes = {}
         self.edges = {}
+        self.nbNodes = 0
+        self.nbEdges = 0
         self.directed = directed
 
-    def addNode(self, label=""):
-        '''Add a Node to the graph.
-        
-        Argument(s):
-        label (str): Label of the node (default "")
-        '''
-        node = ModelFactory.newNode(label)
+    def addNode(self):
+        '''Add a Node to the graph.'''
+        self.nbNodes += 1
+        node = Node(self.nbNodes)
         self.nodes[node.id] = node
+        self.notify();
     
+        
     def removeNode(self, idNode):
         '''Remove a Node from the graph.
         
@@ -49,9 +52,11 @@ class Graph(Subject):
         idSourceNode (int): ID of the source node
         idDestNode (int): ID of the destination node
         '''
-        edge = ModelFactory.newEdge(self.nodes[idSourceNode],
-                                    self.nodes[idDestNode])
+        self.nbEdges += 1
+        edge = Edge(self.nodes[idSourceNode],
+                                    self.nodes[idDestNode], self.nbEdges)
         self.edges[edge.id] = edge
+        self.notify();
     
     def removeEdgde(self, idEdge):
         '''Remove an Edge from the graph.

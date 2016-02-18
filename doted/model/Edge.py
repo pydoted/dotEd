@@ -17,8 +17,8 @@ class Edge:
     '''
 
 
-    def __init__(self, source, dest):
-        self.id = ""
+    def __init__(self, source, dest, id):
+        self.id = id
         self.source = source
         self.dest = dest
         #self.color enum ?
