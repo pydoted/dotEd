@@ -22,4 +22,5 @@ class Subject(object):
 		self.observers.append(obs)
 		
 	def notify(self):
+		'''Notify observers.'''
 		pass

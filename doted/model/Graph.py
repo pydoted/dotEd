@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from observer.Subject import Subject
-from model.Node import *
-from model.Edge import *
+from model.Node import Node
+from model.Edge import Edge
 
 class Graph(Subject):
     '''Model of a graph.
@@ -18,6 +18,7 @@ class Graph(Subject):
     nbEdges (Dictionary[Edge]): number of edges
     directed (boolean): Graph directed or not
     '''
+
 
     def __init__(self, directed=False):
         # Parent constructor(s)
@@ -70,8 +71,8 @@ class Graph(Subject):
         '''Notify all observers of the creation of a Node or an Edge.
         
         Argument(s):
-        dictArgsNode (dict): dictionary of arguments of the node
-        dictArgsEdge (dict): dictionary of arguments of the edge
+        dictArgsNode (Dictionary[]): dictionary of arguments of the node
+        dictArgsEdge (Dictionary[]): dictionary of arguments of the edge
         ''' 
         for obs in self.observers:
             obs.update(dictArgsNode, dictArgsEdge) 

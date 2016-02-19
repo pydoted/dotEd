@@ -32,9 +32,8 @@ class GraphicsGraphView(View, QGraphicsView):
     def updateNode(self, dictArgsNode):
         '''Create or update a node (on the scene).
         
-        
         Argument(s):
-        dictArgsNode (dict): dictionary of arguments of the node
+        dictArgsNode (Dictionary[]): dictionary of arguments of the node
         '''
         nodeId = dictArgsNode["id"]
         if self.nodes[nodeId] is None:
@@ -45,9 +44,8 @@ class GraphicsGraphView(View, QGraphicsView):
     def updateEdge(self, dictArgsEdge):
         '''Create or update an edge (on the scene).
         
-        
         Argument(s):
-        dictArgsEdge (dict): dictionary of arguments of the edge
+        dictArgsEdge (Dictionary[]): dictionary of arguments of the edge
         '''
         pass
     

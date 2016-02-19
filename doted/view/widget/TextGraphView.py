@@ -28,7 +28,7 @@ class TextGraphView(View, QTextEdit):
         
         
         Argument(s):
-        dictArgsNode (dict): dictionary of arguments of the node
+        dictArgsNode (Dictionary[]): dictionary of arguments of the node
         '''
         nodeId = dictArgsNode["id"]
         if self.nodes[nodeId] is None:

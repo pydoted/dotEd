@@ -26,4 +26,3 @@ class Controller(Observer):
     def update(self):
         '''Update the view.'''
         pass
-        

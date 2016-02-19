@@ -18,4 +18,5 @@ class Observer(object):
         self.model.addObserver(self)
     
     def update(self):
+        '''Update the observer.'''
         pass

@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PyQt5.Qt import Qt
-from PyQt5.QtWidgets import QMainWindow, QWidget, QToolBar, QHBoxLayout, \
-                            QAction
+from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout
 
 from view.widget.View import View
 
@@ -26,9 +24,8 @@ class MainWindow(View, QMainWindow):
         self.setCentralWidget(self.mainWidget)
         self.setWindowTitle("dotEd")
         
-        # Menu + ToolBar
+        # Menu
         self.createMenu()
-        self.createToolBar()
         
         # Status bar just for a test
         self.statusBar().showMessage("Status bar")
@@ -41,15 +38,7 @@ class MainWindow(View, QMainWindow):
         '''Create the menu bar.'''
         self.menuBar().addAction("File")
         self.menuBar().addAction("Help")
-    
-    def createToolBar(self):
-        '''Create the toolbar.'''
-        # Toolbar initialisation
-        toolBar = QToolBar()
-        toolBar.setFloatable(False)
-        self.addToolBar(Qt.TopToolBarArea, toolBar)
         
-
     def addWidget(self, widget):
         '''Add a widget to the layout.
         
@@ -57,4 +46,3 @@ class MainWindow(View, QMainWindow):
         widget (QWidget): Widget to add to the layout
         '''
         self.layout.addWidget(widget)
-        
