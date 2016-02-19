@@ -23,11 +23,16 @@ class TextGraphView(View, QTextEdit):
         self.nodes = {}
         self.edges = {}
 
-    def update(self):
-        '''Update the text.'''
-        nodeId = "ID"
-        if nodeId not in self.nodes:
-            self.nodes[nodeId] = "A"
+    def updateNode(self, dictArgsNode):
+        '''Create or update a node (in the text).
+        
+        
+        Argument(s):
+        dictArgsNode (dict): dictionary of arguments of the node
+        '''
+        nodeId = dictArgsNode["id"]
+        if self.nodes[nodeId] is None:
+            self.nodes[nodeId] = dictArgsNode["label"]
             self.setPlainText(self.nodes[nodeId])
         
         #for all node in nodes....,

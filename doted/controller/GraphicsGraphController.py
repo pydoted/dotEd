@@ -27,7 +27,7 @@ class GraphicsGraphController(Controller):
         if dictArgsNode: 
             self.view.updateNode(dictArgsNode)
         else:
-            self.view.updateNode(dictArgsEdge)
+            self.view.updateEdge(dictArgsEdge)
             
     def onCreateNode(self):
         '''Callback function when creating a node.'''

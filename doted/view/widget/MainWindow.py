@@ -49,13 +49,6 @@ class MainWindow(View, QMainWindow):
         toolBar.setFloatable(False)
         self.addToolBar(Qt.TopToolBarArea, toolBar)
         
-        # Create a node
-        createNodeAction = QAction("Node", self)
-        createNodeAction.triggered.connect(self.createNode)
-        toolBar.addAction(createNodeAction)
-        
-        # Create an edge
-        toolBar.addAction("Edge")
 
     def addWidget(self, widget):
         '''Add a widget to the layout.
@@ -64,12 +57,4 @@ class MainWindow(View, QMainWindow):
         widget (QWidget): Widget to add to the layout
         '''
         self.layout.addWidget(widget)
-
-    def createNode(self):
-        '''Callback funtion when creating a node.'''
-        self.controller.onCreateNode()
-        
-    def createEdge(self):
-        '''Callback funtion when creating an edge.'''
-        self.controller.onCreateEdge()
         

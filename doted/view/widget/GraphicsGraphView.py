@@ -37,7 +37,7 @@ class GraphicsGraphView(View, QGraphicsView):
         dictArgsNode (dict): dictionary of arguments of the node
         '''
         nodeId = dictArgsNode["id"]
-        if nodeId not in self.nodes:
+        if self.nodes[nodeId] is None:
             self.nodes[nodeId] = GraphicsEllipseNode(nodeId,
                                                          dictArgsNode["label"])
             self.scene.addItem(self.nodes[nodeId])
@@ -50,3 +50,11 @@ class GraphicsGraphView(View, QGraphicsView):
         dictArgsEdge (dict): dictionary of arguments of the edge
         '''
         pass
+    
+    def onCreateNode(self):
+        '''Callback funtion when creating a node.'''
+        self.controller.onCreateNode()
+        
+    def onCreateEdge(self):
+        '''Callback funtion when creating an edge.'''
+        self.controller.onCreateEdge()
