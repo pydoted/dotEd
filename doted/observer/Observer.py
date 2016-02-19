@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 
-class Observator(object):
-    '''Represent an observator. 
+class Observer(object):
+    '''Represent an observer. 
     
     
     Argument(s):
@@ -15,7 +15,7 @@ class Observator(object):
     
     def __init__(self, model):
         self.model = model
-        self.model.addObservator(self)
+        self.model.addObserver(self)
     
     def updateView(self):
         '''Update the view.'''

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from observer.Observator import Observator
+from observer.Observer import Observer
 
 
-class Controller(Observator):
+class Controller(Observer):
     '''Base class for controllers.
     
     
@@ -18,7 +18,7 @@ class Controller(Observator):
 
     def __init__(self, model, view):
         # Parent constructor(s)
-        Observator.__init__(self, model)
+        Observer.__init__(self, model)
         
         self.view = view
         self.view.setController(self)
