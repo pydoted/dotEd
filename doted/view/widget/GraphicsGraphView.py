@@ -29,9 +29,24 @@ class GraphicsGraphView(View, QGraphicsView):
         self.setScene(self.scene)
         self.show()
 
-    def update(self):
-        '''Update the scene.'''
-        nodeId = "ID"
+    def updateNode(self, dictArgsNode):
+        '''Create or update a node (on the scene).
+        
+        
+        Argument(s):
+        dictArgsNode (dict): dictionary of arguments of the node
+        '''
+        nodeId = dictArgsNode["id"]
         if nodeId not in self.nodes:
-            self.nodes[nodeId] = GraphicsEllipseNode(nodeId, "A")
+            self.nodes[nodeId] = GraphicsEllipseNode(nodeId,
+                                                         dictArgsNode["label"])
             self.scene.addItem(self.nodes[nodeId])
+            
+    def updateEdge(self, dictArgsEdge):
+        '''Create or update an edge (on the scene).
+        
+        
+        Argument(s):
+        dictArgsEdge (dict): dictionary of arguments of the edge
+        '''
+        pass

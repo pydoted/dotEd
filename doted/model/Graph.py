@@ -30,11 +30,11 @@ class Graph(Subject):
         self.directed = directed
 
     def addNode(self):
-        '''Add a Node to the graph.'''
+        '''Add a Node to the graph and notify this.'''
         self.nbNodes += 1
         node = Node(self.nbNodes)
         self.nodes[node.id] = node
-        self.notify();
+        self.notify(node.getArgs(), None);
     
         
     def removeNode(self, idNode):
@@ -46,7 +46,7 @@ class Graph(Subject):
         self.nodes.pop(idNode)
     
     def addEdgde(self, idSourceNode, idDestNode):
-        '''Add an Edge to the graph.
+        '''Add an Edge to the graph and notify this.
         
         Argument(s):
         idSourceNode (int): ID of the source node
@@ -56,7 +56,7 @@ class Graph(Subject):
         edge = Edge(self.nodes[idSourceNode],
                                     self.nodes[idDestNode], self.nbEdges)
         self.edges[edge.id] = edge
-        self.notify();
+        self.notify(None, edge.getArgs());
     
     def removeEdgde(self, idEdge):
         '''Remove an Edge from the graph.
@@ -65,3 +65,13 @@ class Graph(Subject):
         idEdge (int): ID of the edge to remove
         '''
         self.edges.pop(idEdge)
+       
+    def notify(self, dictArgsNode, dictArgsEdge):
+        '''Notify all observers of the creation of a Node or an Edge.
+        
+        Argument(s):
+        dictArgsNode (dict): dictionary of arguments of the node
+        dictArgsEdge (dict): dictionary of arguments of the edge
+        ''' 
+        for obs in self.observers:
+            obs.update(dictArgsNode, dictArgsEdge) 

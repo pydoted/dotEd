@@ -72,3 +72,4 @@ class MainWindow(View, QMainWindow):
     def createEdge(self):
         '''Callback funtion when creating an edge.'''
         self.controller.onCreateEdge()
+        

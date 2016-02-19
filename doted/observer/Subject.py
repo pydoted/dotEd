@@ -22,6 +22,4 @@ class Subject(object):
 		self.observers.append(obs)
 		
 	def notify(self):
-		'''Notify all observers.'''
-		for obs in self.observers:
-			obs.update() 
+		pass

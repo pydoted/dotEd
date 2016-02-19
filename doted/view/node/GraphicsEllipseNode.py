@@ -11,14 +11,14 @@ class GraphicsEllipseNode(GraphicsNode, QGraphicsEllipseItem):
     
     
     Argument(s):
-    nodeId (int): ID of the node
-    nodeLabel (str): Label of the node
+    id (int): Id of the node
+    label (str): Label of the node
     '''
 
 
-    def __init__(self, nodeId, nodeLabel):
+    def __init__(self, id, label):
         # Parent constructor(s)
-        GraphicsNode.__init__(self, nodeId, nodeLabel)
+        GraphicsNode.__init__(self, id, label)
         QGraphicsEllipseItem.__init__(self)
         
         self.graphicsTextNode.setParentItem(self)

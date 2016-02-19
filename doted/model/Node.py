@@ -6,18 +6,22 @@ class Node:
     
     
     Argument(s):
-    label (str): Label (default "") 
-    id (int): ID
+    label (str): Label 
+    id (int): Id
     
     Attribute(s):
-    id (int): ID
+    id (int): Id
     label (str): Label
     '''
 
 
-    def __init__(self, idNode):
-        self.id = idNode
+    def __init__(self, id):
+        self.id = id
         self.label = "n" + str(self.id)
         #self.shape enum ?
         #self.color enum ?
         #self.neighbours = [] subgraph ?
+
+    def getArgs(self):
+        '''return a dictionary of the arguments of the node.'''
+        return {"id":self.id, "label":self.label}

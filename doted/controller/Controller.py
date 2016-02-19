@@ -28,6 +28,5 @@ class Controller(Observer):
     
     def update(self):
         '''Update the view.'''
-        if self.ignore:
-            self.ignore = False
+        pass
         

@@ -9,7 +9,7 @@ class Edge:
     Argument(s):
     source (Node): Source node
     dest (Node): Destionation node
-    idEdge (int): ID
+    id (int): Id 
     
     Attribute(s):
     id (int): ID
@@ -18,8 +18,12 @@ class Edge:
     '''
 
 
-    def __init__(self, source, dest, idEdge):
-        self.id = idEdge
+    def __init__(self, source, dest, id):
+        self.id = id
         self.source = source
         self.dest = dest
         #self.color enum ?
+
+    def getArgs(self):
+        '''return a list of the arguments of the edge.'''
+        return [self.id, self.source, self.dest]
