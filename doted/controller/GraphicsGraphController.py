@@ -24,13 +24,10 @@ class GraphicsGraphController(Controller):
         dictArgsNode (dict): dictionary of arguments of the node
         dictArgsEdge (dict): dictionary of arguments of the edge
         ''' 
-        if self.ignore:
-            self.ignore = False
+        if dictArgsNode: 
+            self.view.updateNode(dictArgsNode)
         else:
-            if dictArgsNode: 
-                self.view.updateNode(dictArgsNode)
-            else:
-                self.view.updateNode(dictArgsEdge)
+            self.view.updateNode(dictArgsEdge)
             
     def onCreateNode(self):
         '''Callback function when creating a node.'''
