@@ -16,3 +16,13 @@ class GraphicsGraphController(Controller):
     def __init__(self, model, view):
         # Parent constructor(s)
         Controller.__init__(self, model, view)
+
+    def onCreateNode(self):
+        '''Callback function when creating a node.'''
+        self.ignore = True;
+        self.model.addNode()
+    
+    def onCreateEdge(self):
+        '''Callback function when creating an edge.'''
+        self.ignore = True;
+        self.model.addEdgde()

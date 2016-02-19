@@ -13,6 +13,8 @@ class Controller(Observer):
     
     Attribute(s):
     view (View): View of the controller
+    ignore_notify (boolean): To ignore boomerang effect after an update of model
+                             make by self.
     '''
 
 
@@ -20,9 +22,12 @@ class Controller(Observer):
         # Parent constructor(s)
         Observer.__init__(self, model)
         
+        self.ignore = False
         self.view = view
         self.view.setController(self)
     
-    def updateView(self):
+    def update(self):
         '''Update the view.'''
-        self.view.update()
+        if self.ignore:
+            self.ignore = False
+        

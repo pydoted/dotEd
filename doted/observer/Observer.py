@@ -17,6 +17,5 @@ class Observer(object):
         self.model = model
         self.model.addObserver(self)
     
-    def updateView(self):
-        '''Update the view.'''
+    def update(self):
         pass

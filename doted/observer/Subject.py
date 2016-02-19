@@ -24,4 +24,4 @@ class Subject(object):
 	def notify(self):
 		'''Notify all observers.'''
 		for obs in self.observers:
-			obs.updateView() 
+			obs.update() 
