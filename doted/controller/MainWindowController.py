@@ -12,6 +12,7 @@ class MainWindowController(Controller):
     view (View): View of the controller    
     '''
 
+
     def __init__(self, model, view):
         # Parent constructor(s)
         Controller.__init__(self, model, view)
