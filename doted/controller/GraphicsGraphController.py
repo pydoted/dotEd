@@ -31,10 +31,8 @@ class GraphicsGraphController(Controller):
             
     def onCreateNode(self, x, y):
         '''Callback function when creating a node.'''
-        self.ignore = True;
         self.model.addNode(x, y)
     
     def onCreateEdge(self):
         '''Callback function when creating an edge.'''
-        self.ignore = True;
         self.model.addEdge()
