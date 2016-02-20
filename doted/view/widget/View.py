@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-class View():
+class View(object):
     '''Base class for views.
     
     

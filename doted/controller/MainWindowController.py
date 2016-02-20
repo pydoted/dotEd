@@ -16,3 +16,6 @@ class MainWindowController(Controller):
     def __init__(self, model, view):
         # Parent constructor(s)
         Controller.__init__(self, model, view)
+
+    def update(self, dictArgsNode, dictArgsEdge):
+        pass

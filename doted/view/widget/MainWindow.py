@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout
+from PyQt5.Qt import Qt
+from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QSplitter
 
 from view.widget.View import View
 
@@ -11,7 +12,7 @@ class MainWindow(View, QMainWindow):
     
     Attribute(s):
     mainWidget (QWidget): Central widget containing all other widgets
-    layout (QHBoxLayout): Layout of the central widget
+    splitter (QSplitter): Frame that will contains widgets
     '''
 
     def __init__(self):
@@ -28,11 +29,12 @@ class MainWindow(View, QMainWindow):
         self.createMenu()
         
         # Status bar just for a test
-        self.statusBar().showMessage("Status bar")
+        self.statusBar().showMessage("Double click to create a node")
         
-        # Layout which will contain all views
-        self.layout = QHBoxLayout()
-        self.mainWidget.setLayout(self.layout)
+        # Layout/Splitter which will contain all widgets
+        self.splitter = QSplitter(Qt.Horizontal)
+        layout = QHBoxLayout(self.mainWidget)
+        layout.addWidget(self.splitter)
     
     def createMenu(self):
         '''Create the menu bar.'''
@@ -43,6 +45,6 @@ class MainWindow(View, QMainWindow):
         '''Add a widget to the layout.
         
         Argument(s):
-        widget (QWidget): Widget to add to the layout
+        widget (QWidget): Widget to add to the splitter
         '''
-        self.layout.addWidget(widget)
+        self.splitter.addWidget(widget)

@@ -31,8 +31,18 @@ class TextGraphView(View, QTextEdit):
         dictArgsNode (Dictionary[]): dictionary of arguments of the node
         '''
         nodeId = dictArgsNode["id"]
-        if self.nodes[nodeId] is None:
-            self.nodes[nodeId] = dictArgsNode["label"]
-            self.setPlainText(self.nodes[nodeId])
+        self.nodes[nodeId] = dictArgsNode["label"]
         
-        #for all node in nodes....,
+        # The way of displaying will change
+        stringNodes = ""
+        for id, label in self.nodes.items():
+            stringNodes += str(id) + " [label=\"" + label + "\"] ;\n"
+        self.setPlainText(stringNodes)
+
+    def updateEdge(self, dictArgsEdge):
+        '''Create or update an edge (on the scene).
+        
+        Argument(s):
+        dictArgsEdge (Dictionary[]): dictionary of arguments of the edge
+        '''
+        pass

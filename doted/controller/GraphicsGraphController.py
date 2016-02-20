@@ -29,12 +29,12 @@ class GraphicsGraphController(Controller):
         else:
             self.view.updateEdge(dictArgsEdge)
             
-    def onCreateNode(self):
+    def onCreateNode(self, x, y):
         '''Callback function when creating a node.'''
         self.ignore = True;
-        self.model.addNode()
+        self.model.addNode(x, y)
     
     def onCreateEdge(self):
         '''Callback function when creating an edge.'''
         self.ignore = True;
-        self.model.addEdgde()
+        self.model.addEdge()

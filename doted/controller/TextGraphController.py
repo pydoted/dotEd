@@ -21,8 +21,8 @@ class TextGraphController(Controller):
         '''Update the view.
         
         Argument(s):
-        dictArgsNode (dict): dictionary of arguments of the node
-        dictArgsEdge (dict): dictionary of arguments of the edge
+        dictArgsNode (Dictionary[]): dictionary of arguments of the node
+        dictArgsEdge (Dictionary[]): dictionary of arguments of the edge
         ''' 
         if dictArgsNode: 
             self.view.updateNode(dictArgsNode)
