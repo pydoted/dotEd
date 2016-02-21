@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QGraphicsTextItem
 
 
 class GraphicsTextNode(QGraphicsTextItem):
-    '''Represent the text view of a Node.
+    '''The GraphicsTextNode class defines the text of a GraphicsNode.
     
     
     Argument(s):

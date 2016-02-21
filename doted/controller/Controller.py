@@ -4,7 +4,7 @@ from observer.Observer import Observer
 
 
 class Controller(Observer):
-    '''Base class for controllers.
+    '''The Controller class defines a base class for controllers.
     
     
     Argument(s):

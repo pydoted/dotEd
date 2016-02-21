@@ -4,7 +4,8 @@ from controller.Controller import Controller
 
 
 class MainWindowController(Controller):
-    '''Controller to manage a MainWindow.
+    '''The MainWindowController class defines the controller to manage
+       a Doted (app)/MainWindow (view).
     
     
     Argument(s):

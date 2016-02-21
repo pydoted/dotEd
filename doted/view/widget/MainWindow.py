@@ -7,7 +7,7 @@ from view.widget.View import View
 
 
 class MainWindow(View, QMainWindow):
-    '''Main view of the application.
+    '''The MainWindow class defines the main view of the application.
     
     
     Attribute(s):

@@ -5,7 +5,7 @@ from model.Node import Node
 from model.Edge import Edge
 
 class Graph(Subject):
-    '''Model of a graph.
+    '''The Graph class defines a graph (model).
     
     
     Argument(s):
@@ -34,8 +34,8 @@ class Graph(Subject):
         '''Add a Node to the graph and notify this.
         
         Argument(s):
-        x (float): x coordinate of the node (default 0.0)
-        y (float): y coordinate of the node (default 0.0)
+        x (float): x coordinate of the node
+        y (float): y coordinate of the node
         '''
         self.nbNodes += 1
         node = Node(self.nbNodes, x , y)
@@ -57,11 +57,13 @@ class Graph(Subject):
         idSourceNode (int): ID of the source node
         idDestNode (int): ID of the destination node
         '''
-        self.nbEdges += 1
-        edge = Edge(self.nodes[idSourceNode],
-                                    self.nodes[idDestNode], self.nbEdges)
-        self.edges[edge.id] = edge
-        self.notify(None, edge.getArgs());
+        # Only add the edge if the two nodes are not neighboring
+        if not self.nodes[idSourceNode].isNeighboringTo(idDestNode):
+            self.nbEdges += 1
+            edge = Edge(self.nodes[idSourceNode],
+                                        self.nodes[idDestNode], self.nbEdges)
+            self.edges[edge.id] = edge
+            self.notify(None, edge.getArgs());
     
     def removeEdge(self, idEdge):
         '''Remove an Edge from the graph.

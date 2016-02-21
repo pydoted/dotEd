@@ -6,7 +6,8 @@ from view.widget.View import View
 
 
 class TextGraphView(View, QTextEdit):
-    '''Text (dot file) representation of a Graph.
+    '''The TextGraphView class defines a text (dot file) representation of a
+       Graph.
     
     
     Attribute(s):

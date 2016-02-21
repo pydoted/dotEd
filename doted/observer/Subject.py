@@ -2,7 +2,7 @@
 
 
 class Subject(object):
-	'''Represent a subject.
+	'''The Subject class defines a subject.
 	
 	
 	Argument(s):

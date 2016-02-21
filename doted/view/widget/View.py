@@ -2,7 +2,7 @@
 
 
 class View(object):
-    '''Base class for views.
+    '''The View class defines a base class for views.
     
     
     Attribute(s):

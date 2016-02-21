@@ -5,7 +5,7 @@ from model.Node import Node
 
 
 class ModelFactory(object):
-    '''Factory to create models.'''
+    '''The ModelFactory class allows to create models.'''
     
     
     @staticmethod

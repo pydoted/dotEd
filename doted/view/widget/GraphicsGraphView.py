@@ -3,12 +3,13 @@
 from PyQt5.Qt import QEvent, Qt, QRectF
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
+from view.edge.GraphicsLineEdge import GraphicsLineEdge
 from view.node.GraphicsEllipseNode import GraphicsEllipseNode
 from view.widget.View import View
 
 
 class GraphicsGraphView(View, QGraphicsView):
-    '''Graphical representation of a Graph.
+    '''The GraphicsGraphView defines a graphical representation of a Graph.
     
     
     Attribute(s):
@@ -39,12 +40,13 @@ class GraphicsGraphView(View, QGraphicsView):
         Argument(s):
         dictArgsNode (Dictionary[]): dictionary of arguments of the node
         '''
-        nodeId = dictArgsNode["id"]
-        self.nodes[nodeId] = GraphicsEllipseNode(nodeId,
-                                                     dictArgsNode["label"])
-        self.nodes[nodeId].setX(dictArgsNode["x"])
-        self.nodes[nodeId].setY(dictArgsNode["y"])
-        self.scene.addItem(self.nodes[nodeId])
+        id = dictArgsNode["id"]
+        
+        self.nodes[id] = GraphicsEllipseNode(id, dictArgsNode["label"])
+        self.nodes[id].setX(dictArgsNode["x"])
+        self.nodes[id].setY(dictArgsNode["y"])
+        
+        self.scene.addItem(self.nodes[id])
             
     def updateEdge(self, dictArgsEdge):
         '''Create or update an edge (on the scene).
@@ -52,25 +54,23 @@ class GraphicsGraphView(View, QGraphicsView):
         Argument(s):
         dictArgsEdge (Dictionary[]): dictionary of arguments of the edge
         '''
-        pass
-    
-    def onCreateNode(self, x, y):
-        '''Callback funtion when creating a node.'''
-        self.controller.onCreateNode(x, y)
+        id = dictArgsEdge["id"]
+        source = self.nodes[dictArgsEdge["source"].id]
+        dest = self.nodes[dictArgsEdge["dest"].id]
         
-    def onCreateEdge(self):
-        '''Callback funtion when creating an edge.'''
-        self.controller.onCreateEdge()
+        self.edges[id] = GraphicsLineEdge(source, dest)
+        
+        self.scene.addItem(self.edges[id])
 
     def eventFilter(self, source, event):
         '''Handle events for the scene.'''
-        # When left-doubleclicking on the scene, it creates a node 
-        if (source == self.scene and
-            event.type() == QEvent.GraphicsSceneMouseDoubleClick and
-            event.button() == Qt.LeftButton):
-            pos = event.scenePos()
-            self.onCreateNode(pos.x(), pos.y())
+        if source == self.scene:
+            # Create a node
+            if (event.type() == QEvent.GraphicsSceneMouseDoubleClick and
+                event.buttons() == Qt.LeftButton):
+                pos = event.scenePos()
+                self.controller.onCreateNode(pos.x(), pos.y())
+                
+                return True
             
-            return True
-        
         return False

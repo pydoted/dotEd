@@ -4,7 +4,8 @@ from controller.Controller import Controller
 
 
 class TextGraphController(Controller):
-    '''Controller to manage a Graph/TextGraphView.
+    '''The TextGraphController class defines a controller to manage
+       a Graph (model)/TextGraphView (view).
     
     
     Argument(s):

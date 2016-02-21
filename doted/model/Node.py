@@ -2,7 +2,7 @@
 
 
 class Node:
-    '''Model of a node.
+    '''The Node class defines a node (model).
     
     
     Argument(s):
@@ -16,6 +16,7 @@ class Node:
     label (str): Label
     x (float): x coordinate
     y (float): y coordinate
+    neighbours (Dictionary[Edge]): Neighbouring nodes
     '''
 
 
@@ -24,10 +25,21 @@ class Node:
         self.label = "n" + str(self.id)
         self.x = x
         self.y = y
+        self.neighbours = {}
         #self.shape enum ?
         #self.color enum ?
-        #self.neighbours = [] subgraph ?
+        
+    def addNeighbour(self, node):
+        self.neighbours[node.id] = node
 
+    def isNeighboringTo(self, id):
+        '''Check is the the node is neighboring with another.
+        
+        Argument(s):
+        id (int): Node id
+        '''
+        return id in self.neighbours
+    
     def getArgs(self):
         '''Return a dictionary of the arguments of the node.'''
         return {

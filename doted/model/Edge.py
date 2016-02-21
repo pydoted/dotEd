@@ -3,7 +3,7 @@
 
 class Edge:
     '''
-    Model of an edge.
+    The Edge class defines an edge (model).
     
     
     Argument(s):
@@ -22,8 +22,14 @@ class Edge:
         self.id = id
         self.source = source
         self.dest = dest
+        source.addNeighbour(dest)
+        dest.addNeighbour(source)
         #self.color enum ?
 
     def getArgs(self):
-        '''return a list of the arguments of the edge.'''
-        return [self.id, self.source, self.dest]
+        '''Return a dictionary of the arguments of the edge.'''
+        return {
+                "id": self.id,
+                "source": self.source,
+                "dest": self.dest
+            }

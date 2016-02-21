@@ -2,7 +2,7 @@
 
 
 class Observer(object):
-    '''Represent an observer. 
+    '''The Observer class defines an observer. 
     
     
     Argument(s):

@@ -6,7 +6,7 @@ from view.node.GraphicsTextNode import GraphicsTextNode
 
 
 class GraphicsNode(object):
-    '''Base class view of a Node.
+    '''The GraphicsNode class defines a base class for a graphics node.
     
     Argument(s):
     id (int): Id of the node
