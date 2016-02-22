@@ -5,16 +5,17 @@ from PyQt5.QtWidgets import QGraphicsTextItem
 
 
 class GraphicsTextNode(QGraphicsTextItem):
-    '''Represent the text view of a Node.
+    '''The GraphicsTextNode class defines the text of a GraphicsNode.
+    
     
     Argument(s):
-    nodeLabel (str): Label of the node
+    label (str): Label of the node
     '''
 
 
-    def __init__(self, nodeLabel):
+    def __init__(self, label):
         # Parent constructor(s)
-        QGraphicsTextItem.__init__(self, nodeLabel)
+        QGraphicsTextItem.__init__(self, label)
         
         self.setTextInteractionFlags(Qt.TextEditorInteraction)
     

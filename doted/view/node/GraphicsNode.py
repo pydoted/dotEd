@@ -6,21 +6,21 @@ from view.node.GraphicsTextNode import GraphicsTextNode
 
 
 class GraphicsNode(object):
-    '''Base class view of a Node.
+    '''The GraphicsNode class defines a base class for a graphics node.
     
     Argument(s):
-    nodeId (int): ID of the node
-    nodeLabel (str): Label of the node
+    id (int): Id of the node
+    label (str): Label of the node
     
     Attribute(s):
-    nodeId (int): ID of the node
+    id (int): Id of the node
     graphicsTextNode (GraphicsTextNode): Text (label) of the node
     '''
 
 
-    def __init__(self, nodeId, nodeLabel):
-        self.nodeId = nodeId;
-        self.graphicsTextNode = GraphicsTextNode(nodeLabel);
+    def __init__(self, id, label):
+        self.id = id;
+        self.graphicsTextNode = GraphicsTextNode(label);
         (self.graphicsTextNode.boundingRect().
                                marginsAdded(QMarginsF(10, 10, 10, 10)))
     

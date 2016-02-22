@@ -4,7 +4,8 @@ from controller.Controller import Controller
 
 
 class MainWindowController(Controller):
-    '''Controller to manage a MainWindow.
+    '''The MainWindowController class defines the controller to manage
+       a Doted (app)/MainWindow (view).
     
     
     Argument(s):
@@ -12,14 +13,10 @@ class MainWindowController(Controller):
     view (View): View of the controller    
     '''
 
+
     def __init__(self, model, view):
         # Parent constructor(s)
         Controller.__init__(self, model, view)
-    
-    def onCreateNode(self):
-        '''Callback function when creating a node.'''
-        self.model.addNode()
-    
-    def onCreateEdge(self):
-        '''Callback function when creating an edge.'''
-        self.model.addEdgde()
+
+    def update(self, dictArgsNode, dictArgsEdge):
+        pass

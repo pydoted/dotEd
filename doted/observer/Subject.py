@@ -2,26 +2,25 @@
 
 
 class Subject(object):
-	'''Represent a subject.
+	'''The Subject class defines a subject.
 	
 	
 	Argument(s):
-	observators (List[Observator]): All observators
+	observers (List[Observer]): All observers
 	'''
 	
 	
 	def __init__(self):
-		self.observators = []
+		self.observers = []
 		
-	def addObservator(self, obs):
-		'''Add an observator.
+	def addObserver(self, obs):
+		'''Add an observer.
 		
 		Argument(s):
-		obs (Observator): A controller
+		obs (Observer): A controller
 		'''
-		self.observators.append(obs)
+		self.observers.append(obs)
 		
 	def notify(self):
-		'''Notify all observators.'''
-		for obs in self.observators:
-			obs.updateView() 
+		'''Notify observers.'''
+		pass

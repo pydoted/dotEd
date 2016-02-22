@@ -6,7 +6,7 @@ from factory.ModelFactory import ModelFactory
 
 
 class Doted(object):
-    '''Represent the main application.
+    '''The Doted class provides a main application.
     
     
     Attribute(s):

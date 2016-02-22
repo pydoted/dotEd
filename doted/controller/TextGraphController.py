@@ -4,7 +4,8 @@ from controller.Controller import Controller
 
 
 class TextGraphController(Controller):
-    '''Controller to manage a Graph/TextGraphView.
+    '''The TextGraphController class defines a controller to manage
+       a Graph (model)/TextGraphView (view).
     
     
     Argument(s):
@@ -16,3 +17,15 @@ class TextGraphController(Controller):
     def __init__(self, model, view):
         # Parent constructor(s)
         Controller.__init__(self, model, view)
+
+    def update(self, dictArgsNode, dictArgsEdge):
+        '''Update the view.
+        
+        Argument(s):
+        dictArgsNode (Dictionary[]): dictionary of arguments of the node
+        dictArgsEdge (Dictionary[]): dictionary of arguments of the edge
+        ''' 
+        if dictArgsNode: 
+            self.view.updateNode(dictArgsNode)
+        else:
+            self.view.updateEdge(dictArgsEdge)

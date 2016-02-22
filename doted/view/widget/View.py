@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 
-class View():
-    '''Base class for views.
+class View(object):
+    '''The View class defines a base class for views.
     
     
     Attribute(s):

@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
+from PyQt5.Qt import QEvent, Qt, QRectF
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
+from view.edge.GraphicsLineEdge import GraphicsLineEdge
 from view.node.GraphicsEllipseNode import GraphicsEllipseNode
 from view.widget.View import View
 
 
 class GraphicsGraphView(View, QGraphicsView):
-    '''Graphical representation of a Graph.
+    '''The GraphicsGraphView defines a graphical representation of a Graph.
     
     
     Attribute(s):
@@ -27,11 +29,48 @@ class GraphicsGraphView(View, QGraphicsView):
         
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
+        self.scene.setSceneRect(QRectF(self.viewport().rect()));
+        self.scene.installEventFilter(self)
+        
         self.show()
 
-    def update(self):
-        '''Update the scene.'''
-        nodeId = "ID"
-        if nodeId not in self.nodes:
-            self.nodes[nodeId] = GraphicsEllipseNode(nodeId, "A")
-            self.scene.addItem(self.nodes[nodeId])
+    def updateNode(self, dictArgsNode):
+        '''Create or update a node (on the scene).
+        
+        Argument(s):
+        dictArgsNode (Dictionary[]): dictionary of arguments of the node
+        '''
+        id = dictArgsNode["id"]
+        
+        self.nodes[id] = GraphicsEllipseNode(id, dictArgsNode["label"])
+        self.nodes[id].setX(dictArgsNode["x"])
+        self.nodes[id].setY(dictArgsNode["y"])
+        
+        self.scene.addItem(self.nodes[id])
+            
+    def updateEdge(self, dictArgsEdge):
+        '''Create or update an edge (on the scene).
+        
+        Argument(s):
+        dictArgsEdge (Dictionary[]): dictionary of arguments of the edge
+        '''
+        id = dictArgsEdge["id"]
+        source = self.nodes[dictArgsEdge["source"].id]
+        dest = self.nodes[dictArgsEdge["dest"].id]
+        
+        self.edges[id] = GraphicsLineEdge(source, dest)
+        
+        self.scene.addItem(self.edges[id])
+
+    def eventFilter(self, source, event):
+        '''Handle events for the scene.'''
+        if source == self.scene:
+            # Create a node
+            if (event.type() == QEvent.GraphicsSceneMouseDoubleClick and
+                event.buttons() == Qt.LeftButton):
+                pos = event.scenePos()
+                self.controller.onCreateNode(pos.x(), pos.y())
+                
+                return True
+            
+        return False

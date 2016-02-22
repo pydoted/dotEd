@@ -9,7 +9,7 @@ from view.widget.TextGraphView import TextGraphView
 
 
 class ViewFactory(object):
-    '''Factory to create views.'''
+    '''The ViewFactory class allows to create views.'''
 
 
     @staticmethod

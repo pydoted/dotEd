@@ -6,7 +6,7 @@ from controller.TextGraphController import TextGraphController
 
 
 class ControllerFactory(object):
-    '''Factory to create controllers.'''
+    '''The ControllerFactory class allows to create controllers.'''
     
     
     @staticmethod

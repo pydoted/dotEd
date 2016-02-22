@@ -7,7 +7,7 @@ from view.widget.View import View
 
 
 class PropertiesView(View, QTreeView):
-    ''' Properties (data) of a Node.'''
+    '''The PropertiesView class defines a view for the properties of a Node.'''
 
 
     def __init__(self):

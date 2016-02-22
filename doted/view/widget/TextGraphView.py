@@ -6,7 +6,8 @@ from view.widget.View import View
 
 
 class TextGraphView(View, QTextEdit):
-    '''Text (dot file) representation of a Graph.
+    '''The TextGraphView class defines a text (dot file) representation of a
+       Graph.
     
     
     Attribute(s):
@@ -23,11 +24,26 @@ class TextGraphView(View, QTextEdit):
         self.nodes = {}
         self.edges = {}
 
-    def update(self):
-        '''Update the text.'''
-        nodeId = "ID"
-        if nodeId not in self.nodes:
-            self.nodes[nodeId] = "A"
-            self.setPlainText(self.nodes[nodeId])
+    def updateNode(self, dictArgsNode):
+        '''Create or update a node (in the text).
         
-        #for all node in nodes....,
+        
+        Argument(s):
+        dictArgsNode (Dictionary[]): dictionary of arguments of the node
+        '''
+        nodeId = dictArgsNode["id"]
+        self.nodes[nodeId] = dictArgsNode["label"]
+        
+        # The way of displaying will change
+        stringNodes = ""
+        for id, label in self.nodes.items():
+            stringNodes += str(id) + " [label=\"" + label + "\"] ;\n"
+        self.setPlainText(stringNodes)
+
+    def updateEdge(self, dictArgsEdge):
+        '''Create or update an edge (on the scene).
+        
+        Argument(s):
+        dictArgsEdge (Dictionary[]): dictionary of arguments of the edge
+        '''
+        pass
