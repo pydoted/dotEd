@@ -17,18 +17,6 @@ class GraphicsGraphController(Controller):
     def __init__(self, model, view):
         # Parent constructor(s)
         Controller.__init__(self, model, view)
-        
-    def update(self, dictArgsNode, dictArgsEdge):
-        '''Update the view.
-        
-        Argument(s):
-        dictArgsNode (Dictionary[]): dictionary of arguments of the node
-        dictArgsEdge (Dictionary[]): dictionary of arguments of the edge
-        ''' 
-        if dictArgsNode: 
-            self.view.updateNode(dictArgsNode)
-        else:
-            self.view.updateEdge(dictArgsEdge)
             
     def onCreateNode(self, x, y):
         '''Callback function when creating a node.
@@ -39,6 +27,23 @@ class GraphicsGraphController(Controller):
         '''
         self.model.addNode(x, y)
     
+    def onEditLabelNode(self, idNode, labelNode):
+        '''Callback function when editing a label a node.
+        
+        Argument(s):
+        idNode (int): ID of the node to edit
+        labelNode (str): New label of the node
+        '''
+        self.model.editLabelNode(idNode, labelNode)
+    
+    def onRemoveNode(self, idNode):
+        '''Callback function when removinf a node.
+        
+        Argument(s):
+        idNode (int): ID of the node to remove
+        '''
+        self.model.removeNode(idNode)
+    
     def onCreateEdge(self, idSourceNode, idDestNode):
         '''Callback function when creating an edge.
         
@@ -47,3 +52,11 @@ class GraphicsGraphController(Controller):
         idDestNode (int): ID of the destination node
         '''
         self.model.addEdge(idSourceNode, idDestNode)
+
+    def onRemoveEdge(self, idEdge):
+        '''Callback function when removing an edge.
+        
+        Argument(s):
+        idEdge (int): ID of the edge to remove
+        '''
+        self.model.removeEdge(idEdge)

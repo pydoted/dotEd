@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from enumeration.NodeArgs import NodeArgs
 
-class Node:
+
+class Node(object):
     '''The Node class defines a node (model).
     
     
@@ -30,10 +32,23 @@ class Node:
         #self.color enum ?
         
     def addNeighbour(self, node):
+        '''Add a neighbour.
+        
+        Argument(s):
+        node (Node): Neighbour
+        '''
         self.neighbours[node.id] = node
+        
+    def removeNeighbour(self, node):
+        '''Remove a neighbour.
+        
+        Argument(s):
+        node (Node): Neighbour
+        '''
+        self.neighbours.pop(node.id)
 
     def isNeighboringTo(self, id):
-        '''Check is the the node is neighboring with another.
+        '''Check if the node is neighboring with another.
         
         Argument(s):
         id (int): Node id
@@ -43,8 +58,8 @@ class Node:
     def getArgs(self):
         '''Return a dictionary of the arguments of the node.'''
         return {
-                "id": self.id,
-                "label": self.label,
-                "x": self.x,
-                "y": self.y
+                NodeArgs.id: self.id,
+                NodeArgs.label: self.label,
+                NodeArgs.x: self.x,
+                NodeArgs.y: self.y
             }

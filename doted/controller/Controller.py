@@ -23,6 +23,15 @@ class Controller(Observer):
         self.view = view
         self.view.setController(self)
     
-    def update(self):
-        '''Update the view.'''
-        pass
+    def update(self, dictArgsNode, dictArgsEdge, updateModeView):
+        '''Update the view.
+        
+        Argument(s):
+        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
+        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
+        updateModeView (UpdateModeView) : Update mode
+        ''' 
+        if dictArgsNode: 
+            self.view.updateNode(dictArgsNode, updateModeView)
+        else:
+            self.view.updateEdge(dictArgsEdge, updateModeView)

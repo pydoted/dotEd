@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from PyQt5.Qt import QLineF
 from PyQt5.QtWidgets import QGraphicsLineItem, QGraphicsItem
 
+from view.edge.EdgeUtils import EdgeUtils
 from view.edge.GraphicsEdge import GraphicsEdge
 
 
@@ -13,23 +13,29 @@ class GraphicsLineEdge(GraphicsEdge, QGraphicsLineItem):
     Argument(s):
     source (GraphicsNode): Node view
     dest (GraphicsNode): Node view
+    id (int): ID
     '''
 
 
-    def __init__(self, source, dest):
+    def __init__(self, source, dest, id):
         # Parent constructor(s)
-        GraphicsEdge.__init__(self, source, dest)
+        GraphicsEdge.__init__(self, source, dest, id)
         QGraphicsLineItem.__init__(self)
         
+        self.setFlag(QGraphicsItem.ItemIsSelectable)        
+        self.update()
+
+    def update(self):
+        '''Update the coordinates of the line.'''
         # Get the two shapes of each node
         sourceShape = self.source.mapToScene(self.source.shape())
         destShape = self.dest.mapToScene(self.dest.shape())
         
         # Compute the closest points between the two shapes
-        pSource = self.closestPointTo(destShape.boundingRect().center(),
-                                      sourceShape)
-        pDest = self.closestPointTo(sourceShape.boundingRect().center(),
-                                    destShape)
+        pSource = EdgeUtils.closestPointTo(destShape.boundingRect().center(),
+                                           sourceShape)
+        pDest = EdgeUtils.closestPointTo(sourceShape.boundingRect().center(),
+                                         destShape)
         
-        self.setLine(QLineF(pSource, pDest))
-        self.setFlag(QGraphicsItem.ItemIsSelectable)
+        # Draw a line between source and dest
+        self.setLine(pSource.x(), pSource.y(), pDest.x(), pDest.y())

@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
 
+from enumeration.EdgeArgs import EdgeArgs
 
-class Edge:
+
+class Edge(object):
     '''
     The Edge class defines an edge (model).
     
     
     Argument(s):
     source (Node): Source node
-    dest (Node): Destionation node
-    id (int): Id 
+    dest (Node): Destination node
+    id (int): ID
     
     Attribute(s):
     id (int): ID
     source (Node): Source node
-    dest (Node): Destionation node
+    dest (Node): Destination node
     '''
 
 
@@ -29,7 +31,7 @@ class Edge:
     def getArgs(self):
         '''Return a dictionary of the arguments of the edge.'''
         return {
-                "id": self.id,
-                "source": self.source,
-                "dest": self.dest
+                EdgeArgs.id: self.id,
+                EdgeArgs.sourceId: self.source.id,
+                EdgeArgs.destId: self.dest.id
             }

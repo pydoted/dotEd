@@ -13,17 +13,26 @@ class GraphicsNode(object):
     label (str): Label of the node
     
     Attribute(s):
-    id (int): Id of the node
+    id (int): ID of the node
     graphicsTextNode (GraphicsTextNode): Text (label) of the node
+    semiEdge (GraphicsSemiEdge): Line between a graphics node and cursor mouse
     '''
 
 
     def __init__(self, id, label):
         self.id = id;
+        
+        # Init graphics text node
         self.graphicsTextNode = GraphicsTextNode(label);
         (self.graphicsTextNode.boundingRect().
                                marginsAdded(QMarginsF(10, 10, 10, 10)))
+        
+        self.semiEdge = None
     
     def centerTextInShape(self):
         '''Center the text in the shape.'''
         pass
+
+    def getGraphicsView(self):
+        '''Return the graphics view.'''
+        return self.scene().views()[0]
