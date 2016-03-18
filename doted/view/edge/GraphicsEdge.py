@@ -8,36 +8,16 @@ class GraphicsEdge(object):
     Argument(s):
     source (GraphicsNode): Node view
     dest (GraphicsNode): Node view
+    id (int): ID
     
     Attribute(s):
     source (GraphicsNode): Node view
     dest (GraphicsNode): Node view
+    id (int): ID
     '''
 
 
-    def __init__(self, source, dest):
+    def __init__(self, source, dest, id):
         self.source = source
         self.dest = dest
-        
-    def closestPointTo(self, point, path):
-        '''Return the closest point between a point and a path.
-        
-        Argument(s):
-        point (QPointF): Point
-        path (QPainterPath): Painter path
-        '''
-        target = path.boundingRect().center()
-        mid = (point + target) / 2.0
-        
-        if path.contains(mid):
-            return mid
-        else:
-            while (mid - point).manhattanLength() > 1:
-                while not path.contains(mid) :
-                    point = mid
-                    mid = (point + target) / 2.0
-    
-                while path.contains(mid) :
-                    mid = (point + mid) / 2.0
-                    
-            return mid
+        self.id = id

@@ -37,4 +37,4 @@ class Doted(object):
 
     def run(self):
         '''Run the application.'''
-        self.mainWindow.showMaximized()
+        self.mainWindow.show()

@@ -21,6 +21,21 @@ class View(object):
         '''
         self.controller = controller
 
-    def update(self):
-        '''Update the view.'''
+    def updateNode(self, dictArgsNode, updateMode):
+        '''Update a node (on the scene).
+        
+        Argument(s):
+        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
+        updateMode (UpdateMode) : Update mode
+        '''
+        pass
+            
+            
+    def updateEdge(self, dictArgsEdge, updateMode):
+        '''Update an edge (on the scene).
+        
+        Argument(s):
+        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
+        updateMode (UpdateMode) : Update mode
+        '''
         pass

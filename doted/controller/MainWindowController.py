@@ -18,5 +18,12 @@ class MainWindowController(Controller):
         # Parent constructor(s)
         Controller.__init__(self, model, view)
 
-    def update(self, dictArgsNode, dictArgsEdge):
+    def update(self, dictArgsNode, dictArgsEdge, updateModeView):
+        '''Update the view.
+        
+        Argument(s):
+        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
+        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
+        updateModeView (UpdateModeView) : Update mode
+        ''' 
         pass

@@ -2,11 +2,12 @@
 
 from PyQt5.QtWidgets import QGraphicsLineItem
 
-from view.edge.GraphicsEdge import GraphicsEdge
+from view.edge.EdgeUtils import EdgeUtils
 
 
-class GraphicsSemiEdge(GraphicsEdge, QGraphicsLineItem):
-    '''The GraphicsSemiEdge class defines a line between a GraphicsNode and a QPoint. 
+class GraphicsSemiEdge(QGraphicsLineItem):
+    '''The GraphicsSemiEdge class defines a line between a GraphicsNode and a
+       QPoint. 
     
     
     Argument(s):
@@ -17,8 +18,10 @@ class GraphicsSemiEdge(GraphicsEdge, QGraphicsLineItem):
 
     def __init__(self, source, dest):
         # Parent constructor(s)
-        GraphicsEdge.__init__(self, source, dest)
         QGraphicsLineItem.__init__(self)
+        
+        self.source = source
+        self.dest = dest
     
     def update(self, source):
         '''Update the coordinates of the line.
@@ -27,6 +30,6 @@ class GraphicsSemiEdge(GraphicsEdge, QGraphicsLineItem):
         source (QPointF): Source point
         '''
         destShape = self.dest.mapToScene(self.dest.shape())
-        p = self.closestPointTo(source, destShape)
+        p = EdgeUtils.closestPointTo(source, destShape)
         
         self.setLine(source.x(), source.y(), p.x(), p.y())
