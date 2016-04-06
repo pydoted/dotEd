@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from PyQt5.Qt import QPainterPath, QPainterPathStroker
 from PyQt5.QtWidgets import QGraphicsLineItem, QGraphicsItem
-
 from view.edge.EdgeUtils import EdgeUtils
 from view.edge.GraphicsEdge import GraphicsEdge
 
@@ -39,3 +39,16 @@ class GraphicsLineEdge(GraphicsEdge, QGraphicsLineItem):
         
         # Draw a line between source and dest
         self.setLine(pSource.x(), pSource.y(), pDest.x(), pDest.y())
+    
+    def shape(self):
+        '''Defines the shape of the item for selection '''
+        stroker = QPainterPathStroker()
+        
+        # Tolerance on click to update if needed
+        stroker.setWidth(12);
+        
+        path = QPainterPath()
+        path.moveTo(self.line().p1());
+        path.lineTo(self.line().p2());
+        
+        return stroker.createStroke(path);
