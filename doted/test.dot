@@ -1,0 +1,6 @@
+graph graphname {
+     a [label="Foo"];
+     b;
+     a -- b -- c;
+     b -- d;
+ }

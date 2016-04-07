@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5.Qt import Qt
-from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QSplitter
+from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QSplitter, QMenu
 
 from view.widget.View import View
 
@@ -38,8 +38,16 @@ class MainWindow(View, QMainWindow):
     
     def createMenu(self):
         '''Create the menu bar.'''
-        self.menuBar().addAction("File")
+        menuFile = self.menuBar().addMenu("File")
         self.menuBar().addAction("Help")
+        
+        self.importAction = menuFile.addAction("Import")
+        self.saveAction = menuFile.addAction("Save")
+        
+    def initMenuAction(self):
+        '''Connect signals of QActions with their slots.'''
+        self.importAction.triggered.connect(self.controller.onImportFile)
+        self.saveAction.triggered.connect(self.controller.onSaveFile)
         
     def addWidget(self, widget):
         '''Add a widget to the layout.

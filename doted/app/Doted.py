@@ -34,6 +34,9 @@ class Doted(object):
         # Adding views to main window
         self.mainWindow.addWidget(graphicsGraphView)
         self.mainWindow.addWidget(textGraphView)
+        
+        # Activate actions in menu of the main window
+        self.mainWindow.initMenuAction()
 
     def run(self):
         '''Run the application.'''

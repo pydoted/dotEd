@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from controller.Controller import Controller
+from pydot_ng import *
+from pydot_ng._dotparser import add_elements, push_default_stmt
 
-
-class MainWindowController(Controller):
+class MainWindowController():
     '''The MainWindowController class defines the controller to manage
        a Doted (app)/MainWindow (view).
     
@@ -15,15 +15,26 @@ class MainWindowController(Controller):
 
 
     def __init__(self, model, view):
-        # Parent constructor(s)
-        Controller.__init__(self, model, view)
+        self.view = view
+        self.view.setController(self)
+        self.model = model
 
-    def update(self, dictArgsNode, dictArgsEdge, updateModeView):
-        '''Update the view.
+
+    def onImportFile(self):
+        '''Import a file which contains a graph and build or rebuild''' 
+        #Load graph from file with pydot_ng    
+        graph = graph_from_dot_file("doted/test.dot")
+        nodes = graph.get_nodes();
+        for n in nodes:
+            print(n.to_string())
+        push_default_stmt("a -- b -- c;", a, b)
+        #nods = g.get_nodes();
+        #for m in nods:
+        #    print(m.to_string())
         
-        Argument(s):
-        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
-        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
-        updateModeView (UpdateModeView) : Update mode
-        ''' 
+        
+    
+    def onSaveFile(self):
+        '''Save in a file the text description of the graph.''' 
         pass
+        
