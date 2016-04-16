@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5.Qt import Qt
-from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QSplitter, QMenu
+from PyQt5.QtWidgets import QMainWindow, QWidget, QSplitter, QVBoxLayout
 
 from view.widget.View import View
 
@@ -33,9 +33,9 @@ class MainWindow(View, QMainWindow):
         
         # Layout/Splitter which will contain all widgets
         self.splitter = QSplitter(Qt.Horizontal)
-        layout = QHBoxLayout(self.mainWidget)
-        layout.addWidget(self.splitter)
-    
+        self.layout = QVBoxLayout(self.mainWidget)
+        self.layout.addWidget(self.splitter)
+
     def createMenu(self):
         '''Create the menu bar.'''
         menuFile = self.menuBar().addMenu("File")
@@ -49,10 +49,18 @@ class MainWindow(View, QMainWindow):
         self.importAction.triggered.connect(self.controller.onImportFile)
         self.saveAction.triggered.connect(self.controller.onSaveFile)
         
-    def addWidget(self, widget):
-        '''Add a widget to the layout.
+    def addWidgetToSplitter(self, widget):
+        '''Add a widget to the splitter.
         
         Argument(s):
         widget (QWidget): Widget to add to the splitter
         '''
         self.splitter.addWidget(widget)
+        
+    def addWidgetToLayout(self, widget):
+        '''Add a widget to the layout.
+        
+        Argument(s):
+        widget (QWidget): Widget to add to the splitter
+        '''
+        self.layout.addWidget(widget)

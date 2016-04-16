@@ -33,6 +33,8 @@ class TextGraphView(View, QTextEdit):
         self.strNodes = ""
         self.strEdges = ""
         self.graphName = "my_graph"
+        
+        self.setPlainText(self.strDot())
 
     def updateNode(self, dictArgsNode, updateModeView):
         '''Create or update a node (in the text).
@@ -42,7 +44,7 @@ class TextGraphView(View, QTextEdit):
         dictArgsNode (Dictionary[]): dictionary of arguments of the node
         updateModeView (UpdateModeView) : Update mode
         '''
-        id = dictArgsNode[NodeArgs.id]
+        nodeId = dictArgsNode[NodeArgs.id]
         
         # Add node
         if updateModeView == UpdateModeView.add:
@@ -59,9 +61,13 @@ class TextGraphView(View, QTextEdit):
         # Generate string nodes
         self.strNodes = ""
         for idNode, labelNode in self.nodes.items():
-            self.strNodes += ("    " + str(idNode) +
-                              " [label=\"" + labelNode.replace('\n', '') +
-                              "\"] ;\n")
+            self.strNodes += "    " + str(idNode)
+            if labelNode:
+                self.strNodes += (" [label=\"" + labelNode.replace('\n', '') +
+                                  "\"]")
+            
+            self.strNodes += ";\n"
+            
         
         self.setPlainText(self.strDot())
 
@@ -90,8 +96,8 @@ class TextGraphView(View, QTextEdit):
         # Generate string edges
         self.strEdges = ""
         for tupleIdNodes in self.edges.values():
-            self.strEdges += ("    " + str(tupleIdNodes[0]) + "-" +
-                              str(tupleIdNodes[1]) + "\n")
+            self.strEdges += ("    " + str(tupleIdNodes[0]) + "--" +
+                              str(tupleIdNodes[1]) + ";\n")
         
         self.setPlainText(self.strDot())
     

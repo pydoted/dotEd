@@ -51,12 +51,18 @@ class GraphicsGraphView(View, QGraphicsView):
        
         # Add node
         if updateModeView == UpdateModeView.add:
-            self.nodes[id] = GraphicsEllipseNode(id,
-                                                 dictArgsNode[NodeArgs.label])
-            self.nodes[id].setX(dictArgsNode[NodeArgs.x])
-            self.nodes[id].setY(dictArgsNode[NodeArgs.y])  
+            label = (dictArgsNode[NodeArgs.label]
+                        if dictArgsNode[NodeArgs.label]
+                        else id)
+            
+            self.nodes[id] = GraphicsEllipseNode(id, label)
+            self.nodes[id].setPos(dictArgsNode[NodeArgs.x],
+                                  dictArgsNode[NodeArgs.y]) 
         
             self.scene.addItem(self.nodes[id])
+            
+            if len(self.scene.items()) > 2:
+                self.scene.setSceneRect(self.scene.itemsBoundingRect());
         
         # Edit node
         elif updateModeView == UpdateModeView.edit:
@@ -67,6 +73,9 @@ class GraphicsGraphView(View, QGraphicsView):
         elif updateModeView == UpdateModeView.remove:
             self.scene.removeItem(self.nodes[id])
             self.nodes.pop(id)
+            
+            if len(self.scene.items()) == 0:
+                self.scene.setSceneRect(QRectF(self.viewport().rect()));
             
     def updateEdge(self, dictArgsEdge, updateModeView):
         '''Update an edge (on the scene).
@@ -117,7 +126,7 @@ class GraphicsGraphView(View, QGraphicsView):
                 if not source.itemAt(event.scenePos(), QTransform()):
                     pos = event.scenePos()
                     self.controller.onCreateNode(pos.x(), pos.y())
-                    
+
                     return True
             
             # Key press

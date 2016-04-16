@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from factory.ControllerFactory import ControllerFactory
-from factory.ViewFactory import ViewFactory
-from factory.ModelFactory import ModelFactory
+from PyQt5.QtWidgets import QPushButton
+
+from controller.GraphicsGraphController import GraphicsGraphController
+from controller.MainWindowController import MainWindowController
+from controller.TextGraphController import TextGraphController
+from model.Graph import Graph
+from view.widget.GraphicsGraphView import GraphicsGraphView
+from view.widget.MainWindow import MainWindow
+from view.widget.TextGraphView import TextGraphView
 
 
 class Doted(object):
@@ -16,24 +22,28 @@ class Doted(object):
 
     def __init__(self):
         # Model
-        graphModel = ModelFactory.newGraph()
+        graphModel = Graph()
         
         # Views
-        graphicsGraphView = ViewFactory.newGraphicsGraphView()
-        textGraphView = ViewFactory.newTextGraphView()
+        graphicsGraphView = GraphicsGraphView()
+        textGraphView = TextGraphView()
 
         # Controllers
-        ControllerFactory.newGraphicsGraphController(graphModel,
-                                                     graphicsGraphView)
-        ControllerFactory.newTextGraphController(graphModel, textGraphView)
+        GraphicsGraphController(graphModel, graphicsGraphView)
+        textGraphController = TextGraphController(graphModel, textGraphView)
 
         # Main window
-        self.mainWindow = ViewFactory.newMainWindow()
-        ControllerFactory.newMainWindowController(graphModel, self.mainWindow)
+        self.mainWindow = MainWindow()
+        MainWindowController(graphModel, self.mainWindow, textGraphController)
+        
+        # Clear graph button
+        clearGraphButton = QPushButton("Clear graph")
+        clearGraphButton.clicked.connect(graphModel.clear)
         
         # Adding views to main window
-        self.mainWindow.addWidget(graphicsGraphView)
-        self.mainWindow.addWidget(textGraphView)
+        self.mainWindow.addWidgetToLayout(clearGraphButton)
+        self.mainWindow.addWidgetToSplitter(graphicsGraphView)
+        self.mainWindow.addWidgetToSplitter(textGraphView)
         
         # Activate actions in menu of the main window
         self.mainWindow.initMenuAction()
