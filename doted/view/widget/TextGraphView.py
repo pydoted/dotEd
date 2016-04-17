@@ -3,7 +3,6 @@
 from PyQt5.QtWidgets import QTextEdit
 
 from enumeration.NodeArgs import NodeArgs
-from enumeration.UpdateModeView import UpdateModeView
 from enumeration.EdgeArgs import EdgeArgs
 from view.widget.View import View
 
@@ -36,28 +35,64 @@ class TextGraphView(View, QTextEdit):
         
         self.setPlainText(self.strDot())
 
-    def updateNode(self, dictArgsNode, updateModeView):
-        '''Create or update a node (in the text).
-        
+    def addNode(self, dictArgsNode):
+        '''Add a node.
         
         Argument(s):
-        dictArgsNode (Dictionary[]): dictionary of arguments of the node
-        updateModeView (UpdateModeView) : Update mode
+        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
         '''
-        id = dictArgsNode[NodeArgs.id]
+        self.nodes[dictArgsNode[NodeArgs.id]] = dictArgsNode[NodeArgs.label]
+        self.updateStrNodes()
+
+    def editNode(self, dictArgsNode):
+        '''Edit a node.
         
-        # Add node
-        if updateModeView == UpdateModeView.add:
-            self.nodes[id] = dictArgsNode[NodeArgs.label]
+        Argument(s):
+        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
+        '''
+        self.nodes[dictArgsNode[NodeArgs.id]] = dictArgsNode[NodeArgs.label]
+        self.updateStrNodes()
+
+    def removeNode(self, dictArgsNode):
+        '''Remove a node.
         
-        # Edit node
-        elif updateModeView == UpdateModeView.edit:
-            self.nodes[id] = dictArgsNode[NodeArgs.label]
+        Argument(s):
+        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
+        '''
+        self.nodes.pop(dictArgsNode[NodeArgs.id])
+        self.updateStrNodes()
+
+    def addEdge(self, dictArgsEdge):
+        '''Add an edge.
         
-        # Remove node
-        elif updateModeView == UpdateModeView.remove:
-            self.nodes.pop(id)
+        Argument(s):
+        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
+        '''
         
+        self.edges[dictArgsEdge[EdgeArgs.id]] = (
+                            dictArgsEdge[EdgeArgs.sourceId],
+                            dictArgsEdge[EdgeArgs.destId])
+        self.updateStrEdges()
+    
+    def editEdge(self, dictArgsEdge):
+        '''Edit an edge.
+        
+        Argument(s):
+        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
+        '''
+        self.updateStrEdges()
+    
+    def removeEdge(self, dictArgsEdge):
+        '''Remove an edge.
+        
+        Argument(s):
+        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
+        '''
+        self.edges.pop(dictArgsEdge[EdgeArgs.id])
+        self.updateStrEdges()
+    
+    def updateStrNodes(self):
+        '''Update the dot string representation of the nodes.'''
         # Generate string nodes
         self.strNodes = ""
         for idNode, labelNode in self.nodes.items():
@@ -67,32 +102,11 @@ class TextGraphView(View, QTextEdit):
                                   "\"]")
             
             self.strNodes += ";\n"
-            
         
         self.setPlainText(self.strDot())
-
-    def updateEdge(self, dictArgsEdge, updateModeView):
-        '''Create or update an edge (on the scene).
-        
-        Argument(s):
-        dictArgsEdge (Dictionary[]): dictionary of arguments of the edge
-        updateModeView (UpdateModeView) : Update mode
-        '''
-        id = dictArgsEdge[EdgeArgs.id]
-        
-        # Add edge
-        if updateModeView == UpdateModeView.add:
-            self.edges[id] = (dictArgsEdge[EdgeArgs.sourceId],
-                              dictArgsEdge[EdgeArgs.destId])
-        
-        # Edit edge
-        elif updateModeView == UpdateModeView.edit:
-            pass
-        
-        # Remove edge
-        elif updateModeView == UpdateModeView.remove:
-            self.edges.pop(id)
-        
+    
+    def updateStrEdges(self):
+        '''Update the dot string representation of the edges.'''
         # Generate string edges
         self.strEdges = ""
         for tupleIdNodes in self.edges.values():

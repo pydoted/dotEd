@@ -21,21 +21,50 @@ class View(object):
         '''
         self.controller = controller
 
-    def updateNode(self, dictArgsNode, updateMode):
-        '''Update a node (on the scene).
+    def addNode(self, dictArgsNode):
+        '''Add a node.
         
         Argument(s):
         dictArgsNode (Dictionary[]): Dictionary of arguments of the node
-        updateMode (UpdateMode) : Update mode
         '''
         pass
-            
-            
-    def updateEdge(self, dictArgsEdge, updateMode):
-        '''Update an edge (on the scene).
+    
+    def editNode(self, dictArgsNode):
+        '''Edit a node.
+        
+        Argument(s):
+        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
+        '''
+        pass
+    
+    def removeNode(self, dictArgsNode):
+        '''Remove a node.
+        
+        Argument(s):
+        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
+        '''
+        pass
+
+    def addEdge(self, dictArgsEdge):
+        '''Add an edge.
         
         Argument(s):
         dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
-        updateMode (UpdateMode) : Update mode
+        '''
+        pass
+    
+    def editEdge(self, dictArgsEdge):
+        '''Edit an edge.
+        
+        Argument(s):
+        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
+        '''
+        pass
+    
+    def removeEdge(self, dictArgsEdge):
+        '''Remove an edge.
+        
+        Argument(s):
+        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
         '''
         pass

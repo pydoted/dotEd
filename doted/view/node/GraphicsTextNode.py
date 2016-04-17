@@ -24,15 +24,8 @@ class GraphicsTextNode(QGraphicsTextItem):
         event (QKeyEvent): Key event
         '''
         QGraphicsTextItem.keyPressEvent(self, event)
-        
-        # Must center the text in the shape
-        self.parentItem().centerTextInShape()
-        
-        # Update coordinates of each edge of the current node
-        graphicsNode = self.parentItem()
-        graphicsNode.getGraphicsView().updateEdgesOfNode(graphicsNode)
+        self.parentItem().updateShapeAndEdges()
   
-
     def mouseDoubleClickEvent(self, event):
         '''Handle mouse double click event.
 
@@ -72,3 +65,12 @@ class GraphicsTextNode(QGraphicsTextItem):
         '''
         # Disable context menu (right click)
         pass
+
+    def setPlainText(self, text):
+        '''Sets the item's text to text.
+        
+        Argument(s):
+        text (str): Text to set
+        '''
+        QGraphicsTextItem.setPlainText(self, text)
+        self.parentItem().updateShapeAndEdges()

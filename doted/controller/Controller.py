@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from enumeration.UpdateModeView import UpdateModeView
 from observer.Observer import Observer
 
 
@@ -30,8 +31,21 @@ class Controller(Observer):
         dictArgsNode (Dictionary[]): Dictionary of arguments of the node
         dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
         updateModeView (UpdateModeView) : Update mode
-        ''' 
-        if dictArgsNode: 
-            self.view.updateNode(dictArgsNode, updateModeView)
+        '''
+        # Update node
+        if dictArgsNode:
+            if updateModeView == UpdateModeView.add:
+                self.view.addNode(dictArgsNode)
+            elif updateModeView == UpdateModeView.edit:
+                self.view.editNode(dictArgsNode)
+            elif updateModeView == UpdateModeView.remove:
+                self.view.removeNode(dictArgsNode)
+        
+        # Update edge
         else:
-            self.view.updateEdge(dictArgsEdge, updateModeView)
+            if updateModeView == UpdateModeView.add:
+                self.view.addEdge(dictArgsEdge)
+            elif updateModeView == UpdateModeView.edit:
+                self.view.editEdge(dictArgsEdge)
+            elif updateModeView == UpdateModeView.remove:
+                self.view.removeEdge(dictArgsEdge)
