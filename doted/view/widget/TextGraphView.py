@@ -44,7 +44,7 @@ class TextGraphView(View, QTextEdit):
         dictArgsNode (Dictionary[]): dictionary of arguments of the node
         updateModeView (UpdateModeView) : Update mode
         '''
-        nodeId = dictArgsNode[NodeArgs.id]
+        id = dictArgsNode[NodeArgs.id]
         
         # Add node
         if updateModeView == UpdateModeView.add:

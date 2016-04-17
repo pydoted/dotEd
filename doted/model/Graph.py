@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from pydot_ng import graph_from_dot_file
-
 from enumeration.UpdateModeView import UpdateModeView
 from model.Edge import Edge
 from model.Node import Node
@@ -30,8 +28,8 @@ class Graph(Subject):
         
         self.nodes = {}
         self.edges = {}
-        self.nbNodes = 0
-        self.nbEdges = 0
+        self.resetNbNodes()
+        self.resetNbEdges()
         self.directed = directed
     
     def clear(self):
@@ -39,37 +37,6 @@ class Graph(Subject):
         # Remove all nodes (will also remove all edges)
         for idNode in list(self.nodes.keys()):
             self.removeNode(idNode)
-        
-        # Reset ID
-        self.nbNodes = 0
-        self.nbEdges = 0
-
-    def importDotFile(self, filePath):
-        '''Import a dot file into the graph.
-        
-        Argument(s):
-        filePath (str): path to the dot file to import
-        '''
-        # Load dot file into a pydot graph
-        pydotGraph = graph_from_dot_file(filePath)
-        
-        # Clear graph (ask to save before importing here in a future extension)
-        self.clear()
-        
-        # Default position of the node
-        x = [1]
-        x[0] = 0
-        y = [1]
-        y[0] = 0
-        deltaX = 100
-        
-        # Create nodes from pydot nodes
-        for node in pydotGraph.get_nodes():
-            self.addPydotNode(node, x, y, deltaX)
-            
-        # Create edges from pydot edges
-        for edge in pydotGraph.get_edges():
-            self.addPydotEdge(edge, x, y, deltaX)
     
     def addPydotNode(self, pydotNode, x, y, deltaX):
         '''Add a pydot node in the graph.
@@ -79,17 +46,17 @@ class Graph(Subject):
         x (List[float]): x coordinate of the node
         y (List[float]): y coordinate of the node
         deltaX (float): Delta increment for x coordinate
-        '''   
-        
-        node = Node(pydotNode.get_name(), x[0] , y[0])
-        x[0] += deltaX
-        label = pydotNode.get_label()
-        if label:
-            # Transform "label" to label 
-            node.label = label[1:len(label) - 1]
-        
-        self.nodes[node.id] = node
-        self.notify(node.getArgs(), None, UpdateModeView.add)
+        '''
+        if not self.nodeExists(pydotNode.get_name()):
+            node = Node(pydotNode.get_name(), x[0] , y[0])
+            x[0] += deltaX
+            label = pydotNode.get_label()
+            if label:
+                # Transform "label" to label 
+                node.label = label[1:len(label) - 1]
+            
+            self.nodes[node.id] = node
+            self.notify(node.getArgs(), None, UpdateModeView.add)
 
     def addPydotEdge(self, pydotEdge, x, y, deltaX):
         '''Add a pydot edge in the graph.
@@ -102,7 +69,7 @@ class Graph(Subject):
         '''
         # Create source node if it doesn't exist
         idSourceNode = pydotEdge.get_source()
-        if not idSourceNode in self.nodes:
+        if not self.nodeExists(idSourceNode):
             node = Node(idSourceNode, x[0], y[0])
             x[0] += deltaX
             self.nodes[node.id] = node
@@ -110,7 +77,7 @@ class Graph(Subject):
 
         # Create dest node if it doesn't exist
         idDestNode = pydotEdge.get_destination()
-        if not idDestNode in self.nodes:
+        if not self.nodeExists(idDestNode):
             node = Node(idDestNode, x[0], y[0])
             x[0] += deltaX
             self.nodes[node.id] = node
@@ -134,6 +101,14 @@ class Graph(Subject):
         self.nodes[node.id] = node
         self.notify(node.getArgs(), None, UpdateModeView.add)
     
+    def nodeExists(self, idNode):
+        '''Check if a node exists.
+        
+        Argument(s):
+        idNode (int): ID of the node to check
+        '''
+        return idNode in self.nodes
+    
     def removeNode(self, idNode):
         '''Remove a Node from the graph.
         
@@ -147,6 +122,9 @@ class Graph(Subject):
         for edge in list(self.edges.values()):
             if node == edge.source or node == edge.dest:
                 self.removeEdge(edge.id)
+        
+        if not self.nodes:
+            self.resetNbNodes()
 
     def editLabelNode(self, idNode, labelNode):
         '''Edit a label node of the graph.
@@ -187,8 +165,19 @@ class Graph(Subject):
         edge.source.removeNeighbour(edge.dest)
         edge.dest.removeNeighbour(edge.source)
         
+        if not self.edges:
+            self.resetNbEdges()
+        
         self.notify(None, edge.getArgs(), UpdateModeView.remove)
-       
+    
+    def resetNbNodes(self):
+        '''Reset number of nodes.'''
+        self.nbNodes = 0
+    
+    def resetNbEdges(self):
+        '''Reset number of edges.'''
+        self.nbEdges = 0
+    
     def notify(self, dictArgsNode, dictArgsEdge, updateModeView):
         '''Notify all observers of the creation of a Node or an Edge.
         

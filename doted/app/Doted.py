@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from PyQt5.QtWidgets import QPushButton
-
 from controller.GraphicsGraphController import GraphicsGraphController
 from controller.MainWindowController import MainWindowController
 from controller.TextGraphController import TextGraphController
@@ -16,37 +14,42 @@ class Doted(object):
     
     
     Attribute(s):
-    mainWindow (MainWindow) -- Application view
+    model (Graph): Model representing the graph
+    graphicsGraphView (GraphicsGraphView): Graphic view
+    textGraphView (TextGraphView): Textual view
+    graphicsGraphController (GraphicsGraphController): Graphic controller
+    textGraphController (TextGraphController): Textual controller
+    mainWindow (MainWindow): Application view
+    mainWindowController (MainWindowController): Application controller
     '''
 
 
     def __init__(self):
         # Model
-        graphModel = Graph()
+        self.graphModel = Graph()
         
         # Views
-        graphicsGraphView = GraphicsGraphView()
-        textGraphView = TextGraphView()
+        self.graphicsGraphView = GraphicsGraphView()
+        self.textGraphView = TextGraphView()
 
         # Controllers
-        GraphicsGraphController(graphModel, graphicsGraphView)
-        textGraphController = TextGraphController(graphModel, textGraphView)
+        self. graphicsGraphController = GraphicsGraphController(
+                                                    self.graphModel,
+                                                    self.graphicsGraphView)
+        self.textGraphController = TextGraphController(
+                                                    self.graphModel,
+                                                    self.textGraphView)
 
-        # Main window
+        # Main application
         self.mainWindow = MainWindow()
-        MainWindowController(graphModel, self.mainWindow, textGraphController)
-        
-        # Clear graph button
-        clearGraphButton = QPushButton("Clear graph")
-        clearGraphButton.clicked.connect(graphModel.clear)
+        self.mainWindowController = MainWindowController(
+                                                    self.graphModel,
+                                                    self.mainWindow,
+                                                    self.textGraphController)
         
         # Adding views to main window
-        self.mainWindow.addWidgetToLayout(clearGraphButton)
-        self.mainWindow.addWidgetToSplitter(graphicsGraphView)
-        self.mainWindow.addWidgetToSplitter(textGraphView)
-        
-        # Activate actions in menu of the main window
-        self.mainWindow.initMenuAction()
+        self.mainWindow.addWidgetToSplitter(self.graphicsGraphView)
+        self.mainWindow.addWidgetToSplitter(self.textGraphView)
 
     def run(self):
         '''Run the application.'''
