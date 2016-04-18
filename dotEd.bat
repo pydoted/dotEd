@@ -1,0 +1,1 @@
+python .\doted\main.py
