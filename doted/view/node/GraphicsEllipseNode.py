@@ -67,6 +67,7 @@ class GraphicsEllipseNode(GraphicsNode, QGraphicsEllipseItem):
 
         # Create the semi-edge
         if event.buttons() == Qt.LeftButton:
+            self.getFocus(self.id)
             self.semiEdge = GraphicsSemiEdge(event.scenePos(), self)
             self.scene().addItem(self.semiEdge)
         
@@ -100,3 +101,13 @@ class GraphicsEllipseNode(GraphicsNode, QGraphicsEllipseItem):
         '''
         # Double click on the text of the node to edit text
         self.graphicsTextNode.mouseDoubleClickEvent(event)
+
+    def getFocus(self, id):
+        '''Special getFocus function for architect and writer M.L.
+        
+        Argument(s):
+        id (str): ID of the node
+        '''
+        controller = self.getGraphicsView().controller
+        print("GET FOCUS : node id = " + str(id))
+        pass

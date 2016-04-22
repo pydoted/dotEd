@@ -46,20 +46,13 @@ class MainWindowController(object):
             # Clear graph (ask to save before importing here in a future extension)
             self.onClearGraph()
             
-            # Default position of the node
-            x = [1]
-            x[0] = 0
-            y = [1]
-            y[0] = 0
-            deltaX = 100
-            
             # Create nodes from pydot nodes
             for node in pydotGraph.get_nodes():
-                self.model.addPydotNode(node, x, y, deltaX)
+                self.model.addNode(node.get_name(), node.get_attributes())
                 
             # Create edges from pydot edges
             for edge in pydotGraph.get_edges():
-                self.model.addPydotEdge(edge, x, y, deltaX)
+                self.model.addEdge(edge.get_source(), edge.get_destination())
     
     def onSaveFile(self):
         '''Save in a file the text description of the graph.'''        

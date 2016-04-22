@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
 from enumeration.EdgeArgs import EdgeArgs
 from enumeration.NodeArgs import NodeArgs
+from enumeration.NodeDotAttrs import NodeDotAttrs
 from view.edge.GraphicsLineEdge import GraphicsLineEdge
 from view.node.GraphicsEllipseNode import GraphicsEllipseNode
 from view.widget.View import View
@@ -46,8 +47,9 @@ class GraphicsGraphView(View, QGraphicsView):
         dictArgsNode (Dictionary[]): Dictionary of arguments of the node
         '''
         # Get the text of the node
-        text = self.getText(dictArgsNode[NodeArgs.label],
-                            dictArgsNode[NodeArgs.id])
+        text = self.getText(
+                    dictArgsNode[NodeArgs.dotAttrs][NodeDotAttrs.label.value],
+                    dictArgsNode[NodeArgs.id])
         
         # Create the node
         self.nodes[dictArgsNode[NodeArgs.id]] = GraphicsEllipseNode(
@@ -71,8 +73,9 @@ class GraphicsGraphView(View, QGraphicsView):
         dictArgsNode (Dictionary[]): Dictionary of arguments of the node
         '''
         # Get the text of the node
-        text = self.getText(dictArgsNode[NodeArgs.label],
-                            dictArgsNode[NodeArgs.id])
+        text = self.getText(
+                    dictArgsNode[NodeArgs.dotAttrs][NodeDotAttrs.label.value],
+                    dictArgsNode[NodeArgs.id])
         
         # Update the text
         self.nodes[dictArgsNode[NodeArgs.id]].graphicsTextNode.setPlainText(

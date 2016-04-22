@@ -25,22 +25,22 @@ class GraphicsGraphController(Controller):
         x (float): x coordinate of the node
         y (float): y coordinate of the node
         '''
-        self.model.addNode(x, y)
+        self.model.addNode(None, {}, x, y)
     
-    def onEditLabelNode(self, idNode, labelNode):
+    def onEditNode(self, idNode, dicDotAttrs):
         '''Callback function when editing a label a node.
         
         Argument(s):
-        idNode (int): ID of the node to edit
-        labelNode (str): New label of the node
+        idNode (str): ID of the node to edit
+        dicDotAttrs (Dictionary[]): Dot attributes of the node
         '''
-        self.model.editLabelNode(idNode, labelNode)
+        self.model.editNode(idNode, dicDotAttrs)
     
     def onRemoveNode(self, idNode):
         '''Callback function when removinf a node.
         
         Argument(s):
-        idNode (int): ID of the node to remove
+        idNode (str): ID of the node to remove
         '''
         self.model.removeNode(idNode)
     
@@ -48,8 +48,8 @@ class GraphicsGraphController(Controller):
         '''Callback function when creating an edge.
         
         Argument(s):
-        idSourceNode (int): ID of the source node
-        idDestNode (int): ID of the destination node
+        idSourceNode (str): ID of the source node
+        idDestNode (str): ID of the destination node
         '''
         self.model.addEdge(idSourceNode, idDestNode)
 
@@ -57,6 +57,6 @@ class GraphicsGraphController(Controller):
         '''Callback function when removing an edge.
         
         Argument(s):
-        idEdge (int): ID of the edge to remove
+        idEdge (str): ID of the edge to remove
         '''
         self.model.removeEdge(idEdge)

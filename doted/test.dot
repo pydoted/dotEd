@@ -3,6 +3,6 @@ graph graphname {
      2;
      1;
      1;
-     a --b -- c;
+     a -- b -- c;
      b -- d;
  }

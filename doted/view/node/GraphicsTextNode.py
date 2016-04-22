@@ -3,6 +3,8 @@
 from PyQt5.Qt import Qt
 from PyQt5.QtWidgets import QGraphicsTextItem
 
+from enumeration.NodeDotAttrs import NodeDotAttrs
+
 
 class GraphicsTextNode(QGraphicsTextItem):
     '''The GraphicsTextNode class defines the text of a GraphicsNode.
@@ -50,8 +52,9 @@ class GraphicsTextNode(QGraphicsTextItem):
         
         # Update text in other views
         node = self.parentItem()
-        node.getGraphicsView().controller.onEditLabelNode(node.id,
-                                                          self.toPlainText())
+        dicDotAttrs = {}
+        dicDotAttrs[NodeDotAttrs.label.value] = self.toPlainText()
+        node.getGraphicsView().controller.onEditNode(node.id, dicDotAttrs)
         
         # Disable edit text
         self.setTextInteractionFlags(Qt.NoTextInteraction)

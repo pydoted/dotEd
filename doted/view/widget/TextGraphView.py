@@ -2,8 +2,11 @@
 
 from PyQt5.QtWidgets import QTextEdit
 
-from enumeration.NodeArgs import NodeArgs
+from pydot_ng import graph_from_dot_data
+
 from enumeration.EdgeArgs import EdgeArgs
+from enumeration.NodeArgs import NodeArgs
+from enumeration.NodeDotAttrs import NodeDotAttrs
 from view.widget.View import View
 
 
@@ -34,6 +37,7 @@ class TextGraphView(View, QTextEdit):
         self.graphName = "my_graph"
         
         self.setPlainText(self.strDot())
+        self.oldPydotGraph = graph_from_dot_data(self.toPlainText())
 
     def addNode(self, dictArgsNode):
         '''Add a node.
@@ -41,7 +45,8 @@ class TextGraphView(View, QTextEdit):
         Argument(s):
         dictArgsNode (Dictionary[]): Dictionary of arguments of the node
         '''
-        self.nodes[dictArgsNode[NodeArgs.id]] = dictArgsNode[NodeArgs.label]
+        self.nodes[dictArgsNode[NodeArgs.id]] = (dictArgsNode[NodeArgs.dotAttrs]
+                                                 [NodeDotAttrs.label.value])
         self.updateStrNodes()
 
     def editNode(self, dictArgsNode):
@@ -50,7 +55,8 @@ class TextGraphView(View, QTextEdit):
         Argument(s):
         dictArgsNode (Dictionary[]): Dictionary of arguments of the node
         '''
-        self.nodes[dictArgsNode[NodeArgs.id]] = dictArgsNode[NodeArgs.label]
+        self.nodes[dictArgsNode[NodeArgs.id]] = (dictArgsNode[NodeArgs.dotAttrs]
+                                                 [NodeDotAttrs.label.value])
         self.updateStrNodes()
 
     def removeNode(self, dictArgsNode):
@@ -98,8 +104,8 @@ class TextGraphView(View, QTextEdit):
         for idNode, labelNode in self.nodes.items():
             self.strNodes += "    " + str(idNode)
             if labelNode:
-                self.strNodes += (" [label=\"" + labelNode.replace('\n', '') +
-                                  "\"]")
+                self.strNodes += (" [label=" + labelNode.replace('\n', '') +
+                                  "]")
             
             self.strNodes += ";\n"
         
@@ -120,3 +126,71 @@ class TextGraphView(View, QTextEdit):
         return ("graph " + self.graphName + " {\n" +
                 self.strNodes + self.strEdges +
                 "}")
+    
+    def focusOutEvent(self, event):
+        '''Handle focus out event.
+        
+        Attribute(s):
+        event (QFocusEvent): Focus event
+        '''
+        # Create pydot graph    
+        self.pydotGraph = graph_from_dot_data(self.toPlainText())
+        
+        # If the pydot graph is valid
+        if self.pydotGraph:
+            pydotNodes = self.pydotGraph.get_nodes()
+            pydotEdges = self.pydotGraph.get_edges()
+ 
+            # -- Remove nodes --
+            # We get all the ID of the nodes from the pydot graph
+            pydotNodesId = []
+            for pydotNode in pydotNodes:
+                pydotNodesId.append(pydotNode.get_name())
+            
+            # If our current nodes are not in the new pydot graph,
+            # we must remove them
+            for nodeId in list(self.nodes.keys()):
+                if not nodeId in pydotNodesId:
+                    self.controller.onRemoveNode(nodeId)
+ 
+            # -- Add nodes --
+            for pydotNode in pydotNodes:
+                self.controller.onCreateNode(pydotNode.get_name(),
+                                             pydotNode.get_attributes(),
+                                             0, 0)
+            
+            # -- Edit nodes -- (a real diff should be done there)
+            for pydotNode in pydotNodes:
+                self.controller.onEditNode(pydotNode.get_name(),
+                                           pydotNode.get_attributes())
+            
+            # -- Remove edges --
+            for edge in list(self.edges.values()):
+                needToRemoveEdge = True
+                # If there are pydot edges in the pydot graph
+                if pydotEdges:
+                    # We must remove the edge if we don't find it in the
+                    # pydot graph
+                    for pydotEdge in pydotEdges:
+                        if ((edge[0] == pydotEdge.get_source() and
+                             edge[1] == pydotEdge.get_destination()) or
+                            (edge[1] == pydotEdge.get_source() and
+                             edge[0] == pydotEdge.get_destination())):
+                            needToRemoveEdge = False
+                            break
+                    
+                    if needToRemoveEdge:
+                        self.controller.onRemoveEdge(edge[0], edge[1])
+                else:
+                    self.controller.onRemoveEdge(edge[0], edge[1])
+                
+            # -- Add edges --
+            for pydotEdge in pydotEdges:
+                self.controller.onCreateEdge(pydotEdge.get_source(),
+                                             pydotEdge.get_destination())
+                
+            QTextEdit.focusOutEvent(self, event)
+        
+        # Pydot graph invalid = block other views ?
+        else:
+            print("Syntax error.")
