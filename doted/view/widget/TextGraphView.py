@@ -176,7 +176,7 @@ class TextGraphView(View, QTextEdit):
         argsN = self.nodes[id]
         nbAttrs = 0
         if len(argsN) > 0:
-             strNode += " ["
+            strNode += " ["
              
         for attr in argsN:
             nbAttrs += 1
@@ -187,7 +187,7 @@ class TextGraphView(View, QTextEdit):
                 strNode += attr + "=" + attrVal.replace("\n", "")
             
         if len(argsN) > 0:
-             strNode += " ]"
+            strNode += " ]"
              
         # Write end statement
         strNode += ";\n"
