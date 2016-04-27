@@ -27,8 +27,6 @@ class Node(object):
         self.y = y
         
         self.neighbours = {}
-        self.dotAttrs = {}
-    
         self.edit(dicDotAttrs)
         
     def addNeighbour(self, node):
@@ -53,7 +51,7 @@ class Node(object):
         Argument(s):
         dicDotAttrs (Dictionary[]): Dot attributes of the node
         '''
-        self.dotAttrs = dicDotAttrs
+        self.dotAttrs = dicDotAttrs.copy()
     
     def isNeighboringTo(self, id):
         '''Check if the node is neighboring with another.
