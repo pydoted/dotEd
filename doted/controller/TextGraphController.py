@@ -16,9 +16,17 @@ class TextGraphController(Controller):
 
     def __init__(self, model, view):
         # Parent constructor(s)
-        Controller.__init__(self, model, view)
-
-    def onCreateNode(self, idNode, dicDotAttrs, x, y):
+        Controller.__init__(self, model, view)  
+        
+    def importGraph(self, text):
+        '''Send textual representation of the graph to the view after an import
+        
+        Argument(s):
+        text (str): Textual representation of the graph
+        '''
+        self.view.importGraph(text)
+        
+    def onCreateNode(self, idNode, dicDotAttrs, x=None, y=None):
         '''Callback function when creating a node.
         
         Argument(s):
@@ -63,3 +71,12 @@ class TextGraphController(Controller):
         idDestNode (intstr): ID of the destination node
         '''
         self.model.removeEdgeByIdNodes(idSourceNode, idDestNode)
+
+        
+    def highlightItem(self, id):
+        '''Inform the view that it must highlight an Item
+        
+        Argument(s):
+        id (str): ID of the node
+        '''
+        self.view.highlightItem(id)

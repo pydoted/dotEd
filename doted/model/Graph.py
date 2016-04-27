@@ -17,7 +17,6 @@ class Graph(Subject):
     nodes (Dictionary[Node]): All nodes
     edges (Dictionary[Edge]): All edges
     nbNodes (Dictionary[Edge]): Number of nodes
-    nbEdges (Dictionary[Edge]): Number of edges
     directed (boolean): Graph directed or not
     x (float): x coordinate for auto pos x node
     y (float): y coordinate for auto pos y node
@@ -34,7 +33,6 @@ class Graph(Subject):
         self.nodes = {}
         self.edges = {}
         self.resetNbNodes()
-        self.resetNbEdges()
         self.directed = directed
         
         self.x = 0
@@ -82,22 +80,22 @@ class Graph(Subject):
             while str(self.nbNodes) in self.nodes:
                 self.nbNodes += 1
             id = str(self.nbNodes)
-        
+            
         # Only create the node if it doesn't exist
         if not self.nodeExists(id):            
             node = Node(id, dicDotAttrs, x if x else self.x, 
                         y if y else self.y)
             if not x:
                 self.x += Graph.deltaX
-
+                
             self.nodes[node.id] = node
             self.notify(node.getArgs(), None, UpdateModeView.add)
     
     def editNode(self, idNode, dicDotAttrs):
-        '''Edit a label node of the graph.
+        '''Edit attributes of a node of the graph.
         
         Argument(s):
-        idNode (int): ID of the node to edit
+        idNode (str): ID of the node to edit
         dicDotAttrs (Dictionary[]): Dot attributes of the node
         '''
         if self.nodeExists(idNode):
@@ -135,9 +133,8 @@ class Graph(Subject):
         
         # Only create the edge if it doesn't exist
         if not self.edgeExists(idSourceNode, idDestNode):
-            self.nbEdges += 1
             edge = Edge(self.nodes[idSourceNode], self.nodes[idDestNode],
-                        self.nbEdges)
+                        idSourceNode+idDestNode)
             self.edges[edge.id] = edge
             self.notify(None, edge.getArgs(), UpdateModeView.add)
     
@@ -155,9 +152,6 @@ class Graph(Subject):
             # Source and dest nodes are not neighboring anymore
             edge.source.removeNeighbour(edge.dest)
             edge.dest.removeNeighbour(edge.source)
-            
-            if not self.edges:
-                self.resetNbEdges()
             
             self.notify(None, edge.getArgs(), UpdateModeView.remove)
     
@@ -180,10 +174,6 @@ class Graph(Subject):
     def resetNbNodes(self):
         '''Reset number of nodes.'''
         self.nbNodes = 0
-    
-    def resetNbEdges(self):
-        '''Reset number of edges.'''
-        self.nbEdges = 0
     
     def notify(self, dictArgsNode, dictArgsEdge, updateModeView):
         '''Notify all observers of the creation of a Node or an Edge.

@@ -33,12 +33,13 @@ class Doted(object):
         self.textGraphView = TextGraphView()
 
         # Controllers
-        self. graphicsGraphController = GraphicsGraphController(
-                                                    self.graphModel,
-                                                    self.graphicsGraphView)
         self.textGraphController = TextGraphController(
                                                     self.graphModel,
                                                     self.textGraphView)
+        self. graphicsGraphController = GraphicsGraphController(
+                                                    self.graphModel,
+                                                    self.graphicsGraphView,
+                                                    self.textGraphController)
 
         # Main application
         self.mainWindow = MainWindow()

@@ -11,12 +11,18 @@ class GraphicsGraphController(Controller):
     Argument(s):
     model (Model): Model of the controller
     view (View): View of the controller
+    textGraphController (TextGraphController): Ref to the TextGraphController
+    
+    Attribute(s):
+    textGraphController (TextGraphController): Ref to the TextGraphController
     '''
 
 
-    def __init__(self, model, view):
+    def __init__(self, model, view, textGraphController):
         # Parent constructor(s)
         Controller.__init__(self, model, view)
+        
+        self.textGraphController = textGraphController
             
     def onCreateNode(self, x, y):
         '''Callback function when creating a node.
@@ -37,7 +43,7 @@ class GraphicsGraphController(Controller):
         self.model.editNode(idNode, dicDotAttrs)
     
     def onRemoveNode(self, idNode):
-        '''Callback function when removinf a node.
+        '''Callback function when removing a node.
         
         Argument(s):
         idNode (str): ID of the node to remove
@@ -60,3 +66,14 @@ class GraphicsGraphController(Controller):
         idEdge (str): ID of the edge to remove
         '''
         self.model.removeEdge(idEdge)
+        
+    def onSelectItem(self, id):
+        '''Inform the controller of textual view that an item (node/edge) has 
+        been selected for that the controller of textual view highlight this
+        item in the text
+        
+        Argument(s):
+        id (str): ID of the node
+        '''
+        self.textGraphController.highlightItem(id)
+        

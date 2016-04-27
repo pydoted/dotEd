@@ -48,24 +48,23 @@ class GraphicsGraphView(View, QGraphicsView):
         '''
         # Get the text of the node
         text = self.getText(
-                    dictArgsNode[NodeArgs.dotAttrs][NodeDotAttrs.label.value],
-                    dictArgsNode[NodeArgs.id])
+                    dictArgsNode[NodeArgs.dotAttrs],dictArgsNode[NodeArgs.id])
         
         # Create the node
         self.nodes[dictArgsNode[NodeArgs.id]] = GraphicsEllipseNode(
                                               dictArgsNode[NodeArgs.id], text)
-        
+               
         # Set the position
         self.nodes[dictArgsNode[NodeArgs.id]].setPos(dictArgsNode[NodeArgs.x],
                               dictArgsNode[NodeArgs.y]) 
-    
+          
         # Add the node to the scene
         self.scene.addItem(self.nodes[dictArgsNode[NodeArgs.id]])
-        
+               
         # Reset scene rect
         if len(self.scene.items()) > 2:
             self.scene.setSceneRect(self.scene.itemsBoundingRect());
-
+        
     def editNode(self, dictArgsNode):
         '''Edit a node.
         
@@ -74,8 +73,7 @@ class GraphicsGraphView(View, QGraphicsView):
         '''
         # Get the text of the node
         text = self.getText(
-                    dictArgsNode[NodeArgs.dotAttrs][NodeDotAttrs.label.value],
-                    dictArgsNode[NodeArgs.id])
+                    dictArgsNode[NodeArgs.dotAttrs],dictArgsNode[NodeArgs.id])
         
         # Update the text
         self.nodes[dictArgsNode[NodeArgs.id]].graphicsTextNode.setPlainText(
@@ -112,7 +110,7 @@ class GraphicsGraphView(View, QGraphicsView):
         
         # Add edge to the scene
         self.scene.addItem(self.edges[dictArgsEdge[EdgeArgs.id]])
-
+        
     def editEdge(self, dictArgsEdge):
         '''Edit an edge.
         
@@ -142,16 +140,19 @@ class GraphicsGraphView(View, QGraphicsView):
             if edge.source == graphicsNode or edge.dest == graphicsNode:
                 edge.update()   
 
-    def getText(self, label, id):
+    def getText(self, dotAttrs, id):
         '''Return the label if it is defined, else the id.'''
-        return label if label else id
+        if NodeDotAttrs.label.value in dotAttrs :
+            return dotAttrs[NodeDotAttrs.label.value]
+        else :
+            return id
 
     def resetSceneRect(self):
         '''Reset the scene rect with the viewport.'''
         self.scene.setSceneRect(QRectF(self.viewport().rect()));
 
     def eventFilter(self, source, event):
-        '''Handle events for the scene.'''
+        '''Handle events for the scene.'''        
         if source == self.scene:
             # Left double click (mouse button)
             if (event.type() == QEvent.GraphicsSceneMouseDoubleClick and
@@ -161,7 +162,7 @@ class GraphicsGraphView(View, QGraphicsView):
                 if not source.itemAt(event.scenePos(), QTransform()):
                     pos = event.scenePos()
                     self.controller.onCreateNode(pos.x(), pos.y())
-
+                    
                     return True
             
             # Key press

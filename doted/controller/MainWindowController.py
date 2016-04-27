@@ -33,11 +33,12 @@ class MainWindowController(object):
         self.dotFilter = "Dot files (*.dot)"
 
     def onImportFile(self):
-        '''Import a file which contains a graph and build or rebuild.''' 
-        #Load graph from file with pydot_ng    
+        '''Import a file which contains a graph and build or rebuild the model
+        with this graph.''' 
+        # Load graph from file with pydot_ng    
         result = QFileDialog.getOpenFileName(None, "Import", None,
                                              self.dotFilter)
-        
+
         # Check if Open button has been pressed
         if len(result[0]) > 0:
             # Load dot file into a pydot graph
@@ -45,15 +46,22 @@ class MainWindowController(object):
             
             # Clear graph (ask to save before importing here in a future extension)
             self.onClearGraph()
-            
-            # Create nodes from pydot nodes
-            for node in pydotGraph.get_nodes():
-                self.model.addNode(node.get_name(), node.get_attributes())
-                
-            # Create edges from pydot edges
-            for edge in pydotGraph.get_edges():
-                self.model.addEdge(edge.get_source(), edge.get_destination())
-    
+           
+    ## Nodes and edges are send to the model in importGraph() in TextGraphView
+    # If importGraph() is clean or change you could remove comments of theses
+    # lines to build the model 
+#             # Create nodes from pydot nodes
+#             for node in pydotGraph.get_nodes():
+#                 self.model.addNode(node.get_name(), node.get_attributes())
+#                 
+#             # Create edges from pydot edges
+#             for edge in pydotGraph.get_edges():
+#                 self.model.addEdge(edge.get_source(), edge.get_destination())
+
+            # Send graph's textual representation to the textual controller
+            with open(result[0], 'r') as file :
+                self.textGraphController.importGraph(file.read())
+                              
     def onSaveFile(self):
         '''Save in a file the text description of the graph.'''        
         # Export dialog

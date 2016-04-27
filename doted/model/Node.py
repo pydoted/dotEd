@@ -29,11 +29,7 @@ class Node(object):
         
         self.neighbours = {}
         self.dotAttrs = {}
-        
-        # Init handled dot attributes with None value
-        for attr in NodeDotAttrs.__members__:
-            self.dotAttrs[attr] = None
-        
+    
         self.edit(dicDotAttrs)
         
     def addNeighbour(self, node):
@@ -59,7 +55,6 @@ class Node(object):
         dicDotAttrs (Dictionary[]): Dot attributes of the node
         '''
         for attr, val in dicDotAttrs.items():
-            if attr in NodeDotAttrs.__members__:
                 self.dotAttrs[attr] = val
     
     def isNeighboringTo(self, id):
