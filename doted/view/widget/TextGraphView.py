@@ -10,7 +10,6 @@ from PyQt5.QtWidgets import QTextEdit
 
 from enumeration.EdgeArgs import EdgeArgs
 from enumeration.NodeArgs import NodeArgs
-from enumeration.NodeDotAttrs import NodeDotAttrs
 from view.widget.View import View
 
 
