@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PyQt5.Qt import QMarginsF, Qt, QFocusEvent, QEvent
+from PyQt5.Qt import QMarginsF, Qt
 from PyQt5.QtWidgets import QGraphicsItem
 
 from view.edge.GraphicsSemiEdge import GraphicsSemiEdge
@@ -11,11 +11,11 @@ class GraphicsNode(object):
     '''The GraphicsNode class defines a base class for a graphics node.
     
     Argument(s):
-    id (int): Id of the node
+    id (str): ID of the node
     label (str): Label of the node
     
     Attribute(s):
-    id (int): ID of the node
+    id (str): ID of the node
     graphicsTextNode (GraphicsTextNode): Text (label) of the node
     semiEdge (GraphicsSemiEdge): Line between a graphics node and cursor mouse
     '''
@@ -40,13 +40,12 @@ class GraphicsNode(object):
         return self.scene().views()[0]
     
     def getFocus(self, id):
-        '''Indicate when node get the focus to highlight him in textual view
+        '''Indicate when node get the focus to highlight him in textual view.
         
         Argument(s):
         id (str): ID of the node
         '''
-        controller = self.getGraphicsView().controller
-        controller.onSelectItem(id)
+        self.getGraphicsView().controller.onSelectItem(id)
         
     def mouseMoveEvent(self, event):
         '''Handle mouse move event.

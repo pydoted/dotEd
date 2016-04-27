@@ -3,6 +3,7 @@
 from PyQt5.Qt import Qt
 from PyQt5.QtWidgets import QGraphicsItem
 
+
 class GraphicsEdge(object):
     '''The GraphicsEdge class defines the base class of a graphics edge.
     

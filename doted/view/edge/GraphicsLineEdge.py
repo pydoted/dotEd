@@ -2,6 +2,7 @@
 
 from PyQt5.Qt import QPainterPath, QPainterPathStroker
 from PyQt5.QtWidgets import QGraphicsLineItem, QGraphicsItem
+
 from view.edge.EdgeUtils import EdgeUtils
 from view.edge.GraphicsEdge import GraphicsEdge
 

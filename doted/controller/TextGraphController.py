@@ -5,11 +5,11 @@ from controller.Controller import Controller
 
 class TextGraphController(Controller):
     '''The TextGraphController class defines a controller to manage
-       a Graph (model)/TextGraphView (view).
+    a Graph (model)/TextGraphView (view).
     
     
     Argument(s):
-    model (Model): Model of the controller
+    model (Graph): Model of the controller
     view (View): View of the controller
     '''
 
@@ -19,7 +19,7 @@ class TextGraphController(Controller):
         Controller.__init__(self, model, view)  
         
     def importGraph(self, text):
-        '''Send textual representation of the graph to the view after an import
+        '''Send textual representation of the graph to the view after an import.
         
         Argument(s):
         text (str): Textual representation of the graph
@@ -71,10 +71,9 @@ class TextGraphController(Controller):
         idDestNode (intstr): ID of the destination node
         '''
         self.model.removeEdgeByIdNodes(idSourceNode, idDestNode)
-
         
     def highlightItem(self, id):
-        '''Inform the view that it must highlight an Item
+        '''Inform the view that it must highlight an Item.
         
         Argument(s):
         id (str): ID of the node

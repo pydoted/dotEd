@@ -35,7 +35,6 @@ class Controller(Observer):
         # Update node
         if dictArgsNode:
             if updateModeView == UpdateModeView.add:
-                
                 self.view.addNode(dictArgsNode)
             elif updateModeView == UpdateModeView.edit:
                 self.view.editNode(dictArgsNode)

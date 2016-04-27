@@ -7,7 +7,7 @@ from view.edge.EdgeUtils import EdgeUtils
 
 class GraphicsSemiEdge(QGraphicsLineItem):
     '''The GraphicsSemiEdge class defines a line between a GraphicsNode and a
-       QPoint. 
+    QPoint. 
     
     
     Argument(s):

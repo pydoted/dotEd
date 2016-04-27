@@ -16,7 +16,7 @@ class Graph(Subject):
     Attribute(s):
     nodes (Dictionary[Node]): All nodes
     edges (Dictionary[Edge]): All edges
-    nbNodes (Dictionary[Edge]): Number of nodes
+    nbNodes (int): Number of nodes
     directed (boolean): Graph directed or not
     x (float): x coordinate for auto pos x node
     y (float): y coordinate for auto pos y node
@@ -134,7 +134,7 @@ class Graph(Subject):
         # Only create the edge if it doesn't exist
         if not self.edgeExists(idSourceNode, idDestNode):
             edge = Edge(self.nodes[idSourceNode], self.nodes[idDestNode],
-                        idSourceNode+idDestNode)
+                        idSourceNode + idDestNode)
             self.edges[edge.id] = edge
             self.notify(None, edge.getArgs(), UpdateModeView.add)
     

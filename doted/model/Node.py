@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from enumeration.NodeArgs import NodeArgs
-from enumeration.NodeDotAttrs import NodeDotAttrs
 
 
 class Node(object):
@@ -55,7 +54,7 @@ class Node(object):
         dicDotAttrs (Dictionary[]): Dot attributes of the node
         '''
         for attr, val in dicDotAttrs.items():
-                self.dotAttrs[attr] = val
+            self.dotAttrs[attr] = val
     
     def isNeighboringTo(self, id):
         '''Check if the node is neighboring with another.

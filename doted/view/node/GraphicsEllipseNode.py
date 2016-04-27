@@ -8,7 +8,7 @@ from view.node.GraphicsNode import GraphicsNode
 
 class GraphicsEllipseNode(GraphicsNode, QGraphicsEllipseItem):
     '''The GraphicsEllipseNode class defines a graphics node as an ellipse 
-       containing a text.
+    containing a text.
     
     
     Argument(s):

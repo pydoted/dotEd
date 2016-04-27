@@ -5,7 +5,7 @@ from controller.Controller import Controller
 
 class GraphicsGraphController(Controller):
     '''The GraphicsGraphController class defines a controller to manage a
-       Graph (model)/GraphicsGraphView (view).
+    Graph (model)/GraphicsGraphView (view).
     
     
     Argument(s):
@@ -70,10 +70,9 @@ class GraphicsGraphController(Controller):
     def onSelectItem(self, id):
         '''Inform the controller of textual view that an item (node/edge) has 
         been selected for that the controller of textual view highlight this
-        item in the text
+        item in the text.
         
         Argument(s):
         id (str): ID of the node
         '''
         self.textGraphController.highlightItem(id)
-        
