@@ -1,5 +1,5 @@
 graph graphname {
-     a [label="Foo"];
+     a [label="Foo" color="rp" shape="ff" weight=45];
      2;
      1;
      1;

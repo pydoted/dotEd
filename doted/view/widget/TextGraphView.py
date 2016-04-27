@@ -40,6 +40,10 @@ class TextGraphView(View, QTextEdit):
         self.graphName = "my_graph"
 
         self.strDot()
+        
+    def getText(self):
+        '''Return the text of the view'''
+        return self.toPlainText()
 
     def importGraph(self, text):
         '''Init text after an import.
@@ -48,9 +52,10 @@ class TextGraphView(View, QTextEdit):
         text (str): Textual representation of the graph
         '''
         self.acceptUpdate = False
-
+        pydotGraph = graph_from_dot_data(text)
+        
         # Use pydot to get all statements of the graph (in order)
-        # Get name of the graph
+# Get name of the graph
         text = re.split('{', text)[1]
         text = re.split('}', text)[0]
         stats = re.split(';', text)
@@ -60,21 +65,35 @@ class TextGraphView(View, QTextEdit):
             pydotG = graph_from_dot_data("graph {" + s + "}")
 
             # Get current statement type and attributes
-            # if re.search("\n", s):
-            # Ignore subgraphs, etc.:
+# if re.search("\n", s):
+# Ignore subgraphs, etc.:
             for node in pydotG.get_nodes():
-                if node not in self.order:
+                if node.get_name() not in self.order:
                     self.order.append(node.get_name())
                     self.nodes[node.get_name()] = node.get_attributes()
 
             for edge in pydotG.get_edges():
-                idEdge = edge.get_source() + edge.get_destination()
+                idEdge = edge.get_source() + "-" + edge.get_destination()
                 if idEdge not in self.order:
                     self.order.append(idEdge)
                     self.edges[idEdge] = {
                                         EdgeArgs.sourceId: edge.get_source(),
                                         EdgeArgs.destId: edge.get_destination()
                                      }
+                    # Add node source if it doesn't exist
+                    nodesInGraph = [node.get_name()
+                                            for node in pydotGraph.get_nodes()]
+                    if (not(edge.get_source() in nodesInGraph) and 
+                                          not(edge.get_source() in self.order)):
+                        self.order.append(edge.get_source())
+                        self.nodes[edge.get_source()] = {}
+                        
+                    # Add node dest if it doesn't exist
+                    if (not(edge.get_destination() in nodesInGraph) and 
+                                    not(edge.get_destination() in self.order)):
+                        self.order.append(edge.get_destination())
+                        self.nodes[edge.get_destination()] = {}
+
 
         # Send every elements to the model to build him
         for id, args in self.nodes.items():
@@ -151,14 +170,27 @@ class TextGraphView(View, QTextEdit):
         Argument(s):
         id (str): ID of the node that we want to write
         '''
+        # Write id of the node
         strNode = "    " + id
 
+        # If node has attributes we write their
         argsN = self.nodes[id]
-
-        for attr in NodeDotAttrs.__members__:
-            if attr in argsN:
-                attrVal = argsN[attr]
-                strNode += " [" + attr + "=" + attrVal.replace("\n", "") + "]"
+        nbAttrs = 0
+        if len(argsN) > 0:
+             strNode += " ["
+             
+        for attr in argsN:
+            nbAttrs += 1
+            attrVal = argsN[attr]
+            if nbAttrs > 1:
+                strNode += ", " + attr + "=" + attrVal.replace("\n", "")
+            else:
+                strNode += attr + "=" + attrVal.replace("\n", "")
+            
+        if len(argsN) > 0:
+             strNode += " ]"
+             
+        # Write end statement
         strNode += ";\n"
         
         return strNode
@@ -237,7 +269,7 @@ class TextGraphView(View, QTextEdit):
             text = self.toPlainText()
             
             # Use pydot to get all statements of the graph (in order)
-            # Get name of the graph
+# Get name of the graph
             text = re.split('{', text)[1]
             text = re.split('}', text)[0]
             stats = re.split(';', text)
@@ -247,22 +279,36 @@ class TextGraphView(View, QTextEdit):
                 pydotG = graph_from_dot_data("graph {" + s + "}")
     
                 # Get current statement type and attributes
-                # if re.search("\n", s):
-                # Ignore subgraphs, etc.:
+# if re.search("\n", s):
+# Ignore subgraphs, etc.:
                 for node in pydotG.get_nodes():
-                    if node not in self.order:
+                    if node.get_name() not in self.order:
                         self.order.append(node.get_name())
                         self.nodes[node.get_name()] = node.get_attributes()
     
                 for edge in pydotG.get_edges():
-                    idEdge = edge.get_source() + edge.get_destination()
+                    idEdge = edge.get_source() + "-" + edge.get_destination()
                     if idEdge not in self.order:
                         self.order.append(idEdge)
                         self.edges[idEdge] = {
                                        EdgeArgs.sourceId: edge.get_source(),
                                        EdgeArgs.destId: edge.get_destination()
                                     }
-
+                        
+                        # Add node source if it doesn't exist
+                        nodesInGraph = [node.get_name()
+                                                for node in pydotGraph.get_nodes()]
+                        if (not(edge.get_source() in nodesInGraph) and 
+                                              not(edge.get_source() in self.order)):
+                            self.order.append(edge.get_source())
+                            self.nodes[edge.get_source()] = {}
+                            
+                        # Add node dest if it doesn't exist
+                        if (not(edge.get_destination() in nodesInGraph) and 
+                                        not(edge.get_destination() in self.order)):
+                            self.order.append(edge.get_destination())
+                            self.nodes[edge.get_destination()] = {}
+                
             # Compare old and new text and send changes to the model
             # Add nodes added
             added = self.nodes.keys() - oldNodes.keys()

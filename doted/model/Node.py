@@ -53,8 +53,7 @@ class Node(object):
         Argument(s):
         dicDotAttrs (Dictionary[]): Dot attributes of the node
         '''
-        for attr, val in dicDotAttrs.items():
-            self.dotAttrs[attr] = val
+        self.dotAttrs = dicDotAttrs
     
     def isNeighboringTo(self, id):
         '''Check if the node is neighboring with another.

@@ -134,7 +134,7 @@ class Graph(Subject):
         # Only create the edge if it doesn't exist
         if not self.edgeExists(idSourceNode, idDestNode):
             edge = Edge(self.nodes[idSourceNode], self.nodes[idDestNode],
-                        idSourceNode + idDestNode)
+                        idSourceNode + "-" + idDestNode)
             self.edges[edge.id] = edge
             self.notify(None, edge.getArgs(), UpdateModeView.add)
     

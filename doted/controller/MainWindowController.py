@@ -73,14 +73,14 @@ class MainWindowController(object):
             
             # Create file
             dotFile = QFile(filePath)
-            
+
             if (not dotFile.open(QIODevice.WriteOnly | QIODevice.Text)):
                 QMessageBox.warning(None, "Export", "Export failed.")
             else:
                 # Write the text from the TextGraphView into the file
                 dotFile.write(QByteArray(self.textGraphController.view
-                                             .strDot().encode("utf_8")))
-            
+                                             .getText().encode("utf_8")))
+                print("o")
             dotFile.close()
 
     def onClearGraph(self):
