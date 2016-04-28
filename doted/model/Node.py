@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from enumeration.NodeArgs import NodeArgs
+from enumeration.NodeDotAttrs import NodeDotAttrs
+from utils.DotAttrsUtils import DotAttrsUtils
 
 
 class Node(object):
@@ -8,7 +10,7 @@ class Node(object):
     
     
     Argument(s):
-    id (str): Id
+    id (str): ID
     x (float): x coordinate (default 0.0)
     y (float): y coordinate (default 0.0)
     dicDotAttrs (Dictionary[]): Dot attributes (default {})
@@ -27,6 +29,9 @@ class Node(object):
         self.y = y
         
         self.neighbours = {}
+        self.dotAttrs = {}
+        
+        dicDotAttrs[NodeDotAttrs.pos.value] = (DotAttrsUtils.formatPos(x, y))
         self.edit(dicDotAttrs)
         
     def addNeighbour(self, node):
@@ -51,7 +56,15 @@ class Node(object):
         Argument(s):
         dicDotAttrs (Dictionary[]): Dot attributes of the node
         '''
-        self.dotAttrs = dicDotAttrs.copy()
+        for attr, val in dicDotAttrs.items():
+            # Case of pos attribute: we need to update x and y
+            if attr == NodeDotAttrs.pos.value:
+                if val:
+                    pos = DotAttrsUtils.extractPos(val)
+                    self.x = pos[NodeArgs.x]
+                    self.y = pos[NodeArgs.y]
+            
+            self.dotAttrs[attr] = val
     
     def isNeighboringTo(self, id):
         '''Check if the node is neighboring with another.

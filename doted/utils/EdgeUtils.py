@@ -2,7 +2,12 @@
 
 
 class EdgeUtils(object):
-    '''The EdgeUtils class defines a set of functions to work on edges.'''
+    '''The EdgeUtils class defines a set of functions for edges.'''
+    
+    
+    @staticmethod
+    def createEdgeId(idSourceNode, idDestNode):
+        return idSourceNode + "-" + idDestNode
     
     @staticmethod
     def closestPointTo(point, path):

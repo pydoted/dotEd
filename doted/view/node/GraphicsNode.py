@@ -3,6 +3,8 @@
 from PyQt5.Qt import QMarginsF, Qt
 from PyQt5.QtWidgets import QGraphicsItem
 
+from utils.DotAttrsUtils import DotAttrsUtils
+from enumeration.NodeDotAttrs import NodeDotAttrs
 from view.edge.GraphicsSemiEdge import GraphicsSemiEdge
 from view.node.GraphicsTextNode import GraphicsTextNode
 
@@ -39,13 +41,17 @@ class GraphicsNode(object):
         '''Return the graphics view.'''
         return self.scene().views()[0]
     
+    def getGraphicsViewController(self):
+        '''Return the controller of the graphics view.'''
+        return self.getGraphicsView().controller
+    
     def getFocus(self, id):
         '''Indicate when node get the focus to highlight him in textual view.
         
         Argument(s):
         id (str): ID of the node
         '''
-        self.getGraphicsView().controller.onSelectItem(id)
+        self.getGraphicsViewController().onSelectItem(id)
         
     def mouseMoveEvent(self, event):
         '''Handle mouse move event.
@@ -59,6 +65,12 @@ class GraphicsNode(object):
             
             # Update coordinates of each edge of the current node
             self.getGraphicsView().updateEdgesOfNode(self)
+            
+            dicDotAttrs = {}
+            dicDotAttrs[NodeDotAttrs.pos.value] = (DotAttrsUtils.formatPos(
+                                                    event.scenePos().x(),
+                                                    event.scenePos().y()))
+            self.getGraphicsViewController().onEditNode(self.id, dicDotAttrs)
         
         # Update coordinates of the line
         if self.semiEdge is not None:
@@ -97,8 +109,8 @@ class GraphicsNode(object):
                      if isinstance(item, GraphicsNode) and item != self]
             if items:
                 # Create edge
-                self.getGraphicsView().controller.onCreateEdge(self.id,
-                                                               items[0].id)
+                self.getGraphicsViewController().onCreateEdge(self.id,
+                                                              items[0].id)
                 
     def mouseDoubleClickEvent(self, event):
         '''Handle mouse double click event.

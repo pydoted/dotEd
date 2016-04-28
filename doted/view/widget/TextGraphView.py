@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QTextEdit
 
 from enumeration.EdgeArgs import EdgeArgs
 from enumeration.NodeArgs import NodeArgs
+from utils.EdgeUtils import EdgeUtils
 from view.widget.View import View
 
 
@@ -55,9 +56,9 @@ class TextGraphView(View, QTextEdit):
         
         # Use pydot to get all statements of the graph (in order)
 # Get name of the graph
-        text = re.split('{', text)[1]
-        text = re.split('}', text)[0]
-        stats = re.split(';', text)
+        text = re.split("{", text)[1]
+        text = re.split("}", text)[0]
+        stats = re.split(";", text)
 
         for s in stats:
             # Parse current statement
@@ -72,7 +73,8 @@ class TextGraphView(View, QTextEdit):
                     self.nodes[node.get_name()] = node.get_attributes()
 
             for edge in pydotG.get_edges():
-                idEdge = edge.get_source() + "-" + edge.get_destination()
+                idEdge = EdgeUtils.createEdgeId(edge.get_source(),
+                                                edge.get_destination())
                 if idEdge not in self.order:
                     self.order.append(idEdge)
                     self.edges[idEdge] = {
@@ -286,7 +288,8 @@ class TextGraphView(View, QTextEdit):
                         self.nodes[node.get_name()] = node.get_attributes()
     
                 for edge in pydotG.get_edges():
-                    idEdge = edge.get_source() + "-" + edge.get_destination()
+                    idEdge = EdgeUtils.createEdgeId(edge.get_source(),
+                                                    edge.get_destination())
                     if idEdge not in self.order:
                         self.order.append(idEdge)
                         self.edges[idEdge] = {
@@ -296,15 +299,15 @@ class TextGraphView(View, QTextEdit):
                         
                         # Add node source if it doesn't exist
                         nodesInGraph = [node.get_name()
-                                                for node in pydotGraph.get_nodes()]
+                                            for node in pydotGraph.get_nodes()]
                         if (not(edge.get_source() in nodesInGraph) and 
-                                              not(edge.get_source() in self.order)):
+                            not(edge.get_source() in self.order)):
                             self.order.append(edge.get_source())
                             self.nodes[edge.get_source()] = {}
                             
                         # Add node dest if it doesn't exist
                         if (not(edge.get_destination() in nodesInGraph) and 
-                                        not(edge.get_destination() in self.order)):
+                            not(edge.get_destination() in self.order)):
                             self.order.append(edge.get_destination())
                             self.nodes[edge.get_destination()] = {}
                 

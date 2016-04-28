@@ -4,6 +4,7 @@ from enumeration.UpdateModeView import UpdateModeView
 from model.Edge import Edge
 from model.Node import Node
 from observer.Subject import Subject
+from utils.EdgeUtils import EdgeUtils
 
 
 class Graph(Subject):
@@ -134,7 +135,7 @@ class Graph(Subject):
         # Only create the edge if it doesn't exist
         if not self.edgeExists(idSourceNode, idDestNode):
             edge = Edge(self.nodes[idSourceNode], self.nodes[idDestNode],
-                        idSourceNode + "-" + idDestNode)
+                        EdgeUtils.createEdgeId(idSourceNode, idDestNode))
             self.edges[edge.id] = edge
             self.notify(None, edge.getArgs(), UpdateModeView.add)
     

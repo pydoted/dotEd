@@ -3,14 +3,15 @@
 from PyQt5.Qt import QEvent, Qt, QRectF, QTransform
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
+from utils.DotAttrsUtils import DotAttrsUtils
 from enumeration.EdgeArgs import EdgeArgs
 from enumeration.NodeArgs import NodeArgs
 from enumeration.NodeDotAttrs import NodeDotAttrs
+from view.edge.GraphicsEdge import GraphicsEdge
 from view.edge.GraphicsLineEdge import GraphicsLineEdge
 from view.node.GraphicsEllipseNode import GraphicsEllipseNode
-from view.widget.View import View
 from view.node.GraphicsNode import GraphicsNode
-from view.edge.GraphicsEdge import GraphicsEdge
+from view.widget.View import View
 
 
 class GraphicsGraphView(View, QGraphicsView):
@@ -78,6 +79,11 @@ class GraphicsGraphView(View, QGraphicsView):
         # Update the text
         self.nodes[dictArgsNode[NodeArgs.id]].graphicsTextNode.setPlainText(
                                                 text)
+        
+        # Update position
+        self.nodes[dictArgsNode[NodeArgs.id]].setX(dictArgsNode[NodeArgs.x])
+        self.nodes[dictArgsNode[NodeArgs.id]].setY(dictArgsNode[NodeArgs.y])
+        self.updateEdgesOfNode(self.nodes[dictArgsNode[NodeArgs.id]])
 
     def removeNode(self, dictArgsNode):
         '''Remove a node.

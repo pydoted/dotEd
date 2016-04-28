@@ -2,7 +2,7 @@
 
 from PyQt5.QtWidgets import QGraphicsLineItem
 
-from view.edge.EdgeUtils import EdgeUtils
+from utils.EdgeUtils import EdgeUtils
 
 
 class GraphicsSemiEdge(QGraphicsLineItem):
