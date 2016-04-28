@@ -7,6 +7,12 @@ class EdgeUtils(object):
     
     @staticmethod
     def createEdgeId(idSourceNode, idDestNode):
+        '''Create an ID for an edge.
+        
+        Argument(s):
+        idSourceNode (str): ID of the source node
+        idDestNode (str): ID of the destination node
+        '''
         return idSourceNode + "-" + idDestNode
     
     @staticmethod
