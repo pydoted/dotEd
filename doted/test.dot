@@ -9,6 +9,6 @@ graph my_graph {
     c [pos="400,0" ]; 
     b--d; 
     d [pos="200,0" ]; 
-    
+    subgraph { f;g;}h;
 }
-g;h;
+m;n;

@@ -225,19 +225,14 @@ class TextGraphView(View, QTextEdit):
             # Parse current statement
             pydotG = graph_from_dot_data("graph {" + s + "}")
 
-#             # Ignore subgraph
-#             if not pydotG:
-#                 print(s)
-#                 s = re.split('{', s)[1]
-#                 print("\n\n\n"+s)
-#                 if len(s) == 2:
-#                     s = s[1]
-#                     print("\n\n\n"+s)
-#                 else:
-#                     s = re.split('}', s)[1]
-#                     
-#                 pydotG = graph_from_dot_data("graph {" + s + "}")
-                
+            # Ignore subgraph
+            if re.match("\s*(subgraph)*\s*.*\{", s):
+                s = re.split('{', s)[1]
+                pydotG = graph_from_dot_data("graph {" + s + "}")
+            elif re.match("\s*\}.*", s):
+                s = re.split('}', s)[1]
+                pydotG = graph_from_dot_data("graph {" + s + "}")       
+            
             # Get current statement type and attributes
             for node in pydotG.get_nodes():
                 if node.get_name() not in self.order:
