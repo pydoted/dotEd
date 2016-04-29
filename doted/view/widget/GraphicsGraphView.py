@@ -3,7 +3,6 @@
 from PyQt5.Qt import QEvent, Qt, QRectF, QTransform
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
-from utils.DotAttrsUtils import DotAttrsUtils
 from enumeration.EdgeArgs import EdgeArgs
 from enumeration.NodeArgs import NodeArgs
 from enumeration.NodeDotAttrs import NodeDotAttrs
