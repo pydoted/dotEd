@@ -71,7 +71,7 @@ class GraphicsNode(object):
                                                     event.scenePos().x(),
                                                     event.scenePos().y()))
             self.getGraphicsViewController().onEditNode(self.id, dicDotAttrs)
-        
+            self.getFocus(self.id)
         # Update coordinates of the line
         if self.semiEdge is not None:
             self.semiEdge.update(event.scenePos())

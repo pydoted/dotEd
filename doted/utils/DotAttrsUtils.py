@@ -3,6 +3,7 @@
 import re
 
 from enumeration.NodeArgs import NodeArgs
+from enumeration.NodeDotAttrs import NodeDotAttrs
 
 
 class DotAttrsUtils(object):
@@ -17,7 +18,7 @@ class DotAttrsUtils(object):
         x (float): x coordinate
         y (float): y coordinate
         '''
-        return "\"" + str(x) + "," + str(y) + "!\""
+        return "\"" + str(x) + "," + str(y) + "\""
 
     @staticmethod
     def extractPos(posAttr):
@@ -33,3 +34,16 @@ class DotAttrsUtils(object):
             NodeArgs.x: float(result[0]),
             NodeArgs.y: float(result[1])
         }
+
+    @staticmethod
+    def checkAttrsForm(dictAttrs):
+        '''Return true if attributes in dictAttrs are in valid form.
+        
+        Argument(s):
+        dictAttrs (Dictionary[]): Dictionary of attributes 
+        ''' 
+        for attr, val in dictAttrs.items():
+            if attr == NodeDotAttrs.pos.value:
+                if not re.search("-?\d+\.?\d*,\d+\.?\d*", dictAttrs[attr]):
+                    return False       
+        return True
