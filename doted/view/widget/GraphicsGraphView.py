@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PyQt5.Qt import QEvent, Qt, QRectF, QTransform
+from PyQt5.Qt import QEvent, Qt, QRectF, QTransform, QMargins
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
 from enumeration.EdgeArgs import EdgeArgs
@@ -61,9 +61,9 @@ class GraphicsGraphView(View, QGraphicsView):
         # Add the node to the scene
         self.scene.addItem(self.nodes[dictArgsNode[NodeArgs.id]])
                
-        # Reset scene rect
-        if len(self.scene.items()) > 2:
-            self.scene.setSceneRect(self.scene.itemsBoundingRect());
+        # Center scene on the node if needed
+        if self.updateSceneRect(self.nodes[dictArgsNode[NodeArgs.id]]):
+            self.centerOn(self.nodes[dictArgsNode[NodeArgs.id]])
         
     def editNode(self, dictArgsNode):
         '''Edit a node.
@@ -83,6 +83,10 @@ class GraphicsGraphView(View, QGraphicsView):
         self.nodes[dictArgsNode[NodeArgs.id]].setX(dictArgsNode[NodeArgs.x])
         self.nodes[dictArgsNode[NodeArgs.id]].setY(dictArgsNode[NodeArgs.y])
         self.updateEdgesOfNode(self.nodes[dictArgsNode[NodeArgs.id]])
+        
+        # Center scene on the node if needed
+        if self.updateSceneRect(self.nodes[dictArgsNode[NodeArgs.id]]):
+            self.centerOn(self.nodes[dictArgsNode[NodeArgs.id]])
 
     def removeNode(self, dictArgsNode):
         '''Remove a node.
@@ -95,7 +99,7 @@ class GraphicsGraphView(View, QGraphicsView):
         self.nodes.pop(dictArgsNode[NodeArgs.id])
         
         # Reset scene rect
-        if len(self.scene.items()) == 0:
+        if not self.scene.items():
             self.resetSceneRect()
 
     def addEdge(self, dictArgsEdge):
@@ -104,7 +108,6 @@ class GraphicsGraphView(View, QGraphicsView):
         Argument(s):
         dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
         '''
-        
         # Init source and dest nodes
         source = self.nodes[dictArgsEdge[EdgeArgs.sourceId]]
         dest = self.nodes[dictArgsEdge[EdgeArgs.destId]]
@@ -148,13 +151,14 @@ class GraphicsGraphView(View, QGraphicsView):
     def getText(self, dotAttrs, id):
         '''Return the label if it is defined and not void, else the id.'''
         if NodeDotAttrs.label.value in dotAttrs:
-            return dotAttrs[NodeDotAttrs.label.value]
+            if dotAttrs[NodeDotAttrs.label.value]:
+                return dotAttrs[NodeDotAttrs.label.value]
         
         return id
 
     def resetSceneRect(self):
         '''Reset the scene rect with the viewport.'''
-        self.scene.setSceneRect(QRectF(self.viewport().rect()));
+        self.scene.setSceneRect(QRectF(self.viewport().rect()))
 
     def eventFilter(self, source, event):
         '''Handle events for the scene.'''
@@ -200,3 +204,41 @@ class GraphicsGraphView(View, QGraphicsView):
                         item.setSelected(True)
                                      
         return False
+
+    def updateSceneRect(self, graphicsNode):
+        '''Expand the scene rect if a node is outside the current scene rect.
+        
+        Argument(s):
+        graphicsNode (GraphicsNode): Current graphics node
+        '''
+        sceneRectUpdated = False
+        rect = self.sceneRect()
+        factor = 2
+        
+        # Left border
+        if graphicsNode.x() + graphicsNode.boundingRect().left() < rect.left():
+            sceneRectUpdated = True
+            rect.setLeft(graphicsNode.x() +
+                         graphicsNode.boundingRect().left() * factor)
+        # Right boder
+        elif graphicsNode.x() + graphicsNode.boundingRect().right() > rect.right():
+            sceneRectUpdated = True
+            rect.setRight(graphicsNode.x() +
+                          graphicsNode.boundingRect().right() * factor)
+        
+        # Top border
+        if graphicsNode.y() + graphicsNode.boundingRect().top() < rect.top():
+            sceneRectUpdated = True
+            rect.setTop(graphicsNode.y() +
+                        graphicsNode.boundingRect().top() * factor)  
+        # Bottom border
+        elif graphicsNode.y() + graphicsNode.boundingRect().bottom() > rect.bottom():
+            sceneRectUpdated = True
+            rect.setBottom(graphicsNode.y() +
+                           graphicsNode.boundingRect().bottom() * factor)
+        
+        # Node not in the current scene rect: we need to update it
+        if sceneRectUpdated:
+            self.scene.setSceneRect(rect)
+            
+        return sceneRectUpdated

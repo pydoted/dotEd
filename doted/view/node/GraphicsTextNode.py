@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from pydot_ng import graph_from_dot_data
+
 from PyQt5.Qt import Qt
-from PyQt5.QtWidgets import QGraphicsTextItem
+from PyQt5.QtWidgets import QGraphicsTextItem, QMessageBox
 
 from enumeration.NodeDotAttrs import NodeDotAttrs
 
@@ -50,14 +52,28 @@ class GraphicsTextNode(QGraphicsTextItem):
         '''
         QGraphicsTextItem.focusOutEvent(self, event)
         
-        # Update text in other views
-        node = self.parentItem()
-        dicDotAttrs = {}
-        dicDotAttrs[NodeDotAttrs.label.value] = self.toPlainText()
-        node.getGraphicsView().controller.onEditNode(node.id, dicDotAttrs)
+        # Create a fake node to test if label is valid with pydot
+        fakeNode = ("fake[" + NodeDotAttrs.label.value +
+                    "=" + self.toPlainText() + "]")
+        pydotGraph = graph_from_dot_data("graph{" + fakeNode+ "}")
         
-        # Disable edit text
-        self.setTextInteractionFlags(Qt.NoTextInteraction)
+        # Label is valid: we can do the update
+        if pydotGraph:
+            dicDotAttrs = {}
+            dicDotAttrs[NodeDotAttrs.label.value] = self.toPlainText()
+            
+            # Update text in other views
+            node = self.parentItem()
+            node.getGraphicsView().controller.onEditNode(node.id, dicDotAttrs)
+            
+            # Disable edit text
+            self.setTextInteractionFlags(Qt.NoTextInteraction)
+        
+        # Label is invalid: force user to write a correct label
+        else:
+            QMessageBox.warning(None, "Syntax error",
+                                "The label is invalid.")
+            self.setFocus()
         
     def contextMenuEvent(self, event):
         '''Handle context menu event.

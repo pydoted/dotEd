@@ -20,6 +20,11 @@ class GraphicsNode(object):
     id (str): ID of the node
     graphicsTextNode (GraphicsTextNode): Text (label) of the node
     semiEdge (GraphicsSemiEdge): Line between a graphics node and cursor mouse
+    sceneRectHasBeenUpdated (bool): Flag to check if the scene rect has been
+                                    updated
+    isMoving (bool): Flag to check if a node is moving
+    lastX (float): Last x coordinate of the node 
+    lastY (float): Last y coordinate of the node
     '''
 
 
@@ -32,6 +37,11 @@ class GraphicsNode(object):
                                marginsAdded(QMarginsF(10, 10, 10, 10)))
         
         self.semiEdge = None
+        self.sceneRectHasBeenUpdated = False
+        
+        self.isMoving = False        
+        self.lastX = None
+        self.lastY = None
     
     def centerTextInShape(self):
         '''Center the text in the shape.'''
@@ -65,13 +75,16 @@ class GraphicsNode(object):
             
             # Update coordinates of each edge of the current node
             self.getGraphicsView().updateEdgesOfNode(self)
-            
-            dicDotAttrs = {}
-            dicDotAttrs[NodeDotAttrs.pos.value] = (DotAttrsUtils.formatPos(
-                                                    event.scenePos().x(),
-                                                    event.scenePos().y()))
-            self.getGraphicsViewController().onEditNode(self.id, dicDotAttrs)
             self.getFocus(self.id)
+            
+            self.isMoving = True
+            self.lastX = event.scenePos().x()
+            self.lastY = event.scenePos().y()
+            
+            # Update scene rect if needed
+            if self.getGraphicsView().updateSceneRect(self):
+                self.sceneRectHasBeenUpdated = True
+                    
         # Update coordinates of the line
         if self.semiEdge is not None:
             self.semiEdge.update(event.scenePos())
@@ -97,6 +110,21 @@ class GraphicsNode(object):
         event (QGraphicsSceneMouseEvent): Graphics scene mouse event
         '''
         QGraphicsItem.mouseReleaseEvent(self, event)
+        
+        # Notify other view(s) to update position of the node
+        if self.isMoving:
+            self.isMoving = False
+            dicDotAttrs = {}
+            dicDotAttrs[NodeDotAttrs.pos.value] = (DotAttrsUtils.formatPos(
+                                        self.lastX,
+                                        self.lastY))
+            self.getGraphicsViewController().onEditNode(self.id, dicDotAttrs)
+            self.getFocus(self.id)
+        
+        # Center scene on the node if needed
+        if self.sceneRectHasBeenUpdated:
+            self.getGraphicsView().centerOn(self)
+            self.sceneRectHasBeenUpdated = False
         
         # Construct edge if a semi edge is built
         if self.semiEdge is not None:

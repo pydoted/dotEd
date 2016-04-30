@@ -61,8 +61,12 @@ class Node(object):
             if attr == NodeDotAttrs.pos.value:
                 if val:
                     pos = DotAttrsUtils.extractPos(val)
-                    self.x = pos[NodeArgs.x]
-                    self.y = pos[NodeArgs.y]
+                    if pos:
+                        self.x = pos[NodeArgs.x]
+                        self.y = pos[NodeArgs.y]
+                    else:
+                        self.x = 0.0
+                        self.y = 0.0
             
             self.dotAttrs[attr] = val
     

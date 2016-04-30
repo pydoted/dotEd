@@ -309,7 +309,6 @@ class TextGraphView(View, QTextEdit):
             # Check that attributes are in valid form
             if (self.checkItemsAttributes(pydotGraph.get_nodes()) and
                             self.checkItemsAttributes(pydotGraph.get_edges())):
-            
                 oldNodes = self.nodes
                 oldEdges = self.edges
                 self.nodes = {}
@@ -321,11 +320,12 @@ class TextGraphView(View, QTextEdit):
                 # Add nodes added
                 added = self.nodes.keys() - oldNodes.keys()
                 for idNode in added:
-                    self.controller.onCreateNode(idNode, self.nodes[idNode], 0, 0)
+                    self.controller.onCreateNode(idNode,
+                                                 self.nodes[idNode], 0, 0)
                     
                 # Edit nodes changed
                 intersect = set(self.nodes.keys()).intersection(
-                                                            set(oldNodes.keys()))  
+                                                        set(oldNodes.keys()))  
                 for idNode in intersect:  
                     if self.nodes[idNode] != oldNodes[idNode]:
                         self.controller.onEditNode(idNode, self.nodes[idNode])  
@@ -349,8 +349,8 @@ class TextGraphView(View, QTextEdit):
                 removed = oldEdges.keys() - self.edges.keys() 
                 for idEdge in removed:
                     self.controller.onRemoveEdge(
-                                              oldEdges[idEdge][EdgeArgs.sourceId],
-                                              oldEdges[idEdge][EdgeArgs.destId])
+                                            oldEdges[idEdge][EdgeArgs.sourceId],
+                                            oldEdges[idEdge][EdgeArgs.destId])
                     
                 # Add edges added
                 added = self.edges.keys() - oldEdges.keys()
@@ -371,7 +371,7 @@ class TextGraphView(View, QTextEdit):
             # Some attributes are in invalid form
             else :
                 QMessageBox.warning(self, "Syntax error",
-                                "Some attributes in invalid form")
+                                "Some attributes in invalid form.")
                 self.setFocus()
                 
         # Pydot graph invalid: show an error window

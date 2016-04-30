@@ -7,9 +7,15 @@ from enumeration.NodeDotAttrs import NodeDotAttrs
 
 
 class DotAttrsUtils(object):
-    '''The DotAttrsUtils class defines a set of functions for dot attributes.'''
+    '''The DotAttrsUtils class defines a set of functions for dot attributes.
+    
+    Attribute(s):
+    realNumberPattern (str): Pattern for a negative/positive number
+    '''
 
 
+    realNumberPattern = "\s*-?\d+\.?\d*\s*"
+    
     @staticmethod
     def formatPos(x, y):
         '''Format the dot pos attribute with x and y coordinates.
@@ -27,8 +33,11 @@ class DotAttrsUtils(object):
         Argument(s):
         posAttr (str): Dot pos attribute 
         '''
-        # The regex means: extract all -/+ floating numbers from the string
-        result = re.findall("-?\d+\.?\d*", posAttr)
+        result = re.findall(DotAttrsUtils.realNumberPattern, posAttr)
+        
+        # posAttr if valid if we have two numbers
+        if (len(result) < 2):
+            return None
         
         return {
             NodeArgs.x: float(result[0]),
@@ -42,8 +51,11 @@ class DotAttrsUtils(object):
         Argument(s):
         dictAttrs (Dictionary[]): Dictionary of attributes 
         ''' 
-        for attr, val in dictAttrs.items():
+        for attr in dictAttrs.keys():
             if attr == NodeDotAttrs.pos.value:
-                if not re.search("-?\d+\.?\d*,\d+\.?\d*", dictAttrs[attr]):
-                    return False       
+                if not re.search("^\"" + DotAttrsUtils.realNumberPattern +
+                                 "," + DotAttrsUtils.realNumberPattern +
+                                 "\"$", dictAttrs[attr]):
+                    return False
+             
         return True
