@@ -11,10 +11,10 @@ class Edge(object):
     Argument(s):
     source (Node): Source node
     dest (Node): Destination node
-    id (int): ID
+    id (str): ID
     
     Attribute(s):
-    id (int): ID
+    id (str): ID
     source (Node): Source node
     dest (Node): Destination node
     '''

@@ -1,0 +1,14 @@
+graph my_graph {
+
+    a [label="Foo", color="rp", pos="100,0", shape="ff", weight=45 ]; 
+    2 [pos="0,0" ]; 
+    1 [pos="300,0" ]; 
+    a--b; 
+    b [pos="500,0" ]; 
+    b--c; 
+    c [pos="400,0" ]; 
+    b--d; 
+    d [pos="200,0" ]; 
+    subgraph { f;g;}h;
+}
+m;n;

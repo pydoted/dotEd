@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
+from pydot_ng import graph_from_dot_data
+
 from PyQt5.Qt import Qt
-from PyQt5.QtWidgets import QGraphicsTextItem
+from PyQt5.QtWidgets import QGraphicsTextItem, QMessageBox
+
+from enumeration.NodeDotAttrs import NodeDotAttrs
 
 
 class GraphicsTextNode(QGraphicsTextItem):
@@ -24,15 +28,8 @@ class GraphicsTextNode(QGraphicsTextItem):
         event (QKeyEvent): Key event
         '''
         QGraphicsTextItem.keyPressEvent(self, event)
-        
-        # Must center the text in the shape
-        self.parentItem().centerTextInShape()
-        
-        # Update coordinates of each edge of the current node
-        graphicsNode = self.parentItem()
-        graphicsNode.getGraphicsView().updateEdgesOfNode(graphicsNode)
+        self.parentItem().updateShapeAndEdges()
   
-
     def mouseDoubleClickEvent(self, event):
         '''Handle mouse double click event.
 
@@ -55,13 +52,28 @@ class GraphicsTextNode(QGraphicsTextItem):
         '''
         QGraphicsTextItem.focusOutEvent(self, event)
         
-        # Update text in other views
-        node = self.parentItem()
-        node.getGraphicsView().controller.onEditLabelNode(node.id,
-                                                          self.toPlainText())
+        # Create a fake node to test if label is valid with pydot
+        fakeNode = ("fake[" + NodeDotAttrs.label.value +
+                    "=" + self.toPlainText() + "]")
+        pydotGraph = graph_from_dot_data("graph{" + fakeNode+ "}")
         
-        # Disable edit text
-        self.setTextInteractionFlags(Qt.NoTextInteraction)
+        # Label is valid: we can do the update
+        if pydotGraph:
+            dicDotAttrs = {}
+            dicDotAttrs[NodeDotAttrs.label.value] = self.toPlainText()
+            
+            # Update text in other views
+            node = self.parentItem()
+            node.getGraphicsView().controller.onEditNode(node.id, dicDotAttrs)
+            
+            # Disable edit text
+            self.setTextInteractionFlags(Qt.NoTextInteraction)
+        
+        # Label is invalid: force user to write a correct label
+        else:
+            QMessageBox.warning(None, "Syntax error",
+                                "The label is invalid.")
+            self.setFocus()
         
     def contextMenuEvent(self, event):
         '''Handle context menu event.
@@ -72,3 +84,12 @@ class GraphicsTextNode(QGraphicsTextItem):
         '''
         # Disable context menu (right click)
         pass
+
+    def setPlainText(self, text):
+        '''Sets the item's text to text.
+        
+        Argument(s):
+        text (str): Text to set
+        '''
+        QGraphicsTextItem.setPlainText(self, text)
+        self.parentItem().updateShapeAndEdges()

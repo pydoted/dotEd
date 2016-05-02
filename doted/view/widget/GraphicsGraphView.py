@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from PyQt5.Qt import QEvent, Qt, QRectF, QTransform
+from PyQt5.Qt import QEvent, Qt, QRectF, QTransform, QMargins
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
 from enumeration.EdgeArgs import EdgeArgs
 from enumeration.NodeArgs import NodeArgs
-from enumeration.UpdateModeView import UpdateModeView
+from enumeration.NodeDotAttrs import NodeDotAttrs
+from view.edge.GraphicsEdge import GraphicsEdge
 from view.edge.GraphicsLineEdge import GraphicsLineEdge
 from view.node.GraphicsEllipseNode import GraphicsEllipseNode
-from view.widget.View import View
 from view.node.GraphicsNode import GraphicsNode
-from view.edge.GraphicsEdge import GraphicsEdge
+from view.widget.View import View
 
 
 class GraphicsGraphView(View, QGraphicsView):
@@ -35,65 +35,107 @@ class GraphicsGraphView(View, QGraphicsView):
         # Init scene
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
-        self.scene.setSceneRect(QRectF(self.viewport().rect()));
+        self.resetSceneRect()
         self.scene.installEventFilter(self)
         
         self.show()
 
-    def updateNode(self, dictArgsNode, updateModeView):
-        '''Update a node (on the scene).
+    def addNode(self, dictArgsNode):
+        '''Add a node.
         
         Argument(s):
         dictArgsNode (Dictionary[]): Dictionary of arguments of the node
-        updateModeView (UpdateModeView) : Update mode
         '''
-        id = dictArgsNode[NodeArgs.id]
-       
-        # Add node
-        if updateModeView == UpdateModeView.add:
-            self.nodes[id] = GraphicsEllipseNode(id,
-                                                 dictArgsNode[NodeArgs.label])
-            self.nodes[id].setX(dictArgsNode[NodeArgs.x])
-            self.nodes[id].setY(dictArgsNode[NodeArgs.y])  
+        # Get the text of the node
+        text = self.getText(
+                    dictArgsNode[NodeArgs.dotAttrs], dictArgsNode[NodeArgs.id])
         
-            self.scene.addItem(self.nodes[id])
+        # Create the node
+        self.nodes[dictArgsNode[NodeArgs.id]] = GraphicsEllipseNode(
+                                              dictArgsNode[NodeArgs.id], text)
+               
+        # Set the position
+        self.nodes[dictArgsNode[NodeArgs.id]].setPos(dictArgsNode[NodeArgs.x],
+                              dictArgsNode[NodeArgs.y]) 
+          
+        # Add the node to the scene
+        self.scene.addItem(self.nodes[dictArgsNode[NodeArgs.id]])
+               
+        # Center scene on the node if needed
+        if self.updateSceneRect(self.nodes[dictArgsNode[NodeArgs.id]]):
+            self.centerOn(self.nodes[dictArgsNode[NodeArgs.id]])
         
-        # Edit node
-        elif updateModeView == UpdateModeView.edit:
-            self.nodes[id].graphicsTextNode.setPlainText(
-                                            dictArgsNode[NodeArgs.label])
+    def editNode(self, dictArgsNode):
+        '''Edit a node.
         
-        # Remove node
-        elif updateModeView == UpdateModeView.remove:
-            self.scene.removeItem(self.nodes[id])
-            self.nodes.pop(id)
-            
-    def updateEdge(self, dictArgsEdge, updateModeView):
-        '''Update an edge (on the scene).
+        Argument(s):
+        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
+        '''
+        # Get the text of the node
+        text = self.getText(
+                    dictArgsNode[NodeArgs.dotAttrs], dictArgsNode[NodeArgs.id])
+        
+        # Update the text
+        self.nodes[dictArgsNode[NodeArgs.id]].graphicsTextNode.setPlainText(
+                                                text)
+        
+        # Update position
+        self.nodes[dictArgsNode[NodeArgs.id]].setX(dictArgsNode[NodeArgs.x])
+        self.nodes[dictArgsNode[NodeArgs.id]].setY(dictArgsNode[NodeArgs.y])
+        self.updateEdgesOfNode(self.nodes[dictArgsNode[NodeArgs.id]])
+        
+        # Center scene on the node if needed
+        if self.updateSceneRect(self.nodes[dictArgsNode[NodeArgs.id]]):
+            self.centerOn(self.nodes[dictArgsNode[NodeArgs.id]])
+
+    def removeNode(self, dictArgsNode):
+        '''Remove a node.
+        
+        Argument(s):
+        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
+        '''
+        # Remove the node from the scene
+        self.scene.removeItem(self.nodes[dictArgsNode[NodeArgs.id]])
+        self.nodes.pop(dictArgsNode[NodeArgs.id])
+        
+        # Reset scene rect
+        if not self.scene.items():
+            self.resetSceneRect()
+
+    def addEdge(self, dictArgsEdge):
+        '''Add an edge.
         
         Argument(s):
         dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
-        updateModeView (UpdateModeView) : Update mode
         '''
-        id = dictArgsEdge[EdgeArgs.id]
+        # Init source and dest nodes
+        source = self.nodes[dictArgsEdge[EdgeArgs.sourceId]]
+        dest = self.nodes[dictArgsEdge[EdgeArgs.destId]]
         
-        # Add edge
-        if updateModeView == UpdateModeView.add:
-            # Init source and dest nodes
-            source = self.nodes[dictArgsEdge[EdgeArgs.sourceId]]
-            dest = self.nodes[dictArgsEdge[EdgeArgs.destId]]
-            
-            self.edges[id] = GraphicsLineEdge(source, dest, id)
-            self.scene.addItem(self.edges[id])
+        # Create the edge
+        self.edges[dictArgsEdge[EdgeArgs.id]] = GraphicsLineEdge(source, dest,
+                                                    dictArgsEdge[EdgeArgs.id])
         
-        # Edit edge
-        elif updateModeView == UpdateModeView.edit:
-            pass
+        # Add edge to the scene
+        self.scene.addItem(self.edges[dictArgsEdge[EdgeArgs.id]])
         
-        # Remove edge
-        elif updateModeView == UpdateModeView.remove:
-            self.scene.removeItem(self.edges[id])
-            self.edges.pop(id)
+    def editEdge(self, dictArgsEdge):
+        '''Edit an edge.
+        
+        Argument(s):
+        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
+        '''
+        pass
+    
+    def removeEdge(self, dictArgsEdge):
+        '''Remove an edge.
+        
+        Argument(s):
+        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
+        '''
+        # Remove the edge from the scene
+        self.scene.removeItem(self.edges[dictArgsEdge[EdgeArgs.id]])
+        self.edges.pop(dictArgsEdge[EdgeArgs.id])
 
     def updateEdgesOfNode(self, graphicsNode):
         '''Update each coordinates of each edges of the current node.
@@ -105,6 +147,18 @@ class GraphicsGraphView(View, QGraphicsView):
             # Check if the edge contains the current node
             if edge.source == graphicsNode or edge.dest == graphicsNode:
                 edge.update()   
+
+    def getText(self, dotAttrs, id):
+        '''Return the label if it is defined and not void, else the id.'''
+        if NodeDotAttrs.label.value in dotAttrs:
+            if dotAttrs[NodeDotAttrs.label.value]:
+                return dotAttrs[NodeDotAttrs.label.value]
+        
+        return id
+
+    def resetSceneRect(self):
+        '''Reset the scene rect with the viewport.'''
+        self.scene.setSceneRect(QRectF(self.viewport().rect()))
 
     def eventFilter(self, source, event):
         '''Handle events for the scene.'''
@@ -150,3 +204,41 @@ class GraphicsGraphView(View, QGraphicsView):
                         item.setSelected(True)
                                      
         return False
+
+    def updateSceneRect(self, graphicsNode):
+        '''Expand the scene rect if a node is outside the current scene rect.
+        
+        Argument(s):
+        graphicsNode (GraphicsNode): Current graphics node
+        '''
+        sceneRectUpdated = False
+        rect = self.sceneRect()
+        factor = 2
+        
+        # Left border
+        if graphicsNode.x() + graphicsNode.boundingRect().left() < rect.left():
+            sceneRectUpdated = True
+            rect.setLeft(graphicsNode.x() +
+                         graphicsNode.boundingRect().left() * factor)
+        # Right boder
+        elif graphicsNode.x() + graphicsNode.boundingRect().right() > rect.right():
+            sceneRectUpdated = True
+            rect.setRight(graphicsNode.x() +
+                          graphicsNode.boundingRect().right() * factor)
+        
+        # Top border
+        if graphicsNode.y() + graphicsNode.boundingRect().top() < rect.top():
+            sceneRectUpdated = True
+            rect.setTop(graphicsNode.y() +
+                        graphicsNode.boundingRect().top() * factor)  
+        # Bottom border
+        elif graphicsNode.y() + graphicsNode.boundingRect().bottom() > rect.bottom():
+            sceneRectUpdated = True
+            rect.setBottom(graphicsNode.y() +
+                           graphicsNode.boundingRect().bottom() * factor)
+        
+        # Node not in the current scene rect: we need to update it
+        if sceneRectUpdated:
+            self.scene.setSceneRect(rect)
+            
+        return sceneRectUpdated
