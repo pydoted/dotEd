@@ -203,7 +203,7 @@ class TextGraphView(View, QTextEdit):
                 return False
         return True
     
-    def rebuildTextModel(self, text, pydotGraph):
+    def rebuildTextModel(self, text, pydotGraph, oldNodes = []):
         '''rebuild self.nodes self.edges and self.order from text.
         
         Argument(s):
@@ -254,13 +254,15 @@ class TextGraphView(View, QTextEdit):
                     nodesInGraph = [node.get_name()
                                         for node in pydotGraph.get_nodes()]
                     if (not(edge.get_source() in nodesInGraph) and 
-                        not(edge.get_source() in self.order)):
+                        not(edge.get_source() in self.order) and 
+                        not(edge.get_source() in oldNodes)):
                         self.order.append(edge.get_source())
                         self.nodes[edge.get_source()] = {}
                         
                     # Add node dest if it doesn't exist
-                    if (not(edge.get_destination() in nodesInGraph) and 
-                        not(edge.get_destination() in self.order)):
+                    if (not(edge.get_source() in nodesInGraph) and 
+                        not(edge.get_source() in self.order) and 
+                        not(edge.get_source() in oldNodes)):
                         self.order.append(edge.get_destination())
                         self.nodes[edge.get_destination()] = {}
                         
@@ -314,7 +316,7 @@ class TextGraphView(View, QTextEdit):
                 self.nodes = {}
                 self.edges = {}
                 self.order = []
-                self.rebuildTextModel(self.toPlainText(), pydotGraph)        
+                self.rebuildTextModel(self.toPlainText(), pydotGraph, oldNodes)        
                     
                 # Compare old and new text and send changes to the model
                 # Add nodes added
