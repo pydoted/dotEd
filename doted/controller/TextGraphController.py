@@ -36,9 +36,17 @@ class TextGraphController(Controller):
         idNode (str): ID of the node
         dicDotAttrs (Dictionary[]): Dot attributes of the node
         '''
-        coords = DotAttrsUtils.extractPos(dicDotAttrs[NodeDotAttrs.pos.value])
-        self.model.addNode(idNode, dicDotAttrs, coords[NodeArgs.x], 
+        # get position
+        print(idNode)
+        if NodeDotAttrs.pos.value in dicDotAttrs:
+            print(idNode)
+            coords = DotAttrsUtils.extractPos(
+                                            dicDotAttrs[NodeDotAttrs.pos.value])
+            self.model.addNode(idNode, dicDotAttrs, coords[NodeArgs.x], 
                                                             coords[NodeArgs.y])
+        else :
+            self.model.addNode(idNode, dicDotAttrs)
+        
     
     def onEditNode(self, idNode, dicDotAttrs):
         '''Callback function when editing a label a node.
