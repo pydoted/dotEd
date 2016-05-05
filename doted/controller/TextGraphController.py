@@ -37,9 +37,7 @@ class TextGraphController(Controller):
         dicDotAttrs (Dictionary[]): Dot attributes of the node
         '''
         # get position
-        print(idNode)
         if NodeDotAttrs.pos.value in dicDotAttrs:
-            print(idNode)
             coords = DotAttrsUtils.extractPos(
                                             dicDotAttrs[NodeDotAttrs.pos.value])
             self.model.addNode(idNode, dicDotAttrs, coords[NodeArgs.x], 
