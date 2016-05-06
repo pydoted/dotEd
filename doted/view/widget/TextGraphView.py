@@ -203,7 +203,7 @@ class TextGraphView(View, QTextEdit):
                 return False
         return True
     
-    def rebuildTextModel(self, text, pydotGraph):
+    def rebuildTextModel(self, text, pydotGraph, oldNodes = []):
         '''rebuild self.nodes self.edges and self.order from text.
         
         Argument(s):
@@ -232,7 +232,7 @@ class TextGraphView(View, QTextEdit):
             elif re.match("\s*\}.*", s):
                 s = re.split('}', s)[1]
                 pydotG = graph_from_dot_data("graph {" + s + "}")       
-            
+
             # Get current statement type and attributes
             for node in pydotG.get_nodes():
                 if node.get_name() not in self.order:
@@ -254,16 +254,18 @@ class TextGraphView(View, QTextEdit):
                     nodesInGraph = [node.get_name()
                                         for node in pydotGraph.get_nodes()]
                     if (not(edge.get_source() in nodesInGraph) and 
-                        not(edge.get_source() in self.order)):
+                        not(edge.get_source() in self.order) and 
+                        not(edge.get_source() in oldNodes)):
                         self.order.append(edge.get_source())
                         self.nodes[edge.get_source()] = {}
                         
                     # Add node dest if it doesn't exist
-                    if (not(edge.get_destination() in nodesInGraph) and 
-                        not(edge.get_destination() in self.order)):
+                    if (not(edge.get_source() in nodesInGraph) and 
+                        not(edge.get_source() in self.order) and 
+                        not(edge.get_source() in oldNodes)):
                         self.order.append(edge.get_destination())
                         self.nodes[edge.get_destination()] = {}
-                        
+                 
     def importGraph(self, text):
         '''Init text after an import.
 
@@ -278,7 +280,7 @@ class TextGraphView(View, QTextEdit):
         if (self.checkItemsAttributes(pydotGraph.get_nodes()) and
                             self.checkItemsAttributes(pydotGraph.get_edges())):
             self.rebuildTextModel(text, pydotGraph)
-        
+            
             # Send every elements to the model to build him
             for id, args in self.nodes.items():
                 self.controller.onCreateNode(id, args)
@@ -314,14 +316,13 @@ class TextGraphView(View, QTextEdit):
                 self.nodes = {}
                 self.edges = {}
                 self.order = []
-                self.rebuildTextModel(self.toPlainText(), pydotGraph)        
+                self.rebuildTextModel(self.toPlainText(), pydotGraph, oldNodes)        
                     
                 # Compare old and new text and send changes to the model
                 # Add nodes added
                 added = self.nodes.keys() - oldNodes.keys()
                 for idNode in added:
-                    self.controller.onCreateNode(idNode,
-                                                 self.nodes[idNode], 0, 0)
+                    self.controller.onCreateNode(idNode, self.nodes[idNode])
                     
                 # Edit nodes changed
                 intersect = set(self.nodes.keys()).intersection(

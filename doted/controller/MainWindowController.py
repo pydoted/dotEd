@@ -80,7 +80,6 @@ class MainWindowController(object):
                 # Write the text from the TextGraphView into the file
                 dotFile.write(QByteArray(self.textGraphController.view
                                              .getText().encode("utf_8")))
-                print("o")
             dotFile.close()
 
     def onClearGraph(self):

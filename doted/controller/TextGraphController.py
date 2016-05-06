@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from controller.Controller import Controller
+from enumeration.NodeArgs import NodeArgs
+from enumeration.NodeDotAttrs import NodeDotAttrs
+from utils.DotAttrsUtils import DotAttrsUtils
 
 
 class TextGraphController(Controller):
@@ -26,16 +29,22 @@ class TextGraphController(Controller):
         '''
         self.view.importGraph(text)
         
-    def onCreateNode(self, idNode, dicDotAttrs, x=None, y=None):
+    def onCreateNode(self, idNode, dicDotAttrs):
         '''Callback function when creating a node.
         
         Argument(s):
         idNode (str): ID of the node
         dicDotAttrs (Dictionary[]): Dot attributes of the node
-        x (float): x coordinate of the node
-        y (float): y coordinate of the node
         '''
-        self.model.addNode(idNode, dicDotAttrs, x, y)
+        # get position
+        if NodeDotAttrs.pos.value in dicDotAttrs:
+            coords = DotAttrsUtils.extractPos(
+                                            dicDotAttrs[NodeDotAttrs.pos.value])
+            self.model.addNode(idNode, dicDotAttrs, coords[NodeArgs.x], 
+                                                            coords[NodeArgs.y])
+        else :
+            self.model.addNode(idNode, dicDotAttrs)
+        
     
     def onEditNode(self, idNode, dicDotAttrs):
         '''Callback function when editing a label a node.
