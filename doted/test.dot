@@ -1,14 +1,13 @@
 graph my_graph {
-
-    a [label="Foo", color="rp", pos="100,0", shape="ff", weight=45 ]; 
-    2 [pos="0,0" ]; 
-    1 [pos="300,0" ]; 
+    a [label="Foo", color="rp", pos="100,0", weight=45 ]; 
+    2 [pos="100, 100" ]; 
+    1 [pos="156.0,212.0" ]; 
     a--b; 
-    b [pos="500,0" ]; 
+    b [label=dsb, pos="358.0,146.0" ]; 
     b--c; 
-    c [pos="400,0" ]; 
+    c [pos="400, 400" ]; 
     b--d; 
-    d [pos="200,0" ]; 
-    subgraph { f;g;}h;
+    d [pos="200, 200" ]; 
+    subgraph { subgraph{f;} g;}h;
 }
 m;n;

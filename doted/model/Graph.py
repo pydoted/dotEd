@@ -19,13 +19,8 @@ class Graph(Subject):
     edges (Dictionary[Edge]): All edges
     nbNodes (int): Number of nodes
     directed (boolean): Graph directed or not
-    x (float): x coordinate for auto pos x node
-    y (float): y coordinate for auto pos y node
-    deltaX (float): delta x to compute new auto pos x of a node
     '''
-    
-    
-    deltaX = 100
+
 
     def __init__(self, directed=False):
         # Parent constructor(s)
@@ -35,9 +30,6 @@ class Graph(Subject):
         self.edges = {}
         self.resetNbNodes()
         self.directed = directed
-        
-        self.x = 0
-        self.y = 0
     
     def clear(self):
         '''Clear the graph.'''
@@ -81,14 +73,12 @@ class Graph(Subject):
             while str(self.nbNodes) in self.nodes:
                 self.nbNodes += 1
             id = str(self.nbNodes)
-            
+           
         # Only create the node if it doesn't exist
         if not self.nodeExists(id):            
-            node = Node(id, dicDotAttrs, x if x else self.x, 
-                        y if y else self.y)
-            if not x:
-                self.x += Graph.deltaX
-                
+            node = Node(id, dicDotAttrs, x if x else 0, 
+                        y if y else 0)
+            
             self.nodes[node.id] = node
             self.notify(node.getArgs(), None, UpdateModeView.add)
     
