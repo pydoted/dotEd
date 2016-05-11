@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PyQt5.Qt import QEvent, Qt, QRectF, QTransform, QMargins
+from PyQt5.Qt import QEvent, Qt, QRectF, QTransform
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
 from enumeration.EdgeArgs import EdgeArgs

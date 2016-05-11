@@ -2,14 +2,14 @@
 
 import re
 
-from PyQt5.Qt import QMessageBox
-from PyQt5.QtGui import QTextCharFormat, QBrush, QColor, QTextBlock, QTextCursor
-from PyQt5.QtWidgets import QTextEdit
 from pydot_ng import graph_from_dot_data
+
+from PyQt5.Qt import QMessageBox
+from PyQt5.QtGui import QTextCharFormat, QBrush, QColor, QTextCursor
+from PyQt5.QtWidgets import QTextEdit
 
 from enumeration.EdgeArgs import EdgeArgs
 from enumeration.NodeArgs import NodeArgs
-from enumeration.NodeDotAttrs import NodeDotAttrs
 from utils.DotAttrsUtils import DotAttrsUtils
 from utils.EdgeUtils import EdgeUtils
 from view.widget.View import View
@@ -54,7 +54,7 @@ class TextGraphView(View, QTextEdit):
                                         dictArgsNode[NodeArgs.dotAttrs].copy()
                                                 
             # Write new node at the top just after graph's {
-            text = [e for e in self.toPlainText().split('{',2) if e != ""]
+            text = [e for e in self.toPlainText().split('{', 2) if e != ""]
             self.setPlainText(text.pop(0) + "{\n" +
                                     self.strNode(dictArgsNode[NodeArgs.id]) +
                                     ''.join(text) + "\n")
@@ -82,7 +82,7 @@ class TextGraphView(View, QTextEdit):
                 decNode = cursor.selectedText()
                 
                 # Find start position of attribute value
-                m = re.search("[ ,\[]" + attr + "=\s*", decNode)
+                m = re.search("[ ,\[]" + attr + "\s*=\s*", decNode)
                 if m:
                     indAttr = m.end()
    
@@ -110,7 +110,8 @@ class TextGraphView(View, QTextEdit):
                         cursor.insertText(attr + "=" + 
                                 dictArgsNode[NodeArgs.dotAttrs][attr] + comma)
                     else:
-                        cursor.setPosition(infoPos[1]-1, QTextCursor.MoveAnchor)
+                        cursor.setPosition(infoPos[1] - 1,
+                                           QTextCursor.MoveAnchor)
                         cursor.insertText(" [" + attr + "=" + 
                                  dictArgsNode[NodeArgs.dotAttrs][attr] + "]")
                         
@@ -150,8 +151,8 @@ class TextGraphView(View, QTextEdit):
                            EdgeArgs.destId: idDest
                         }
             
-             # Write new edge at the top just after graph's {
-            text = [e for e in self.toPlainText().split('{',2) if e != ""]
+            # Write new edge at the top just after graph's {
+            text = [e for e in self.toPlainText().split('{', 2) if e != ""]
             self.setPlainText(text.pop(0) + "{\n" +
                                     self.strEdge(dictArgsEdge[EdgeArgs.id]) +
                                     ''.join(text) + "\n")
@@ -161,9 +162,9 @@ class TextGraphView(View, QTextEdit):
             # Add node source and dest if they don't exist
             self.acceptUpdate = True
             if idSource not in self.nodes:
-                self.addNode( { NodeArgs.id: idSource, NodeArgs.dotAttrs: {} } ) 
+                self.addNode({NodeArgs.id: idSource, NodeArgs.dotAttrs: {}}) 
             if idDest not in self.nodes:
-                self.addNode( { NodeArgs.id: idDest, NodeArgs.dotAttrs: {} } )
+                self.addNode({NodeArgs.id: idDest, NodeArgs.dotAttrs: {}})
             self.acceptUpdate = False
 
     def removeEdge(self, dictArgsEdge):
@@ -235,27 +236,25 @@ class TextGraphView(View, QTextEdit):
         index = 0;
         
         text = self.toPlainText()
-        text = [e +'{' for e in text.split('{') if e != ""]
+        text = [e + '{' for e in text.split('{') if e != ""]
         index += len(text[0]) + 1
         text.pop(0)
         text = ''.join(text)
-        text = [e +'}' for e in text.split('}') if e != ""]
+        text = [e + '}' for e in text.split('}') if e != ""]
         text.pop(len(text) - 1)
         stats = re.split(';', ''.join(text))
         
         # Use pydot to get all statements of the graph (in order)
         for s in stats:
-    
             # Parse current statement
             pydotG = graph_from_dot_data("graph {" + s + "}")
             
             # Ignore subgraph
             s2 = s
             while (re.match("\s*(subgraph)*\s*.*\{", s2) or 
-                                                       re.match("\s*\}.*", s2)):
+                   re.match("\s*\}.*", s2)):
                 if re.match("\s*(subgraph)*\s*.*\{", s2):
                     s2 = re.split('{', s2, 1)[1]
-                    print(s2)
                     pydotG = graph_from_dot_data("graph {" + s2 + "}")
                 elif re.match("\s*\}.*", s2):
                     s2 = re.split('}', s2, 1)[1]
@@ -294,7 +293,7 @@ class TextGraphView(View, QTextEdit):
         # If subgraph in statement
         if re.match("\s*(subgraph)*\s*.*\{", cursor.selectedText()):
             indItem = cursor.selectedText().find(id)
-            cursor.setPosition(infoPos[0]+indItem, QTextCursor.MoveAnchor)
+            cursor.setPosition(infoPos[0] + indItem, QTextCursor.MoveAnchor)
             cursor.setPosition(infoPos[1], QTextCursor.KeepAnchor)
         format = QTextCharFormat()
         format.setBackground(QBrush(QColor(190, 180, 0, 80)))
@@ -424,17 +423,17 @@ class TextGraphView(View, QTextEdit):
                             edgeToRemove.append(edge)
                     self.acceptUpdate = True
                     for edge in edgeToRemove:
-                        self.removeEdge({EdgeArgs.id : edge,
-                       EdgeArgs.sourceId : self.edges[edge][EdgeArgs.sourceId],
-                       EdgeArgs.destId : self.edges[edge][EdgeArgs.destId]})
+                        self.removeEdge({EdgeArgs.id: edge,
+                       EdgeArgs.sourceId: self.edges[edge][EdgeArgs.sourceId],
+                       EdgeArgs.destId: self.edges[edge][EdgeArgs.destId]})
                     self.acceptUpdate = False
                     
                 # Remove edges deleted
                 removed = oldEdges.keys() - self.edges.keys() 
                 for idEdge in removed:
                     self.controller.onRemoveEdge(
-                                            oldEdges[idEdge][EdgeArgs.sourceId],
-                                            oldEdges[idEdge][EdgeArgs.destId])
+                                        oldEdges[idEdge][EdgeArgs.sourceId],
+                                        oldEdges[idEdge][EdgeArgs.destId])
                     
                 # Add edges added
                 added = self.edges.keys() - oldEdges.keys()
@@ -444,13 +443,13 @@ class TextGraphView(View, QTextEdit):
                     self.controller.onCreateEdge(nodeSource, nodeDest)
             
                 QTextEdit.focusOutEvent(self, event)
-            
+
             # Some attributes are in invalid form: show an error window
-            else :
+            else:
                 QMessageBox.warning(self, "Syntax error",
-                                "Some attributes in invalid form.")
+                                    "Some attributes in invalid form.")
                 self.setFocus()
-                
+
         # Pydot graph invalid: show an error window
         else:
             QMessageBox.warning(self, "Syntax error",
