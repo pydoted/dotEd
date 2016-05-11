@@ -75,7 +75,6 @@ class GraphicsNode(object):
             
             # Update coordinates of each edge of the current node
             self.getGraphicsView().updateEdgesOfNode(self)
-            self.getFocus(self.id)
             
             self.isMoving = True
             self.lastX = event.scenePos().x()

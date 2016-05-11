@@ -46,7 +46,7 @@ class MainWindowController(object):
             # Clear graph (ask to save before importing here in a future extension)
             self.onClearGraph()
            
-    ## Nodes and edges are send to the model in importGraph() in TextGraphView
+    # Nodes and edges are send to the model in importGraph() in TextGraphView
     # If importGraph() is clean or change you could remove comments of theses
     # lines to build the model 
 #             # Create nodes from pydot nodes

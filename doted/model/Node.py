@@ -31,8 +31,9 @@ class Node(object):
         self.neighbours = {}
         self.dotAttrs = {}
         
-        dicDotAttrs[NodeDotAttrs.pos.value] = (DotAttrsUtils.formatPos(x, y))
-        self.edit(dicDotAttrs)
+        dictAttrs = dicDotAttrs.copy()
+        dictAttrs[NodeDotAttrs.pos.value] = DotAttrsUtils.formatPos(x, y)
+        self.edit(dictAttrs)
         
     def addNeighbour(self, node):
         '''Add a neighbour.
@@ -67,7 +68,10 @@ class Node(object):
                     else:
                         self.x = 0.0
                         self.y = 0.0
-            
+                else:
+                    self.x = 0.0
+                    self.y = 0.0
+                        
             self.dotAttrs[attr] = val
     
     def isNeighboringTo(self, id):
