@@ -37,19 +37,3 @@ class DotAttrsUtils(DotAttrsUtilsV1_0):
         
         # All attributes are valid
         return None
-
-    def checkEdgeAttrsForm(self, dictEdgeAttrs):
-        '''Return None if an attribute of an edge is not valid, else an error
-        message.
-        
-        Argument(s):
-        dictEdgeAttrs (str): Dot attributes values of the edges
-        '''
-        message = DotAttrsUtilsV1_0.checkEdgeAttrsForm(self, dictEdgeAttrs)
-        # If message is not None, then there is an invalid attribute
-        if message:
-            return message
-        
-        # All attributes are valid
-        return None
-    
