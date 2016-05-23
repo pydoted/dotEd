@@ -6,12 +6,12 @@ from PyQt5.QtWidgets import QColorDialog
 
 from major_1.minor_0.enumeration.NodeArgs import NodeArgs
 from major_1.minor_0.view.node.GraphicsNode import GraphicsNode as \
-    GraphicsNodeV1
+    GraphicsNodeV1_0
 from major_1.minor_1.enumeration.NodeDotAttrs import NodeDotAttrs
 from major_1.minor_1.utils.NodeDotColorUtils import NodeDotColorUtils
 
 
-class GraphicsNode(GraphicsNodeV1):
+class GraphicsNode(GraphicsNodeV1_0):
     '''The GraphicsNode class defines a base class for a graphics node.
     
     Argument(s):
@@ -22,7 +22,7 @@ class GraphicsNode(GraphicsNodeV1):
 
     def __init__(self, id, graphicsGraphView):
         # Parent(s) constructor(s)
-        GraphicsNodeV1.__init__(self, id, graphicsGraphView)
+        GraphicsNodeV1_0.__init__(self, id, graphicsGraphView)
         
         # Edit color
         editColorAction = self.contextMenu.addAction("Edit color")
@@ -34,7 +34,7 @@ class GraphicsNode(GraphicsNodeV1):
         Argument(s):
         dictArgsNode (Dictionary[]): Dictionary of arguments of the node
         '''
-        GraphicsNodeV1.edit(self, dictArgsNode)
+        GraphicsNodeV1_0.edit(self, dictArgsNode)
         self.editColor(dictArgsNode)
 
     def editColor(self, dictArgsNode):
