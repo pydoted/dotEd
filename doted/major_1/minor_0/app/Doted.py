@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-<<<<<<< HEAD:doted/major_1/minor_0/app/Doted.py
 from major_1.minor_0.controller.GraphicsGraphController import \
     GraphicsGraphController
 from major_1.minor_0.controller.MainWindowController import \
@@ -10,7 +9,7 @@ from major_1.minor_0.model.Graph import Graph
 from major_1.minor_0.view.widget.GraphicsGraphView import GraphicsGraphView
 from major_1.minor_0.view.widget.MainWindow import MainWindow
 from major_1.minor_0.view.widget.TextGraphView import TextGraphView
-=======
+
 # Copyright (c) 2016 UPMC
 # This file is part of dotEd.
 # 
@@ -26,15 +25,6 @@ from major_1.minor_0.view.widget.TextGraphView import TextGraphView
 # 
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
-
-from controller.GraphicsGraphController import GraphicsGraphController
-from controller.MainWindowController import MainWindowController
-from controller.TextGraphController import TextGraphController
-from model.Graph import Graph
-from view.widget.GraphicsGraphView import GraphicsGraphView
-from view.widget.MainWindow import MainWindow
-from view.widget.TextGraphView import TextGraphView
->>>>>>> 438da3695b92dd7368e8fc08c3e98d1264c40a9f:doted/app/Doted.py
 
 
 class Doted(object):

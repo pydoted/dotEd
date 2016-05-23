@@ -3,6 +3,7 @@
 import binascii
 import re
 
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 
 from major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils
@@ -47,11 +48,15 @@ class NodeDotColorUtils(object):
                 return QColor(colorAttr)
             
             # Color name to QColor
-            elif NodeDotColorUtils.colorNameExists(colorAttr):
+            if NodeDotColorUtils.colorNameExists(colorAttr):
                 return QColor(NodeDotColorUtils.dictColorNamesHexa[colorAttr])
             
+            # Transparent color
+            if NodeDotColorUtils.isTransparentColor(colorAttr):
+                return QColor(Qt.transparent)
+            
             # HSV to QColor
-            elif NodeDotColorUtils.isHSVColor(colorAttr):
+            if NodeDotColorUtils.isHSVColor(colorAttr):
                 hsv = re.findall(DotAttrsUtils.realNumberPattern,
                                 colorAttr)
                 return QColor.fromHsvF(float(hsv[0]), float(hsv[1]),
@@ -61,6 +66,10 @@ class NodeDotColorUtils(object):
         else:
             if NodeDotColorUtils.colorNameExists(colorAttr):
                 return QColor(NodeDotColorUtils.dictColorNamesHexa[colorAttr])
+            
+            # Transparent color
+            if NodeDotColorUtils.isTransparentColor(colorAttr):
+                return QColor(Qt.transparent)
         
         # Normaly whe should never reach this case
         return None
@@ -87,16 +96,27 @@ class NodeDotColorUtils(object):
             # Hexa color
             if NodeDotColorUtils.isHexaColor(colorAttr):
                 return True
+            
             # Color name
-            elif NodeDotColorUtils.colorNameExists(colorAttr):
+            if NodeDotColorUtils.colorNameExists(colorAttr):
                 return True
+            
+            # Transparent color
+            if NodeDotColorUtils.isTransparentColor(colorAttr):
+                return True
+            
             # HSV Color
-            elif NodeDotColorUtils.isHSVColor(colorAttr):
+            if NodeDotColorUtils.isHSVColor(colorAttr):
                 return True
+        
         # In this case, we can only have a color name
         else:
             if NodeDotColorUtils.colorNameExists(colorAttr):
                 return True
+            
+            # Transparent color
+            if NodeDotColorUtils.isTransparentColor(colorAttr):
+                return True 
         
         return False
     
@@ -141,3 +161,7 @@ class NodeDotColorUtils(object):
         return re.search(DotAttrsUtils.realNumberPattern + "\s*,?\s*" +
                          DotAttrsUtils.realNumberPattern + "\s*,?\s*" +
                          DotAttrsUtils.realNumberPattern, color.strip())
+
+    @staticmethod
+    def isTransparentColor(color):
+        return color == "transparent"
