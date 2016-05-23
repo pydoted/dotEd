@@ -20,7 +20,7 @@ class NodeDotColorUtils(object):
     
     
     dictColorNamesHexa = {}
-    pathColorNamesHexa = "../ressources/colors.txt"    
+    pathColorNamesHexa = "ressources/colors.txt"    
 
     @staticmethod
     def formatColor(color):
