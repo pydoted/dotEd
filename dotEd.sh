@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 doted/main.py &
+python3 doted/main_1_1.py &
