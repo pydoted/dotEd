@@ -158,7 +158,8 @@ class GraphicsGraphView(View, QGraphicsView):
                     # If a item is selected
                     if item:
                         # Remove node
-                        if isinstance(item[0], GraphicsNode):
+                        if (isinstance(item[0], GraphicsNode) and not
+                            item[0].graphicsTextNode.hasFocus()):
                             self.controller.onRemoveNode(item[0].id)
                             
                         # Remove edge
