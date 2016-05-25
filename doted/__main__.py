@@ -22,7 +22,13 @@ from PyQt5.QtWidgets import QApplication
 
 from doted.major_1.minor_1.app.Doted import Doted
 
+
 def main(args=None):
+    '''Entry point.
+
+    Argument(s):
+    args (List[str]): Arguments in command line (default None)
+    '''
     app = QApplication(sys.argv)
 
     # Initialisation
@@ -33,10 +39,3 @@ def main(args=None):
 
 if __name__ == "__main__":
     main()
-    app = QApplication(sys.argv)
-
-    # Initialisation
-    doted = Doted()
-    doted.run()
-
-    sys.exit(app.exec_())
