@@ -2,17 +2,17 @@
 
 # Copyright (c) 2016 Victor Nea, Morvan Lassauzay, Matthieu Dien, Marwan Ghanem
 # This file is part of dotEd.
-# 
+#
 # dotEd is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # dotEd is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -126,20 +126,20 @@ class TextGraphView(View, QTextEdit):
                         cursor.setPosition(infoPos[0] + ind + 1,
                                            QTextCursor.MoveAnchor)
                         cursor.insertText(
-                                attr +
-                                "=" +
-                                dictArgsNode[NodeArgs.dotAttrs][attr] +
-                                comma
+                            attr +
+                            "=" +
+                            dictArgsNode[NodeArgs.dotAttrs][attr] +
+                            comma
                         )
                     else:
                         cursor.setPosition(infoPos[1] - 1,
                                            QTextCursor.MoveAnchor)
                         cursor.insertText(
-                                        " [" +
-                                        attr +
-                                        "=" +
-                                        dictArgsNode[NodeArgs.dotAttrs][attr] +
-                                        "]"
+                            " [" +
+                            attr +
+                            "=" +
+                            dictArgsNode[NodeArgs.dotAttrs][attr] +
+                            "]"
                         )
 
             # Edit attributes values
@@ -461,11 +461,11 @@ class TextGraphView(View, QTextEdit):
                     self.acceptUpdate = True
                     for edge in edgeToRemove:
                         self.removeEdge({
-                               EdgeArgs.id: edge,
-                               EdgeArgs.sourceId:
-                               self.edges[edge][EdgeArgs.sourceId],
-                               EdgeArgs.destId:
-                               self.edges[edge][EdgeArgs.destId]
+                            EdgeArgs.id: edge,
+                            EdgeArgs.sourceId:
+                            self.edges[edge][EdgeArgs.sourceId],
+                            EdgeArgs.destId:
+                            self.edges[edge][EdgeArgs.destId]
                         })
                     self.acceptUpdate = False
 

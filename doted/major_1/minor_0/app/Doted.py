@@ -26,6 +26,7 @@ from major_1.minor_0.view.widget.GraphicsGraphView import GraphicsGraphView
 from major_1.minor_0.view.widget.MainWindow import MainWindow
 from major_1.minor_0.view.widget.TextGraphView import TextGraphView
 
+
 class Doted(object):
     '''The Doted class provides a main application.
 
