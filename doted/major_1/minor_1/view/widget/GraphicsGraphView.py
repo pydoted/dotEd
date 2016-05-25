@@ -111,10 +111,13 @@ class GraphicsGraphView(View, QGraphicsView):
         dest = self.nodes[dictArgsEdge[EdgeArgs.destId]]
 
         # Create the edge
-        self.edges[dictArgsEdge[EdgeArgs.id]] = GraphicsLineEdge(source, dest,
-                                                                 dictArgsEdge[
-                                                                     EdgeArgs.id],
-                                                                 self)
+        self.edges[dictArgsEdge[EdgeArgs.id]] = GraphicsLineEdge(
+                            source,
+                            dest,
+                            dictArgsEdge[EdgeArgs.id],
+                            self
+        )
+
         # Edit it
         self.editEdge(dictArgsEdge)
 
