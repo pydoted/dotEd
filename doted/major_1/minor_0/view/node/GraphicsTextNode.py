@@ -21,8 +21,8 @@ from pydot_ng import graph_from_dot_data
 from PyQt5.Qt import Qt
 from PyQt5.QtWidgets import QGraphicsTextItem, QMessageBox
 
-from major_1.minor_0.enumeration.NodeDotAttrs import NodeDotAttrs
-from major_1.minor_0.utils.NodeDotLabelUtils import NodeDotLabelUtils
+from doted.major_1.minor_0.enumeration.NodeDotAttrs import NodeDotAttrs
+from doted.major_1.minor_0.utils.NodeDotLabelUtils import NodeDotLabelUtils
 
 
 class GraphicsTextNode(QGraphicsTextItem):

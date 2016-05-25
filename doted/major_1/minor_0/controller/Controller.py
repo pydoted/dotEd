@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
-from major_1.minor_0.enumeration.UpdateModeView import UpdateModeView
-from major_1.minor_0.observer.Observer import Observer
+from doted.major_1.minor_0.enumeration.UpdateModeView import UpdateModeView
+from doted.major_1.minor_0.observer.Observer import Observer
 
 
 class Controller(Observer):

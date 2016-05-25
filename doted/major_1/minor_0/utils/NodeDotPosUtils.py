@@ -18,7 +18,7 @@
 
 import re
 
-from major_1.minor_0.enumeration.NodeArgs import NodeArgs
+from doted.major_1.minor_0.enumeration.NodeArgs import NodeArgs
 
 
 class NodeDotPosUtils(object):

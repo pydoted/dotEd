@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
-from major_1.minor_0.utils.StringUtils import StringUtils
+from doted.major_1.minor_0.utils.StringUtils import StringUtils
 
 
 class NodeDotLabelUtils(object):

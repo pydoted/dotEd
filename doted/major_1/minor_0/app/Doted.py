@@ -16,15 +16,15 @@
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
-from major_1.minor_0.controller.GraphicsGraphController import \
+from doted.major_1.minor_0.controller.GraphicsGraphController import \
     GraphicsGraphController
-from major_1.minor_0.controller.MainWindowController import \
+from doted.major_1.minor_0.controller.MainWindowController import \
     MainWindowController
-from major_1.minor_0.controller.TextGraphController import TextGraphController
-from major_1.minor_0.model.Graph import Graph
-from major_1.minor_0.view.widget.GraphicsGraphView import GraphicsGraphView
-from major_1.minor_0.view.widget.MainWindow import MainWindow
-from major_1.minor_0.view.widget.TextGraphView import TextGraphView
+from doted.major_1.minor_0.controller.TextGraphController import TextGraphController
+from doted.major_1.minor_0.model.Graph import Graph
+from doted.major_1.minor_0.view.widget.GraphicsGraphView import GraphicsGraphView
+from doted.major_1.minor_0.view.widget.MainWindow import MainWindow
+from doted.major_1.minor_0.view.widget.TextGraphView import TextGraphView
 
 
 class Doted(object):

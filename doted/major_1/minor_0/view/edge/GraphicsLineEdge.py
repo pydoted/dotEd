@@ -15,11 +15,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
+
 from PyQt5.Qt import QPainterPath, QPainterPathStroker
 from PyQt5.QtWidgets import QGraphicsLineItem, QGraphicsItem
 
-from major_1.minor_0.utils.EdgeUtils import EdgeUtils
-from major_1.minor_0.view.edge.GraphicsEdge import GraphicsEdge
+from doted.major_1.minor_0.utils.EdgeUtils import EdgeUtils
+from doted.major_1.minor_0.view.edge.GraphicsEdge import GraphicsEdge
 
 
 class GraphicsLineEdge(GraphicsEdge, QGraphicsLineItem):

@@ -19,12 +19,12 @@
 from PyQt5.Qt import QMarginsF, Qt
 from PyQt5.QtWidgets import QGraphicsItem, QMenu
 
-from major_1.minor_0.utils.NodeDotPosUtils import NodeDotPosUtils
-from major_1.minor_0.enumeration.NodeArgs import NodeArgs
-from major_1.minor_0.enumeration.NodeDotAttrs import NodeDotAttrs
-from major_1.minor_0.utils.NodeDotLabelUtils import NodeDotLabelUtils
-from major_1.minor_0.view.edge.GraphicsSemiEdge import GraphicsSemiEdge
-from major_1.minor_0.view.node.GraphicsTextNode import GraphicsTextNode
+from doted.major_1.minor_0.utils.NodeDotPosUtils import NodeDotPosUtils
+from doted.major_1.minor_0.enumeration.NodeArgs import NodeArgs
+from doted.major_1.minor_0.enumeration.NodeDotAttrs import NodeDotAttrs
+from doted.major_1.minor_0.utils.NodeDotLabelUtils import NodeDotLabelUtils
+from doted.major_1.minor_0.view.edge.GraphicsSemiEdge import GraphicsSemiEdge
+from doted.major_1.minor_0.view.node.GraphicsTextNode import GraphicsTextNode
 
 
 class GraphicsNode(object):

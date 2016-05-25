@@ -16,10 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
-from major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils as \
+from doted.major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils as \
     DotAttrsUtilsV1_0
-from major_1.minor_1.enumeration.NodeDotAttrs import NodeDotAttrs
-from major_1.minor_1.utils.NodeDotColorUtils import NodeDotColorUtils
+from doted.major_1.minor_1.enumeration.NodeDotAttrs import NodeDotAttrs
+from doted.major_1.minor_1.utils.NodeDotColorUtils import NodeDotColorUtils
 
 
 class DotAttrsUtils(DotAttrsUtilsV1_0):

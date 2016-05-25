@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
-from major_1.minor_0.enumeration.EdgeArgs import EdgeArgs
+from doted.major_1.minor_0.enumeration.EdgeArgs import EdgeArgs
 
 
 class Edge(object):

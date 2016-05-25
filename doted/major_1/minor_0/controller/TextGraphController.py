@@ -18,10 +18,10 @@
 
 from pydot_ng import NODE_ATTRIBUTES
 
-from major_1.minor_0.utils.NodeDotPosUtils import NodeDotPosUtils
-from major_1.minor_0.controller.Controller import Controller
-from major_1.minor_0.enumeration.NodeArgs import NodeArgs
-from major_1.minor_0.enumeration.NodeDotAttrs import NodeDotAttrs
+from doted.major_1.minor_0.utils.NodeDotPosUtils import NodeDotPosUtils
+from doted.major_1.minor_0.controller.Controller import Controller
+from doted.major_1.minor_0.enumeration.NodeArgs import NodeArgs
+from doted.major_1.minor_0.enumeration.NodeDotAttrs import NodeDotAttrs
 
 
 class TextGraphController(Controller):

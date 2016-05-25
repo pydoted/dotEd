@@ -16,11 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
-from major_1.minor_0.enumeration.UpdateModeView import UpdateModeView
-from major_1.minor_0.model.Edge import Edge
-from major_1.minor_0.model.Node import Node
-from major_1.minor_0.observer.Subject import Subject
-from major_1.minor_0.utils.EdgeUtils import EdgeUtils
+from doted.major_1.minor_0.enumeration.UpdateModeView import UpdateModeView
+from doted.major_1.minor_0.model.Edge import Edge
+from doted.major_1.minor_0.model.Node import Node
+from doted.major_1.minor_0.observer.Subject import Subject
+from doted.major_1.minor_0.utils.EdgeUtils import EdgeUtils
 
 
 class Graph(Subject):

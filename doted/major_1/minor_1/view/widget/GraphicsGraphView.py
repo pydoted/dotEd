@@ -20,13 +20,13 @@ from PyQt5.Qt import QEvent, Qt, QRectF, QTransform
 from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
-from major_1.minor_0.enumeration.EdgeArgs import EdgeArgs
-from major_1.minor_0.enumeration.NodeArgs import NodeArgs
-from major_1.minor_0.view.edge.GraphicsEdge import GraphicsEdge
-from major_1.minor_0.view.edge.GraphicsLineEdge import GraphicsLineEdge
-from major_1.minor_1.view.node.GraphicsEllipseNode import GraphicsEllipseNode
-from major_1.minor_0.view.node.GraphicsNode import GraphicsNode
-from major_1.minor_0.view.widget.View import View
+from doted.major_1.minor_0.enumeration.EdgeArgs import EdgeArgs
+from doted.major_1.minor_0.enumeration.NodeArgs import NodeArgs
+from doted.major_1.minor_0.view.edge.GraphicsEdge import GraphicsEdge
+from doted.major_1.minor_0.view.edge.GraphicsLineEdge import GraphicsLineEdge
+from doted.major_1.minor_1.view.node.GraphicsEllipseNode import GraphicsEllipseNode
+from doted.major_1.minor_0.view.node.GraphicsNode import GraphicsNode
+from doted.major_1.minor_0.view.widget.View import View
 
 
 class GraphicsGraphView(View, QGraphicsView):

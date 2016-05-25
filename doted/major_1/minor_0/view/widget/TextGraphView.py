@@ -24,11 +24,11 @@ from PyQt5.Qt import QMessageBox
 from PyQt5.QtGui import QTextCharFormat, QBrush, QColor, QTextCursor
 from PyQt5.QtWidgets import QTextEdit
 
-from major_1.minor_0.enumeration.EdgeArgs import EdgeArgs
-from major_1.minor_0.enumeration.NodeArgs import NodeArgs
-from major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils
-from major_1.minor_0.utils.EdgeUtils import EdgeUtils
-from major_1.minor_0.view.widget.View import View
+from doted.major_1.minor_0.enumeration.EdgeArgs import EdgeArgs
+from doted.major_1.minor_0.enumeration.NodeArgs import NodeArgs
+from doted.major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils
+from doted.major_1.minor_0.utils.EdgeUtils import EdgeUtils
+from doted.major_1.minor_0.view.widget.View import View
 
 
 class TextGraphView(View, QTextEdit):

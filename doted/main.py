@@ -20,7 +20,7 @@ import sys
 
 from PyQt5.QtWidgets import QApplication
 
-from major_1.minor_1.app.Doted import Doted
+from doted.major_1.minor_1.app.Doted import Doted
 
 
 if __name__ == "__main__":

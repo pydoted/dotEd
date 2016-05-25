@@ -22,8 +22,8 @@ import re
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 
-from major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils
-from major_1.minor_0.utils.StringUtils import StringUtils
+from doted.major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils
+from doted.major_1.minor_0.utils.StringUtils import StringUtils
 
 
 class NodeDotColorUtils(object):

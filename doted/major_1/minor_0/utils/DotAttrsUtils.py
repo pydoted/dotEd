@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
-from major_1.minor_0.utils.NodeDotPosUtils import NodeDotPosUtils
-from major_1.minor_0.enumeration.NodeDotAttrs import NodeDotAttrs
+from doted.major_1.minor_0.utils.NodeDotPosUtils import NodeDotPosUtils
+from doted.major_1.minor_0.enumeration.NodeDotAttrs import NodeDotAttrs
 
 
 class DotAttrsUtils(object):
