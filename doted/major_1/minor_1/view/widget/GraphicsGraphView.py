@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5.Qt import QEvent, Qt, QRectF, QTransform
+from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
 from major_1.minor_0.enumeration.EdgeArgs import EdgeArgs
@@ -30,6 +31,9 @@ class GraphicsGraphView(View, QGraphicsView):
 
         self.nodes = {}
         self.edges = {}
+        
+        # Enable Antiliasing
+        self.setRenderHint(QPainter.Antialiasing)
         
         # Init scene
         self.scene = QGraphicsScene()
