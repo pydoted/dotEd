@@ -1,6 +1,12 @@
 dotEd - A graphic editor for DOT graph
 ========================================================
-	
+
+
+install :
+    python setup.py install
+
 Run :  
-	- Windows : run dotEd.bat  
-	- Linux : run dotEd.sh  
+	doted 
+
+uninstall:
+    pip uninstall doted
