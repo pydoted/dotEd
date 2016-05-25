@@ -109,13 +109,22 @@ class TextGraphView(View, QTextEdit):
                     if ind != -1:
                         cursor.setPosition(infoPos[0] + ind + 1,
                                            QTextCursor.MoveAnchor)
-                        cursor.insertText(attr + "=" +
-                                          dictArgsNode[NodeArgs.dotAttrs][attr] + comma)
+                        cursor.insertText(
+                                attr +
+                                "=" +
+                                dictArgsNode[NodeArgs.dotAttrs][attr] +
+                                comma
+                        )
                     else:
                         cursor.setPosition(infoPos[1] - 1,
                                            QTextCursor.MoveAnchor)
-                        cursor.insertText(" [" + attr + "=" +
-                                          dictArgsNode[NodeArgs.dotAttrs][attr] + "]")
+                        cursor.insertText(
+                                        " [" +
+                                        attr +
+                                        "=" +
+                                        dictArgsNode[NodeArgs.dotAttrs][attr] +
+                                        "]"
+                        )
 
             # Edit attributes values
             self.nodes[dictArgsNode[NodeArgs.id]] = \
@@ -435,9 +444,13 @@ class TextGraphView(View, QTextEdit):
                             edgeToRemove.append(edge)
                     self.acceptUpdate = True
                     for edge in edgeToRemove:
-                        self.removeEdge({EdgeArgs.id: edge,
-                                         EdgeArgs.sourceId: self.edges[edge][EdgeArgs.sourceId],
-                                         EdgeArgs.destId: self.edges[edge][EdgeArgs.destId]})
+                        self.removeEdge({
+                               EdgeArgs.id: edge,
+                               EdgeArgs.sourceId:
+                               self.edges[edge][EdgeArgs.sourceId],
+                               EdgeArgs.destId:
+                               self.edges[edge][EdgeArgs.destId]
+                        })
                     self.acceptUpdate = False
 
                 # Remove edges deleted
