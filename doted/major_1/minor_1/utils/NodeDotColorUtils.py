@@ -17,6 +17,7 @@
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
 from os.path import os
+import sys
 import binascii
 import re
 
@@ -24,9 +25,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 
 import __main__
-import pkgutil
-import os
-import sys
 from doted.major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils
 from doted.major_1.minor_0.utils.StringUtils import StringUtils
 
@@ -41,8 +39,10 @@ class NodeDotColorUtils(object):
     '''
 
     dictColorNamesHexa = {}
-    d = os.path.dirname(sys.modules['doted'].__file__)
-    pathColorNamesHexa = os.path.join(d, 'ressources\colors.txt')
+    pathColorNamesHexa = os.path.join(
+        os.path.dirname(sys.modules["doted"].__file__),
+        "ressources\colors.txt"
+    )
 
     @staticmethod
     def formatColor(color):
