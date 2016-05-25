@@ -24,7 +24,8 @@ from doted.major_1.minor_0.enumeration.EdgeArgs import EdgeArgs
 from doted.major_1.minor_0.enumeration.NodeArgs import NodeArgs
 from doted.major_1.minor_0.view.edge.GraphicsEdge import GraphicsEdge
 from doted.major_1.minor_0.view.edge.GraphicsLineEdge import GraphicsLineEdge
-from doted.major_1.minor_0.view.node.GraphicsEllipseNode import GraphicsEllipseNode
+from doted.major_1.minor_0.view.node.GraphicsEllipseNode import \
+    GraphicsEllipseNode
 from doted.major_1.minor_0.view.node.GraphicsNode import GraphicsNode
 from doted.major_1.minor_0.view.widget.View import View
 

@@ -20,9 +20,11 @@ from doted.major_1.minor_0.controller.GraphicsGraphController import \
     GraphicsGraphController
 from doted.major_1.minor_0.controller.MainWindowController import \
     MainWindowController
-from doted.major_1.minor_0.controller.TextGraphController import TextGraphController
+from doted.major_1.minor_0.controller.TextGraphController import \
+    TextGraphController
 from doted.major_1.minor_0.model.Graph import Graph
-from doted.major_1.minor_0.view.widget.GraphicsGraphView import GraphicsGraphView
+from doted.major_1.minor_0.view.widget.GraphicsGraphView import \
+    GraphicsGraphView
 from doted.major_1.minor_0.view.widget.MainWindow import MainWindow
 from doted.major_1.minor_0.view.widget.TextGraphView import TextGraphView
 
