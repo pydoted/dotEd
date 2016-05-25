@@ -7,14 +7,14 @@ from major_1.minor_0.enumeration.NodeDotAttrs import NodeDotAttrs
 
 class Node(object):
     '''The Node class defines a node (model).
-    
-    
+
+
     Argument(s):
     id (str): ID
     x (float): x coordinate (default 0.0)
     y (float): y coordinate (default 0.0)
     dicDotAttrs (Dictionary[]): Dot attributes (default {})
-    
+
     Attribute(s):
     id (str): ID
     x (float): x coordinate
@@ -27,25 +27,25 @@ class Node(object):
         self.id = id
         self.x = x
         self.y = y
-        
+
         self.neighbours = {}
         self.dotAttrs = {}
-        
+
         dictAttrs = dicDotAttrs.copy()
         dictAttrs[NodeDotAttrs.pos.value] = NodeDotPosUtils.formatPos(x, y)
         self.edit(dictAttrs)
-        
+
     def addNeighbour(self, node):
         '''Add a neighbour.
-        
+
         Argument(s):
         node (Node): Neighbour
         '''
         self.neighbours[node.id] = node
-        
+
     def removeNeighbour(self, node):
         '''Remove a neighbour.
-        
+
         Argument(s):
         node (Node): Neighbour
         '''
@@ -53,7 +53,7 @@ class Node(object):
 
     def edit(self, dicDotAttrs):
         '''Edit dot attributes of the node.
-        
+
         Argument(s):
         dicDotAttrs (Dictionary[]): Dot attributes of the node
         '''
@@ -71,22 +71,22 @@ class Node(object):
                 else:
                     self.x = 0.0
                     self.y = 0.0
-                        
+
             self.dotAttrs[attr] = val
-    
+
     def isNeighboringTo(self, id):
         '''Check if the node is neighboring with another.
-        
+
         Argument(s):
         id (str): Node id
         '''
         return id in self.neighbours
-    
+
     def getArgs(self):
         '''Return a dictionary of the arguments of the node.'''
         return {
-                NodeArgs.id: self.id,
-                NodeArgs.dotAttrs: self.dotAttrs,
-                NodeArgs.x: self.x,
-                NodeArgs.y: self.y
-            }
+            NodeArgs.id: self.id,
+            NodeArgs.dotAttrs: self.dotAttrs,
+            NodeArgs.x: self.x,
+            NodeArgs.y: self.y
+        }

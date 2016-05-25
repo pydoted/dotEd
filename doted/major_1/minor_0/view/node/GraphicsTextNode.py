@@ -17,7 +17,6 @@ class GraphicsTextNode(QGraphicsTextItem):
     label (str): Label of the node (default "")
     '''
 
-
     def __init__(self, label=""):
         # Parent constructor(s)
         QGraphicsTextItem.__init__(self, label)
@@ -30,14 +29,14 @@ class GraphicsTextNode(QGraphicsTextItem):
         '''
         QGraphicsTextItem.keyPressEvent(self, event)
         self.parentItem().updateShapeAndEdges()
-  
+
     def editLabel(self):
         '''Edit label.'''
         # Enable edit text
         self.setTextInteractionFlags(Qt.TextEditorInteraction)
-        
+
         # Go to edit mode text
-        self.setFocus()        
+        self.setFocus()
 
     def focusOutEvent(self, event):
         '''Handle focus out event.
@@ -46,37 +45,37 @@ class GraphicsTextNode(QGraphicsTextItem):
         event (QFocusEvent ): Focus event
         '''
         QGraphicsTextItem.focusOutEvent(self, event)
-        
+
         # Create a fake node to test if label is valid with pydot
         fakeNode = ("fake[" + NodeDotAttrs.label.value +
                     "=" + self.toPlainText() + "]")
-        pydotGraph = graph_from_dot_data("graph{" + fakeNode+ "}")
-        
+        pydotGraph = graph_from_dot_data("graph{" + fakeNode + "}")
+
         # Label is valid: we can do the update
         if pydotGraph:
             dicDotAttrs = {
-                   NodeDotAttrs.label.value:
-                            NodeDotLabelUtils.formatLabel(self.toPlainText())
-                   }
-            
+                NodeDotAttrs.label.value:
+                NodeDotLabelUtils.formatLabel(self.toPlainText())
+            }
+
             # Update text in other views
             node = self.parentItem()
             node.graphicsGraphView.controller.onEditNode(node.id, dicDotAttrs)
-            
+
             # Disable edit text
             self.setTextInteractionFlags(Qt.NoTextInteraction)
-        
+
         # Label is invalid: force user to write a correct label
         else:
             QMessageBox.warning(None, "Syntax error",
                                 "The label is invalid.")
             self.setFocus()
-        
+
     def contextMenuEvent(self, event):
         '''Handle context menu event.
-        
+
         Argument(s):
-        event (QGraphicsSceneContextMenuEvent): Graphics scene context menu 
+        event (QGraphicsSceneContextMenuEvent): Graphics scene context menu
                                                 event
         '''
         # Disable context menu (right click)
@@ -84,7 +83,7 @@ class GraphicsTextNode(QGraphicsTextItem):
 
     def setPlainText(self, text):
         '''Sets the item's text to text.
-        
+
         Argument(s):
         text (str): New text
         '''
