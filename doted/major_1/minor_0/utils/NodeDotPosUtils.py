@@ -33,7 +33,13 @@ class NodeDotPosUtils(object):
         x (float): x coordinate
         y (float): y coordinate
         '''
-        return '"' + str(x) + ',' + str(y) + '"'
+        return (
+                '"' +
+                str("{0:.2f}".format(x)) +
+                ',' +
+                str("{0:.2f}".format(y)) +
+                '"'
+        )
 
     @staticmethod
     def getPos(posAttr):
