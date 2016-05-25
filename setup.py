@@ -38,6 +38,8 @@ setup(
     install_requires=['pydot-ng'],
 
     include_package_data=True,
+    
+    package_data={'doted': ['ressources/*.txt']},
 
     entry_points={
         'console_scripts': [

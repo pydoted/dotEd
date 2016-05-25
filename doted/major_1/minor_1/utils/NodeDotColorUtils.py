@@ -24,6 +24,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 
 import __main__
+import pkgutil
+import os
+import sys
 from doted.major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils
 from doted.major_1.minor_0.utils.StringUtils import StringUtils
 
@@ -38,10 +41,8 @@ class NodeDotColorUtils(object):
     '''
 
     dictColorNamesHexa = {}
-    pathColorNamesHexa = (
-            os.path.dirname(__main__.__file__) +
-            "/ressources/colors.txt"
-    )
+    d = os.path.dirname(sys.modules['doted'].__file__)
+    pathColorNamesHexa = os.path.join(d, 'ressources\colors.txt')
 
     @staticmethod
     def formatColor(color):
