@@ -23,21 +23,20 @@ from major_1.minor_1.view.node.GraphicsNode import GraphicsNode
 
 
 class GraphicsEllipseNode(GraphicsNode, QGraphicsEllipseItem):
-    '''The GraphicsEllipseNode class defines a graphics node as an ellipse 
+    '''The GraphicsEllipseNode class defines a graphics node as an ellipse
     containing a text.
-    
-    
+
+
     Argument(s):
     id (str): ID of the node
     graphicsGraphView (GraphicsGraphView): View
     '''
 
-
     def __init__(self, id, graphicsGraphView):
         # Parent constructor(s)
         GraphicsNode.__init__(self, id, graphicsGraphView)
         QGraphicsEllipseItem.__init__(self)
-        
+
         # Init text node
         self.graphicsTextNode.setParentItem(self)
         self.setFlags(QGraphicsItem.ItemIsMovable |
@@ -53,4 +52,4 @@ class GraphicsEllipseNode(GraphicsNode, QGraphicsEllipseItem):
     def centerTextInShape(self):
         '''Center the text in the ellipse.'''
         self.setRect(self.graphicsTextNode.boundingRect().
-                          marginsAdded(QMarginsF(10, 10, 10, 10)))
+                     marginsAdded(QMarginsF(10, 10, 10, 10)))

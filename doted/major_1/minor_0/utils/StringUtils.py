@@ -23,7 +23,7 @@ class StringUtils(object):
     @staticmethod
     def isStrBetweenDoubleQuotes(text):
         '''Return True if the text is between double quotes, else False.
-        
+
         Argument(s):
         text (str): Text to test
         '''
