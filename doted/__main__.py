@@ -22,8 +22,17 @@ from PyQt5.QtWidgets import QApplication
 
 from doted.major_1.minor_1.app.Doted import Doted
 
+def main(args=None):
+    app = QApplication(sys.argv)
+
+    # Initialisation
+    doted = Doted()
+    doted.run()
+
+    sys.exit(app.exec_())
 
 if __name__ == "__main__":
+    main()
     app = QApplication(sys.argv)
 
     # Initialisation

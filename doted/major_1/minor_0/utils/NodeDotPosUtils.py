@@ -48,7 +48,7 @@ class NodeDotPosUtils(object):
         Argument(s):
         posAttr (str): Dot pos attribute
         '''
-        from major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils
+        from doted.major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils
 
         result = re.findall(DotAttrsUtils.realNumberPattern, posAttr)
 
@@ -64,7 +64,7 @@ class NodeDotPosUtils(object):
     @staticmethod
     def isPosValid(posAttr):
         '''Return True if the dot pos attribute is valid.'''
-        from major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils
+        from doted.major_1.minor_0.utils.DotAttrsUtils import DotAttrsUtils
 
         return re.search('^"\s*' + DotAttrsUtils.realNumberPattern +
                          "\s*,\s*" + DotAttrsUtils.realNumberPattern +

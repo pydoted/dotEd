@@ -41,7 +41,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'doted = doted.main.__main__:main',
+            'doted = doted.__main__:main',
         ],
     },
 )
