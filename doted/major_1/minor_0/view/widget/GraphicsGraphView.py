@@ -241,3 +241,29 @@ class GraphicsGraphView(View, QGraphicsView):
             self.scene.setSceneRect(rect)
 
         return sceneRectUpdated
+
+    def wheelEvent(self, event):
+        '''Handle wheel event.
+
+        Argument(s):
+        event (QWheelEvent): Wheel event
+        '''
+        zoomInFactor = 1.25
+        zoomOutFactor = 1 / zoomInFactor
+
+        # Save the scene pos
+        oldPos = self.mapToScene(event.pos())
+
+        # Zoom
+        if event.angleDelta().y() > 0:
+            zoomFactor = zoomInFactor
+        else:
+            zoomFactor = zoomOutFactor
+        self.scale(zoomFactor, zoomFactor)
+
+        # Get the new position
+        newPos = self.mapToScene(event.pos())
+
+        # Move scene to old position
+        delta = newPos - oldPos
+        self.translate(delta.x(), delta.y())
