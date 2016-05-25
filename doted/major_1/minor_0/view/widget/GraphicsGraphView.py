@@ -35,6 +35,10 @@ class GraphicsGraphView(View, QGraphicsView):
         # Enable Antiliasing
         self.setRenderHint(QPainter.Antialiasing)
         
+        # Rectangular selection
+        self.setDragMode(QGraphicsView.RubberBandDrag)
+        self.setRubberBandSelectionMode(Qt.IntersectsItemShape)
+        
         # Init scene
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
@@ -138,6 +142,19 @@ class GraphicsGraphView(View, QGraphicsView):
     def eventFilter(self, source, event):
         '''Handle events for the scene.'''
         if source == self.scene:
+            if (event.type() == QEvent.GraphicsSceneMouseMove and
+                event.modifiers() == Qt.ControlModifier):
+                    # Get nodes/edges
+                    items = source.selectedItems()
+                    
+                    # Filter to only get nodes
+                    nodes = [item for item in items if
+                            isinstance(item, GraphicsNode)]
+                    
+                    # Update all edges for each selected nodes
+                    for node in nodes:
+                        self.updateEdgesOfNode(node)
+            
             # Left double click (mouse button)
             if (event.type() == QEvent.GraphicsSceneMouseDoubleClick and
                 event.buttons() == Qt.LeftButton):
@@ -152,32 +169,18 @@ class GraphicsGraphView(View, QGraphicsView):
             # Key press
             if event.type() == QEvent.KeyPress:
                 if event.key() == Qt.Key_Delete:
-                    # Only one item might be selected at this state
-                    item = source.selectedItems()
+                    # Get selected items (nodes/edges)
+                    items = source.selectedItems()
                     
-                    # If a item is selected
-                    if item:
+                    for item in items:
                         # Remove node
-                        if (isinstance(item[0], GraphicsNode) and not
-                            item[0].graphicsTextNode.hasFocus()):
-                            self.controller.onRemoveNode(item[0].id)
+                        if (isinstance(item, GraphicsNode) and not
+                            item.graphicsTextNode.hasFocus()):
+                            self.controller.onRemoveNode(item.id)
                             
                         # Remove edge
-                        elif isinstance(item[0], GraphicsEdge):
-                            self.controller.onRemoveEdge(item[0].id)
-                            
-            if (event.type() == QEvent.GraphicsSceneMousePress and
-                event.buttons() == Qt.LeftButton):
-                # Disable multiple selection
-                if (event.modifiers() == Qt.ControlModifier):
-                    for it in source.selectedItems():
-                        it.setSelected(False)
-                else:
-                    item = source.itemAt(event.scenePos(), QTransform())
-                    if item:
-                        for it in source.selectedItems():
-                            it.setSelected(False)
-                        item.setSelected(True)
+                        elif isinstance(item, GraphicsEdge):
+                            self.controller.onRemoveEdge(item.id)
                                      
         return False
 
@@ -197,7 +200,8 @@ class GraphicsGraphView(View, QGraphicsView):
             rect.setLeft(graphicsNode.x() +
                          graphicsNode.boundingRect().left() * factor)
         # Right boder
-        elif graphicsNode.x() + graphicsNode.boundingRect().right() > rect.right():
+        elif (graphicsNode.x() + graphicsNode.boundingRect().right() >
+            rect.right()):
             sceneRectUpdated = True
             rect.setRight(graphicsNode.x() +
                           graphicsNode.boundingRect().right() * factor)
@@ -208,7 +212,8 @@ class GraphicsGraphView(View, QGraphicsView):
             rect.setTop(graphicsNode.y() +
                         graphicsNode.boundingRect().top() * factor)  
         # Bottom border
-        elif graphicsNode.y() + graphicsNode.boundingRect().bottom() > rect.bottom():
+        elif (graphicsNode.y() + graphicsNode.boundingRect().bottom() >
+            rect.bottom()):
             sceneRectUpdated = True
             rect.setBottom(graphicsNode.y() +
                            graphicsNode.boundingRect().bottom() * factor)

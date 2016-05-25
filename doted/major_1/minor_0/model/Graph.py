@@ -100,16 +100,17 @@ class Graph(Subject):
         Argument(s):
         idNode (str): ID of the node to remove
         '''
-        node = self.nodes.pop(idNode)
-        self.notify(node.getArgs(), None, UpdateModeView.remove)
-
-        # Removes associated edges
-        for edge in list(self.edges.values()):
-            if node == edge.source or node == edge.dest:
-                self.removeEdge(edge.id)
-        
-        if not self.nodes:
-            self.resetNbNodes()
+        if self.nodeExists(idNode):
+            node = self.nodes.pop(idNode)
+            self.notify(node.getArgs(), None, UpdateModeView.remove)
+    
+            # Removes associated edges
+            for edge in list(self.edges.values()):
+                if node == edge.source or node == edge.dest:
+                    self.removeEdge(edge.id)
+            
+            if not self.nodes:
+                self.resetNbNodes()
         
     def addEdge(self, idSourceNode, idDestNode):
         '''Add an Edge to the graph and notify this.

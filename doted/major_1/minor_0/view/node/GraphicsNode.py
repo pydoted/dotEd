@@ -134,9 +134,6 @@ class GraphicsNode(object):
         if event.modifiers() == Qt.ControlModifier:
             QGraphicsItem.mouseMoveEvent(self, event)
             
-            # Update coordinates of each edge of the current node
-            self.graphicsGraphView.updateEdgesOfNode(self)
-            
             self.isMoving = True
             self.lastX = event.scenePos().x()
             self.lastY = event.scenePos().y()
