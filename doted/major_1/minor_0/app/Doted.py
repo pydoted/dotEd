@@ -1,16 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from major_1.minor_0.controller.GraphicsGraphController import \
-    GraphicsGraphController
-from major_1.minor_0.controller.MainWindowController import \
-    MainWindowController
-from major_1.minor_0.controller.TextGraphController import TextGraphController
-from major_1.minor_0.model.Graph import Graph
-from major_1.minor_0.view.widget.GraphicsGraphView import GraphicsGraphView
-from major_1.minor_0.view.widget.MainWindow import MainWindow
-from major_1.minor_0.view.widget.TextGraphView import TextGraphView
-
-# Copyright (c) 2016 UPMC
+# Copyright (c) 2016 Victor Nea, Morvan Lassauzay, Matthieu Dien, Marwan Ghanem
 # This file is part of dotEd.
 #
 # dotEd is free software: you can redistribute it and/or modify
@@ -26,6 +16,15 @@ from major_1.minor_0.view.widget.TextGraphView import TextGraphView
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
+from major_1.minor_0.controller.GraphicsGraphController import \
+    GraphicsGraphController
+from major_1.minor_0.controller.MainWindowController import \
+    MainWindowController
+from major_1.minor_0.controller.TextGraphController import TextGraphController
+from major_1.minor_0.model.Graph import Graph
+from major_1.minor_0.view.widget.GraphicsGraphView import GraphicsGraphView
+from major_1.minor_0.view.widget.MainWindow import MainWindow
+from major_1.minor_0.view.widget.TextGraphView import TextGraphView
 
 class Doted(object):
     '''The Doted class provides a main application.
