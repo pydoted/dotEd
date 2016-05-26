@@ -1,8 +1,8 @@
-dotEd - A graphic editor for DOT graph
+dotEd - A graphic editor for DOT graphs
 ========================================================
 
 Requirements: 
-	- Python 3
+	- Python 3  
     - PyQt5
 
 Install :
@@ -11,5 +11,5 @@ Install :
 Run :  
 	doted 
 
-Uninstall:
+Uninstall :  
     pip uninstall doted
