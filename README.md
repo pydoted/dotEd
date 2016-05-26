@@ -6,11 +6,17 @@ dotEd - A graphic editor for DOT graphs
  * [Python 3](https://www.python.org/)
  * [PyQt5](https://riverbankcomputing.com/software/pyqt/intro)
 
-## Install
+## Installation
+```bash
 python setup.py install
+```
 
 ## Run
+```bash
 doted 
+```
 
 ## Uninstall
+```bash
 pip uninstall doted
+```
