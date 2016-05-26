@@ -21,6 +21,7 @@ import re
 from pydot_ng import graph_from_dot_data
 
 from PyQt5.Qt import QMessageBox
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTextCharFormat, QBrush, QColor, QTextCursor
 from PyQt5.QtWidgets import QTextEdit
 
@@ -55,6 +56,19 @@ class TextGraphView(View, QTextEdit):
 
         self.textCursor().insertText("graph " + self.graphName + " {\n}")
         self.checker = DotAttrsUtils()
+
+    def wheelEvent(self, event):
+        '''Handle wheel event.
+
+        Argument(s):
+        event (QWheelEvent): Wheel event
+        '''
+        # Only zoom/dezoom if CTRL is pressed
+        if event.modifiers() == Qt.ControlModifier:
+            if event.angleDelta().y() > 0:
+                self.zoomIn()
+            else:
+                self.zoomOut()
 
     def getText(self):
         '''Return the text of the view'''
