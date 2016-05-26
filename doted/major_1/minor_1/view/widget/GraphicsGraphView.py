@@ -174,6 +174,22 @@ class GraphicsGraphView(View, QGraphicsView):
                 for node in nodes:
                     self.updateEdgesOfNode(node)
 
+            if event.type() == QEvent.GraphicsSceneMouseRelease:
+                # Get nodes/edges
+                items = source.selectedItems()
+
+                # Filter to only get nodes
+                nodes = [item for item in items if
+                         isinstance(item, GraphicsNode)]
+
+                for node in nodes:
+                    # Update position
+                    node.onEditPos()
+
+                    # Update scene if outside
+                    if self.updateSceneRect(node):
+                        self.centerOn(node)
+
             # Left double click (mouse button)
             if (event.type() == QEvent.GraphicsSceneMouseDoubleClick and
                     event.buttons() == Qt.LeftButton):
@@ -249,22 +265,24 @@ class GraphicsGraphView(View, QGraphicsView):
         Argument(s):
         event (QWheelEvent): Wheel event
         '''
-        zoomInFactor = 1.25
-        zoomOutFactor = 1 / zoomInFactor
+        # Only zoom/dezoom if CTRL is pressed
+        if event.modifiers() == Qt.ControlModifier:
+            zoomInFactor = 1.25
+            zoomOutFactor = 1 / zoomInFactor
 
-        # Save the scene pos
-        oldPos = self.mapToScene(event.pos())
+            # Save the scene pos
+            oldPos = self.mapToScene(event.pos())
 
-        # Zoom
-        if event.angleDelta().y() > 0:
-            zoomFactor = zoomInFactor
-        else:
-            zoomFactor = zoomOutFactor
-        self.scale(zoomFactor, zoomFactor)
+            # Zoom
+            if event.angleDelta().y() > 0:
+                zoomFactor = zoomInFactor
+            else:
+                zoomFactor = zoomOutFactor
+            self.scale(zoomFactor, zoomFactor)
 
-        # Get the new position
-        newPos = self.mapToScene(event.pos())
+            # Get the new position
+            newPos = self.mapToScene(event.pos())
 
-        # Move scene to old position
-        delta = newPos - oldPos
-        self.translate(delta.x(), delta.y())
+            # Move scene to old position
+            delta = newPos - oldPos
+            self.translate(delta.x(), delta.y())

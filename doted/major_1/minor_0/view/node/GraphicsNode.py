@@ -39,11 +39,6 @@ class GraphicsNode(object):
     graphicsGraphView (GraphicsGraphView): View
     graphicsTextNode (GraphicsTextNode): Text (label) of the node
     semiEdge (GraphicsSemiEdge): Line between a graphics node and cursor mouse
-    sceneRectHasBeenUpdated (bool): Flag to check if the scene rect has been
-                                    updated
-    isMoving (bool): Flag to check if a node is moving
-    lastX (float): Last x coordinate of the node
-    lastY (float): Last y coordinate of the node
     contextMenu (QMenu): Context menu to edit attributes
     '''
 
@@ -57,13 +52,9 @@ class GraphicsNode(object):
          marginsAdded(QMarginsF(10, 10, 10, 10)))
 
         self.semiEdge = None
-        self.sceneRectHasBeenUpdated = False
-
-        self.isMoving = False
-        self.lastX = None
-        self.lastY = None
 
         self.contextMenu = QMenu()
+
         # Edit label
         editLabelAction = self.contextMenu.addAction("Edit label")
         editLabelAction.triggered.connect(self.onEditLabel)
@@ -97,6 +88,10 @@ class GraphicsNode(object):
         if label != self.graphicsTextNode.toPlainText():
             self.graphicsTextNode.setPlainText(label)
 
+    def onEditLabel(self):
+        '''Callback function when editing the label.'''
+        self.graphicsTextNode.editLabel()
+
     def editPos(self, dictArgsNode):
         '''Edit the position.
 
@@ -104,7 +99,6 @@ class GraphicsNode(object):
         dictArgsNode (Dictionary[]): Dictionary of arguments of the node
         '''
         posChanged = False
-
         # Update x
         if self.x() != dictArgsNode[NodeArgs.x]:
             posChanged = True
@@ -115,7 +109,6 @@ class GraphicsNode(object):
             posChanged = True
             self.setY(dictArgsNode[NodeArgs.y])
 
-        # If there was an update
         if posChanged:
             self.graphicsGraphView.updateEdgesOfNode(self)
 
@@ -123,9 +116,14 @@ class GraphicsNode(object):
             if self.graphicsGraphView.updateSceneRect(self):
                 self.graphicsGraphView.centerOn(self)
 
-    def onEditLabel(self):
-        '''Callback function when editing the label.'''
-        self.graphicsTextNode.editLabel()
+    def onEditPos(self):
+        '''Callback function when editing the pos.'''
+        self.graphicsGraphView.controller.onEditNode(self.id, {
+            NodeDotAttrs.pos.value:
+            NodeDotPosUtils.formatPos(
+                self.x(),
+                self.y())
+        })
 
     def centerTextInShape(self):
         '''Center the text in the shape.'''
@@ -145,17 +143,9 @@ class GraphicsNode(object):
         Argument(s):
         event (QGraphicsSceneMouseEvent): Graphics scene mouse event
         '''
-        # Move the node
+        # Only move the node if CTRL button pressed
         if event.modifiers() == Qt.ControlModifier:
             QGraphicsItem.mouseMoveEvent(self, event)
-
-            self.isMoving = True
-            self.lastX = event.scenePos().x()
-            self.lastY = event.scenePos().y()
-
-            # Update scene rect if needed
-            if self.graphicsGraphView.updateSceneRect(self):
-                self.sceneRectHasBeenUpdated = True
 
         # Update coordinates of the line
         if self.semiEdge is not None:
@@ -184,21 +174,6 @@ class GraphicsNode(object):
         event (QGraphicsSceneMouseEvent): Graphics scene mouse event
         '''
         QGraphicsItem.mouseReleaseEvent(self, event)
-
-        # Notify other view(s) to update position of the node
-        if self.isMoving:
-            self.isMoving = False
-            dicDotAttrs = {}
-            dicDotAttrs[NodeDotAttrs.pos.value] = (NodeDotPosUtils.formatPos(
-                self.lastX,
-                self.lastY))
-            self.graphicsGraphView.controller.onEditNode(self.id, dicDotAttrs)
-            self.getFocus(self.id)
-
-        # Center scene on the node if needed
-        if self.sceneRectHasBeenUpdated:
-            self.graphicsGraphView.centerOn(self)
-            self.sceneRectHasBeenUpdated = False
 
         # Construct edge if a semi edge is built
         if self.semiEdge is not None:
