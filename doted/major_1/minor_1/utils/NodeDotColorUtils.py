@@ -83,6 +83,10 @@ class NodeDotColorUtils(object):
                 return QColor.fromHsvF(float(hsv[0]), float(hsv[1]),
                                        float(hsv[2]))
 
+            # Color list
+            if NodeDotColorUtils.isColorList(colorAttr):
+                return QColor(Qt.black)
+
         # In this case, we can only have a color name
         else:
             if NodeDotColorUtils.colorNameExists(colorAttr):
@@ -130,6 +134,10 @@ class NodeDotColorUtils(object):
             if NodeDotColorUtils.isHSVColor(colorAttr):
                 return True
 
+            # Color list
+            if NodeDotColorUtils.isColorList(colorAttr):
+                return True
+
         # In this case, we can only have a color name
         else:
             if NodeDotColorUtils.colorNameExists(colorAttr):
@@ -138,6 +146,32 @@ class NodeDotColorUtils(object):
             # Transparent color
             if NodeDotColorUtils.isTransparentColor(colorAttr):
                 return True
+
+        return False
+
+    @staticmethod
+    def isColorValidWithoutColorList(color):
+        '''Return True if the dot color attribute (without checking color list)
+        is valid, else False.
+
+        Argument(s):
+        color (str): Color attribute
+        '''
+        # Hexa color
+        if NodeDotColorUtils.isHexaColor(color):
+            return True
+
+        # Color name
+        if NodeDotColorUtils.colorNameExists(color):
+            return True
+
+        # Transparent color
+        if NodeDotColorUtils.isTransparentColor(color):
+            return True
+
+        # HSV Color
+        if NodeDotColorUtils.isHSVColor(color):
+            return True
 
         return False
 
@@ -179,10 +213,59 @@ class NodeDotColorUtils(object):
         Argument(s):
         color (str): Color
         '''
-        return re.search(DotAttrsUtils.realNumberPattern + "\s*,?\s*" +
+        return re.search("^" + DotAttrsUtils.realNumberPattern + "\s*,?\s*" +
                          DotAttrsUtils.realNumberPattern + "\s*,?\s*" +
-                         DotAttrsUtils.realNumberPattern, color.strip())
+                         DotAttrsUtils.realNumberPattern + "$", color.strip())
 
     @staticmethod
     def isTransparentColor(color):
+        '''Return True if the color is 'transparent', else False.
+
+        Argument(s):
+        color (str): Color
+        '''
         return color == "transparent"
+
+    @staticmethod
+    def isColorList(colorList):
+        '''Return True if color list if valid, else False.
+
+        Argument(s):
+        colorList (str): List of colors
+        '''
+        # From the Graphvis website, color list pattern is :
+        # WC(:WC)* where each WC has the form C(;F)? with C a color value and
+        # the optional F a floating-point number, 0 ≤ F ≤ 1
+
+        # Get all WC groups
+        colors = colorList.split(":")
+
+        # For each group WC
+        for color in colors:
+            # Get C and F
+            colorFloatTuple = color.split(";")
+            lenColorFloatTuple = len(colorFloatTuple)
+
+            # More than two value is impossible as we must only have C(;F)?
+            if lenColorFloatTuple > 2:
+                return False
+
+            # We only have C
+            if lenColorFloatTuple == 1:
+                # Check is C is a color
+                if (not NodeDotColorUtils.isColorValidWithoutColorList(
+                        colorFloatTuple[0])):
+                    return False
+
+            # We have C and F
+            elif len(colorFloatTuple) == 2:
+                # Check if C is a color and F a floating number
+                if (not NodeDotColorUtils.isColorValidWithoutColorList(
+                                                    colorFloatTuple[0]
+                    ) or
+                    not re.search(
+                        DotAttrsUtils.realNumberPattern,
+                        colorFloatTuple[1])):
+                    return False
+
+        return True
