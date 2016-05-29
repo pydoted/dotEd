@@ -18,7 +18,8 @@
 
 from PyQt5.Qt import Qt
 from PyQt5.QtWidgets import QMainWindow, QWidget, QSplitter, QVBoxLayout, \
-    QPushButton
+    QPushButton, QMessageBox
+import pkg_resources
 
 
 class MainWindow(QMainWindow):
@@ -61,13 +62,20 @@ class MainWindow(QMainWindow):
     def createMenu(self):
         '''Create the menu bar.'''
         menuFile = self.menuBar().addMenu("File")
-        self.menuBar().addAction("Help")
 
         importAction = menuFile.addAction("Import")
         importAction.triggered.connect(self.onImportFile)
 
         saveAction = menuFile.addAction("Save")
         saveAction.triggered.connect(self.onSaveFile)
+
+        questionMarkMenu = self.menuBar().addMenu("?")
+
+        helpAction = questionMarkMenu.addAction("Help")
+        helpAction.triggered.connect(self.onHelpAction)
+
+        aboutAction = questionMarkMenu.addAction("About")
+        aboutAction.triggered.connect(self.onAboutAction)
 
     def onClearGraph(self):
         '''Callback function when clicking on Clear graph button.'''
@@ -80,6 +88,35 @@ class MainWindow(QMainWindow):
     def onSaveFile(self):
         '''Callback function when clicking on Save.'''
         self.controller.onSaveFile()
+
+    def onHelpAction(self):
+        '''Callback function when clicking on Help.'''
+        graphicsViewCommands = (
+            "--Graphics view--\n"
+            "Create a node : Mouse double click\n"
+            "Move a node : ALT + mouse move\n"
+            "Create an edge : Mouse click (maintain) on a node and realease"
+            " on another node\n"
+            "Mutliple selection : CTRL + mouse click or use rubber band"
+            " selection\n"
+            "Zoom in/out : CTRL + wheel\n"
+            "Remove a node/edge : Press DEL key"
+        )
+
+        textualViewCommands = (
+            "--Textual view--\n"
+            "Zoom in/out : CTRL + wheel\n"
+            "Update : Click outside the view"
+        )
+
+        QMessageBox.information(self, "Help", graphicsViewCommands + "\n\n" +
+                                textualViewCommands)
+
+    def onAboutAction(self):
+        '''Callback function when clicking on About.'''
+        QMessageBox.information(self, "About", "dotEd - A graphic editor for"
+                                " DOT graphs\n\n"
+                                "GNU General Public License")
 
     def addWidgetToSplitter(self, widget):
         '''Add a widget to the splitter.

@@ -113,7 +113,7 @@ class GraphicsNode(object):
             self.graphicsGraphView.updateEdgesOfNode(self)
 
             # Center scene on the node if needed
-            if self.graphicsGraphView.updateSceneRect(self):
+            if self.graphicsGraphView.enlargeSceneRect(self):
                 self.graphicsGraphView.centerOn(self)
 
     def onEditPos(self):
@@ -144,11 +144,11 @@ class GraphicsNode(object):
         event (QGraphicsSceneMouseEvent): Graphics scene mouse event
         '''
         # Only move the node if CTRL button pressed
-        if event.modifiers() == Qt.ControlModifier:
+        if event.modifiers() == Qt.AltModifier:
             QGraphicsItem.mouseMoveEvent(self, event)
 
         # Update coordinates of the line
-        if self.semiEdge is not None:
+        elif self.semiEdge is not None:
             self.semiEdge.update(event.scenePos())
 
     def mousePressEvent(self, event):

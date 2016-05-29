@@ -6,7 +6,7 @@ from os import path
 with open(
         path.join(path.dirname(__file__), 'README.md'),
         encoding='utf-8'
-        ) as f:
+) as f:
     long_description = f.read()
 
 setup(

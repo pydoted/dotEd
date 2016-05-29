@@ -34,11 +34,11 @@ class NodeDotPosUtils(object):
         y (float): y coordinate
         '''
         return (
-                '"' +
-                str("{0:.2f}".format(x)) +
-                ',' +
-                str("{0:.2f}".format(y)) +
-                '"'
+            '"' +
+            str("{0:.2f}".format(x)) +
+            ',' +
+            str("{0:.2f}".format(y)) +
+            '"'
         )
 
     @staticmethod

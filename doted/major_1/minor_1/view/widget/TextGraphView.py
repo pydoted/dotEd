@@ -69,6 +69,9 @@ class TextGraphView(View, QTextEdit):
                 self.zoomIn()
             else:
                 self.zoomOut()
+        # Move scrollbar
+        else:
+            QTextEdit.wheelEvent(self, event)
 
     def getText(self):
         '''Return the text of the view'''

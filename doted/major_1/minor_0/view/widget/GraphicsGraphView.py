@@ -38,7 +38,11 @@ class GraphicsGraphView(View, QGraphicsView):
     nodes (Dictionary[GraphicNode]): All nodes (views)
     edges (Dictionary[GraphicEdge]): All edges (views)
     scene (QGraphicsScene): Scene to show items (nodes and edges)
+    nodeHasBeenMoved (bool): Flag to check if a node has been moved
+    factor (int): Used when enlarging/shrinking scene
     '''
+
+    factor = 2
 
     def __init__(self):
         # Parent constructor(s)
@@ -47,6 +51,7 @@ class GraphicsGraphView(View, QGraphicsView):
 
         self.nodes = {}
         self.edges = {}
+        self.nodeHasBeenMoved = False
 
         # Enable Antiliasing
         self.setRenderHint(QPainter.Antialiasing)
@@ -60,7 +65,6 @@ class GraphicsGraphView(View, QGraphicsView):
         self.setScene(self.scene)
         self.resetSceneRect()
         self.scene.installEventFilter(self)
-
         self.show()
 
     def addNode(self, dictArgsNode):
@@ -95,6 +99,7 @@ class GraphicsGraphView(View, QGraphicsView):
         '''
         # Remove the node from the scene
         self.scene.removeItem(self.nodes[dictArgsNode[NodeArgs.id]])
+        self.shrinkSceneRect(self.nodes[dictArgsNode[NodeArgs.id]])
         self.nodes.pop(dictArgsNode[NodeArgs.id])
 
         # Reset scene rect
@@ -162,7 +167,7 @@ class GraphicsGraphView(View, QGraphicsView):
         '''Handle events for the scene.'''
         if source == self.scene:
             if (event.type() == QEvent.GraphicsSceneMouseMove and
-                    event.modifiers() == Qt.ControlModifier):
+                    event.modifiers() == Qt.AltModifier):
                 # Get nodes/edges
                 items = source.selectedItems()
 
@@ -173,8 +178,10 @@ class GraphicsGraphView(View, QGraphicsView):
                 # Update all edges for each selected nodes
                 for node in nodes:
                     self.updateEdgesOfNode(node)
+                self.nodeHasBeenMoved = True
 
-            if event.type() == QEvent.GraphicsSceneMouseRelease:
+            if (self.nodeHasBeenMoved and
+                    event.type() == QEvent.GraphicsSceneMouseRelease):
                 # Get nodes/edges
                 items = source.selectedItems()
 
@@ -186,9 +193,11 @@ class GraphicsGraphView(View, QGraphicsView):
                     # Update position
                     node.onEditPos()
 
-                    # Update scene if outside
-                    if self.updateSceneRect(node):
+                    # Enlarge scene if outside
+                    if self.enlargeSceneRect(node):
                         self.centerOn(node)
+
+                self.nodeHasBeenMoved = False
 
             # Left double click (mouse button)
             if (event.type() == QEvent.GraphicsSceneMouseDoubleClick and
@@ -219,45 +228,110 @@ class GraphicsGraphView(View, QGraphicsView):
 
         return False
 
-    def updateSceneRect(self, graphicsNode):
-        '''Expand the scene rect if a node is outside the current scene rect.
+    def enlargeSceneRect(self, graphicsNode):
+        '''Enlarge the scene rect if a node is outside the current scene rect.
 
         Argument(s):
         graphicsNode (GraphicsNode): Current graphics node
         '''
         sceneRectUpdated = False
         rect = self.sceneRect()
-        factor = 2
 
         # Left border
         if graphicsNode.x() + graphicsNode.boundingRect().left() < rect.left():
             sceneRectUpdated = True
-            rect.setLeft(graphicsNode.x() +
-                         graphicsNode.boundingRect().left() * factor)
+            rect.setLeft(
+                graphicsNode.x() +
+                graphicsNode.boundingRect().left() * GraphicsGraphView.factor
+            )
         # Right boder
         elif (graphicsNode.x() + graphicsNode.boundingRect().right() >
               rect.right()):
             sceneRectUpdated = True
-            rect.setRight(graphicsNode.x() +
-                          graphicsNode.boundingRect().right() * factor)
+            rect.setRight(
+                graphicsNode.x() +
+                graphicsNode.boundingRect().right() * GraphicsGraphView.factor
+            )
 
         # Top border
         if graphicsNode.y() + graphicsNode.boundingRect().top() < rect.top():
             sceneRectUpdated = True
-            rect.setTop(graphicsNode.y() +
-                        graphicsNode.boundingRect().top() * factor)
+            rect.setTop(
+                graphicsNode.y() +
+                graphicsNode.boundingRect().top() * GraphicsGraphView.factor
+            )
         # Bottom border
         elif (graphicsNode.y() + graphicsNode.boundingRect().bottom() >
               rect.bottom()):
             sceneRectUpdated = True
-            rect.setBottom(graphicsNode.y() +
-                           graphicsNode.boundingRect().bottom() * factor)
+            rect.setBottom(
+                graphicsNode.y() +
+                graphicsNode.boundingRect().bottom() * GraphicsGraphView.factor
+            )
 
         # Node not in the current scene rect: we need to update it
         if sceneRectUpdated:
             self.scene.setSceneRect(rect)
 
         return sceneRectUpdated
+
+    def shrinkSceneRect(self, graphicsNode):
+        '''Shrink the scene rect if a node on the boundrary is removed.
+
+        Argument(s):
+        graphicsNode (GraphicsNode): Current graphics node
+        '''
+        # Get nodes
+        items = self.scene.items()
+        nodes = [node for node in items if isinstance(node, GraphicsNode)]
+
+        # Get current scene rect to update its coordinates
+        rect = self.sceneRect()
+        sceneRectUpdated = False
+
+        if nodes:
+            # Case of removing a node on the min left border
+            minXPosNode = min(nodes, key=lambda node: node.pos().x())
+            if graphicsNode.pos().x() < minXPosNode.pos().x():
+                sceneRectUpdated = True
+                rect.setLeft(
+                    graphicsNode.x() +
+                    graphicsNode.boundingRect().left() *
+                    GraphicsGraphView.factor
+                )
+
+            # Case of removing a node on the max right border
+            maxXPosNode = max(nodes, key=lambda node: node.pos().x())
+            if graphicsNode.pos().x() > maxXPosNode.pos().x():
+                sceneRectUpdated = True
+                rect.setRight(
+                    maxXPosNode.x() +
+                    maxXPosNode.boundingRect().right() *
+                    GraphicsGraphView.factor
+                )
+
+            # Case of removing a node on the min top border
+            minYPosNode = min(nodes, key=lambda node: node.pos().y())
+            if graphicsNode.pos().y() < minYPosNode.pos().y():
+                sceneRectUpdated = True
+                rect.setTop(
+                    minYPosNode.y() +
+                    minYPosNode.boundingRect().top() *
+                    GraphicsGraphView.factor
+                )
+
+            # Case of removing a node on the max bottom border
+            maxYPosNode = max(nodes, key=lambda node: node.pos().y())
+            if graphicsNode.pos().y() > maxYPosNode.pos().y():
+                sceneRectUpdated = True
+                rect.setBottom(
+                    maxYPosNode.y() +
+                    maxYPosNode.boundingRect().bottom() *
+                    GraphicsGraphView.factor
+                )
+
+        if sceneRectUpdated:
+            self.scene.setSceneRect(rect)
 
     def wheelEvent(self, event):
         '''Handle wheel event.
@@ -286,3 +360,6 @@ class GraphicsGraphView(View, QGraphicsView):
             # Move scene to old position
             delta = newPos - oldPos
             self.translate(delta.x(), delta.y())
+        # Move scrollbar
+        else:
+            QGraphicsView.wheelEvent(self, event)

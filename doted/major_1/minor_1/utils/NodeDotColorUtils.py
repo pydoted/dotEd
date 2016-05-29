@@ -261,8 +261,8 @@ class NodeDotColorUtils(object):
             elif len(colorFloatTuple) == 2:
                 # Check if C is a color and F a floating number
                 if (not NodeDotColorUtils.isColorValidWithoutColorList(
-                                                    colorFloatTuple[0]
-                    ) or
+                    colorFloatTuple[0]
+                ) or
                     not re.search(
                         DotAttrsUtils.realNumberPattern,
                         colorFloatTuple[1])):
