@@ -292,28 +292,28 @@ class TextGraphView(View, QTextEdit):
         for s in stats:
             # Parse current statement
             pydotG = graph_from_dot_data("graph {" + s + "}")
+            if pydotG:
+                # Ignore subgraph
+                s2 = s
+                while (re.match("\s*(subgraph)*\s*.*\{", s2) or
+                       re.match("\s*\}.*", s2)):
+                    if re.match("\s*(subgraph)*\s*.*\{", s2):
+                        s2 = re.split('{', s2, 1)[1]
+                        pydotG = graph_from_dot_data("graph {" + s2 + "}")
+                    elif re.match("\s*\}.*", s2):
+                        s2 = re.split('}', s2, 1)[1]
+                        pydotG = graph_from_dot_data("graph {" + s2 + "}")
 
-            # Ignore subgraph
-            s2 = s
-            while (re.match("\s*(subgraph)*\s*.*\{", s2) or
-                   re.match("\s*\}.*", s2)):
-                if re.match("\s*(subgraph)*\s*.*\{", s2):
-                    s2 = re.split('{', s2, 1)[1]
-                    pydotG = graph_from_dot_data("graph {" + s2 + "}")
-                elif re.match("\s*\}.*", s2):
-                    s2 = re.split('}', s2, 1)[1]
-                    pydotG = graph_from_dot_data("graph {" + s2 + "}")
+                for node in pydotG.get_nodes():
+                    if node.get_name() == id:
+                        return([index, index + len(s)])
 
-            for node in pydotG.get_nodes():
-                if node.get_name() == id:
-                    return([index, index + len(s)])
+                for edge in pydotG.get_edges():
+                    if EdgeUtils.createEdgeId(edge.get_source(),
+                                              edge.get_destination()) == id:
+                        return([index, index + len(s)])
 
-            for edge in pydotG.get_edges():
-                if EdgeUtils.createEdgeId(edge.get_source(),
-                                          edge.get_destination()) == id:
-                    return([index, index + len(s)])
-
-            index += len(s) + 1
+                index += len(s) + 1
 
     def highlightItem(self, id):
         '''Inform the view that it must highlight an Item.
