@@ -27,3 +27,5 @@ If nodes statements do not have a **pos** attribute, you can automatically gener
 ```bash
 dot -T xdot file.dot
 ```
+<br>
+Check [Wiki](https://github.com/vnea/dotEd/wiki) for more details.
