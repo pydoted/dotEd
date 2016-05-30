@@ -358,9 +358,9 @@ class TextGraphView(View, QTextEdit):
                 return "Node " + node.to_string() + "\n" + message
 
         for edge in edges:
-            message = self.checker.checkNodeAttrsForm(edge.get_attributes())
+            message = self.checker.checkEdgeAttrsForm(edge.get_attributes())
             if message:
-                return "Edge" + edge.to_string() + "\n" + message
+                return "Edge " + edge.to_string() + "\n" + message
 
         return None
 
