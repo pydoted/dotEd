@@ -20,3 +20,10 @@ doted
 ```bash
 pip uninstall doted
 ```
+
+## Notes
+To avoid problems when importing a DOT file, all statements must end with a semicolon.  
+If nodes statements do not have a **pos** attribute, you can automatically generate them with **xdot** :
+```bash
+dot -T xdot file.dot
+```
