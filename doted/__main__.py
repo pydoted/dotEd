@@ -20,7 +20,7 @@ import sys
 
 from PyQt5.QtWidgets import QApplication
 
-from doted.major_1.minor_1.app.Doted import Doted
+from doted.app.Doted import Doted
 
 
 def main(args=None):

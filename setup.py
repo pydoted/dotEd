@@ -14,13 +14,13 @@ setup(
 
     version='1.1.0',
 
-    description='dotEd is a graphic editor for DOT graph',
+    description='dotEd is a graphic editor for graphs in DOT format',
     long_description=long_description,
 
-    url='https://github.com/vnea/dotEd.git',
+    url='https://github.com/MarwanG/dotEd',
 
     author='Victor Nea, Morvan Lassauzay, Matthieu Dien, Marwan Ghanem',
-    author_email='morvan.lassauzay@orange.fr, Victtoor@hotmail.fr',
+    author_email='morvan.lassauzay@orange.fr, Victtoor@hotmail.fr, matthieu.dien@lip6.fr',
 
     license='GNU GPL',
 
@@ -42,8 +42,8 @@ setup(
     package_data={'doted': ['ressources/*.txt']},
 
     entry_points={
-        'console_scripts': [
+        'gui_scripts': [
             'doted = doted.__main__:main',
-        ],
+        ]
     },
 )
