@@ -1,8 +1,0 @@
-graph graphname {
-     a [label="Foo"];
-     2;
-     1;
-     1;
-     a --b -- c;
-     b -- d;
- }

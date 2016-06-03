@@ -15,3 +15,16 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
+
+
+class StringUtils(object):
+    '''The StringUtils class defines a set of functions for strings.'''
+
+    @staticmethod
+    def isStrBetweenDoubleQuotes(text):
+        '''Return True if the text is between double quotes, else False.
+
+        Argument(s):
+        text (str): Text to test
+        '''
+        return text.startswith('"') and text.endswith('"')

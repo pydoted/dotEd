@@ -15,3 +15,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
+
+from enum import Enum
+
+
+class EdgeArgs(Enum):
+    '''The EdgeArgs enum defines the keys of the dictionary of an Edge.'''
+
+    id = 0
+    sourceId = 1
+    destId = 2

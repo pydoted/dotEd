@@ -15,3 +15,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
+
+from enum import Enum
+
+
+class UpdateModeView(Enum):
+    '''The UpdateModeView enum defines the mode when there is an update in a
+    View.'''
+
+    add = 0
+    edit = 1
+    remove = 2
