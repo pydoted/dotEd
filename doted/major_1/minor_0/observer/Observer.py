@@ -15,3 +15,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
+
+
+class Observer(object):
+    '''The Observer class defines an observer.
+
+
+    Argument(s):
+    subject (Subject): Observer subscribe to subject
+    '''
+
+    def __init__(self, subject):
+        subject.addObserver(self)
+
+    def update(self):
+        '''Update the observer.'''
+        pass
