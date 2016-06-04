@@ -369,7 +369,7 @@ class TextGraphView(View, QTextEdit):
 
         Argument(s):
         text (str): Textual representation of the graph
-        pydotGraph (PydotGraph): pydotGraph from text
+        pydotG (PydotGraph): pydotG from text
         '''
         # Get name of the graph
         self.graphName = pydotG.get_name()
