@@ -17,10 +17,9 @@
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
 from doted.enumeration.UpdateModeView import UpdateModeView
-from doted.model.Edge import Edge
-from doted.model.Node import Node
 from doted.observer.Subject import Subject
 from doted.utils.EdgeUtils import EdgeUtils
+from pygraphviz import *
 
 
 class Graph(Subject):
@@ -31,26 +30,21 @@ class Graph(Subject):
     directed (boolean): Graph directed or not (default False)
 
     Attribute(s):
-    nodes (Dictionary[Node]): All nodes
-    edges (Dictionary[Edge]): All edges
-    nbNodes (int): Number of nodes
-    directed (boolean): Graph directed or not
+    graph (AGraph): the pygraphviz representation of a graph
+    freshId (int): the next fresh id for a node
     '''
 
     def __init__(self, directed=False):
         # Parent constructor(s)
         Subject.__init__(self)
 
-        self.nodes = {}
-        self.edges = {}
-        self.resetNbNodes()
-        self.directed = directed
+        self.freshId = 0
+        self.graph = AGraph(directed=directed)
 
     def clear(self):
         '''Clear the graph.'''
-        # Remove all nodes (will also remove all edges)
-        for idNode in list(self.nodes.keys()):
-            self.removeNode(idNode)
+        self.freshId = 0
+        self.graph.clear()
 
     def nodeExists(self, idNode):
         '''Check if a node exists.
@@ -58,7 +52,7 @@ class Graph(Subject):
         Argument(s):
         idNode (str): ID of the node to check
         '''
-        return idNode in self.nodes
+        return idNode in self.graph.nodes()
 
     def edgeExists(self, idSourceNode, idDestNode):
         '''Check if an edge exist.
@@ -67,37 +61,29 @@ class Graph(Subject):
         idSourceNode (str): ID of the source node
         idDestNode (str): ID of the destination node
         '''
-        # The two nodes must exist and be neighbored
-        return (self.nodeExists(idSourceNode) and
-                self.nodeExists(idDestNode) and
-                self.nodes[idSourceNode].isNeighboringTo(idDestNode))
+        return self.graph.has_edge(idSourceNode, idDestNode)
 
-    def addNode(self, id, dicDotAttrs={}, x=None, y=None):
+    def addNode(self, id, **attr):
         '''Add a Node to the graph and notify this.
 
         Argument(s):
         id (str): id of the node
-        dicDotAttrs (Dictionary[]): Dot attributes of the node (default {})
-        x (float): x coordinate of the node (default None)
-        y (float): y coordinate of the node (default None)
-        '''
+        attr (dict): Dot attributes of the node (empty by default)
+
+        '''        
         # Generate an ID if it is not defined
         if not id:
-            self.nbNodes += 1
-            # Increment id while the id already exists
-            while str(self.nbNodes) in self.nodes:
-                self.nbNodes += 1
-            id = str(self.nbNodes)
-
-        # Only create the node if it doesn't exist
+            id = str(self.freshId)
+            self.freshId += 1
+        
         if not self.nodeExists(id):
-            node = Node(id, dicDotAttrs, x if x else 0,
-                        y if y else 0)
-
-            self.nodes[node.id] = node
-            self.notify(node.getArgs(), None, UpdateModeView.add)
-
-    def editNode(self, idNode, dicDotAttrs):
+            self.graph.add_node(id, **attr)
+            self.notify(self.graph.get_node(id), None, UpdateModeView.add)
+        else:
+            self.graph.add_node(id, **attr)
+            self.notify(self.graph.get_node(id), None, UpdateModeView.edit)
+        
+    def editNode(self, idNode, **attr):
         '''Edit attributes of a node of the graph.
 
         Argument(s):
@@ -105,9 +91,11 @@ class Graph(Subject):
         dicDotAttrs (Dictionary[]): Dot attributes of the node
         '''
         if self.nodeExists(idNode):
-            node = self.nodes[idNode]
-            node.edit(dicDotAttrs)
+            self.graph.add_node(idNode, **attr)
             self.notify(node.getArgs(), None, UpdateModeView.edit)
+        else:
+            raise KeyError("Node %s not in graph." % idNode)
+        
 
     def removeNode(self, idNode):
         '''Remove a Node from the graph.
@@ -115,80 +103,61 @@ class Graph(Subject):
         Argument(s):
         idNode (str): ID of the node to remove
         '''
-        if self.nodeExists(idNode):
-            node = self.nodes.pop(idNode)
-            self.notify(node.getArgs(), None, UpdateModeView.remove)
+        self.delete_node(idNode)
+        self.notify(node.getArgs(), None, UpdateModeView.remove)
 
-            # Removes associated edges
-            for edge in list(self.edges.values()):
-                if node == edge.source or node == edge.dest:
-                    self.removeEdge(edge.id)
 
-            if not self.nodes:
-                self.resetNbNodes()
-
-    def addEdge(self, idSourceNode, idDestNode):
+        
+    def addEdge(self, idSourceNode, idDestNode, **attr):
         '''Add an Edge to the graph and notify this.
 
         Argument(s):
         idSourceNode (str): ID of the source node
         idDestNode (str): ID of the destination node
+        attr (dict): attributes of the edge
         '''
         # Add the two nodes
         self.addNode(idSourceNode)
         self.addNode(idDestNode)
-
-        # Only create the edge if it doesn't exist
+        
         if not self.edgeExists(idSourceNode, idDestNode):
-            edge = Edge(self.nodes[idSourceNode], self.nodes[idDestNode],
-                        EdgeUtils.createEdgeId(idSourceNode, idDestNode))
-            self.edges[edge.id] = edge
-            self.notify(None, edge.getArgs(), UpdateModeView.add)
+            self.graph.add_edge(idSourceNode, idDestNode, **attr)
+            self.notify(None, self.graph.get_edge(idSourceNode, idDestNode), UpdateModeView.add)
+        else:
+            self.graph.add_edge(idSourceNode, idDestNode, **attr)
+            self.notify(None, self.graph.get_edge(idSourceNode, idDestNode), UpdateModeView.edit)
 
-    def removeEdge(self, idEdge):
-        '''Remove an Edge from the graph.
+    def editEdge(self, idSourceNode, idDestNode, **attr):
+        '''Edit an Edge of the graph and notify this.
 
         Argument(s):
-        idEdge (str): ID of the edge to remove
+        idSourceNode (str): ID of the source node
+        idDestNode (str): ID of the destination node
+        attr (dict): attributes of the edge
         '''
-        # Check if it exists
-        if idEdge in self.edges:
-            # Remove it
-            edge = self.edges.pop(idEdge)
+        if not self.graph.has_edge(idSourceNode, idDestNode):
+            raise KeyError("Edge %s - %s nit in graph." % (idSourceNode, idDestNode))
 
-            # Source and dest nodes are not neighboring anymore
-            edge.source.removeNeighbour(edge.dest)
-            edge.dest.removeNeighbour(edge.source)
+        self.graph.add_edge(idSourceNode, idDestNode, **attr)
+        self.notify(None, self.graph.get_edge(idSourceNode, idDestNode), UpdateModeView.edit)
 
-            self.notify(None, edge.getArgs(), UpdateModeView.remove)
-
-    def removeEdgeByIdNodes(self, idSourceNode, idDestNode):
-        '''Remove an Edge from the graph with the two nodes ID.
+    def removeEdge(self, idSourceNode, idDestNode):
+        '''Remove an Edge from the graph.
 
         Argument(s):
         idSourceNode (str): ID of the source node
         idDestNode (str): ID of the destination node
         '''
-        if self.edgeExists(idSourceNode, idDestNode):
-            for key, value in list(self.edges.items()):
-                if ((value.source.id == idSourceNode and
-                     value.dest.id == idDestNode) or
-                    (value.source.id == idDestNode and
-                     value.dest.id == idSourceNode)):
-                    self.removeEdge(key)
-                    break
+        self.graph.remove_edge(idSourceNode, idDestNode)
+        self.notify(None, edge.getArgs(), UpdateModeView.remove)
 
-    def resetNbNodes(self):
-        '''Reset number of nodes.'''
-        self.nbNodes = 0
-
-    def notify(self, dictArgsNode, dictArgsEdge, updateModeView):
+    def notify(self, node, edge, updateModeView):
         '''Notify all observers of the creation of a Node or an Edge.
 
         Argument(s):
-        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
-        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
+        node (pygraphviz.Node)
+        edge (pygraphviz.Edge)
         updateModeView (UpdateModeView): Update mode
         '''
         for obs in self.observers:
-            obs.update(dictArgsNode, dictArgsEdge, updateModeView)
+            obs.update(node, edge, updateModeView)

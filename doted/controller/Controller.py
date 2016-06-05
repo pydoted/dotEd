@@ -41,28 +41,28 @@ class Controller(Observer):
         self.view = view
         self.view.setController(self)
 
-    def update(self, dictArgsNode, dictArgsEdge, updateModeView):
+    def update(self, node, edge, updateModeView):
         '''Update the view.
 
         Argument(s):
-        dictArgsNode (Dictionary[]): Dictionary of arguments of the node
-        dictArgsEdge (Dictionary[]): Dictionary of arguments of the edge
+        node (pygraphviz.Node)
+        edge (pygraphviz.Edge)
         updateModeView (UpdateModeView) : Update mode
         '''
         # Update node
         if dictArgsNode:
             if updateModeView == UpdateModeView.add:
-                self.view.addNode(dictArgsNode)
+                self.view.addNode(node)
             elif updateModeView == UpdateModeView.edit:
-                self.view.editNode(dictArgsNode)
+                self.view.editNode(node)
             elif updateModeView == UpdateModeView.remove:
-                self.view.removeNode(dictArgsNode)
+                self.view.removeNode(node)
 
         # Update edge
         else:
             if updateModeView == UpdateModeView.add:
-                self.view.addEdge(dictArgsEdge)
+                self.view.addEdge(edge)
             elif updateModeView == UpdateModeView.edit:
-                self.view.editEdge(dictArgsEdge)
+                self.view.editEdge(edge)
             elif updateModeView == UpdateModeView.remove:
-                self.view.removeEdge(dictArgsEdge)
+                self.view.removeEdge(edge)

@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
-from pydot_ng import NODE_ATTRIBUTES
-
 from doted.utils.NodeDotPosUtils import NodeDotPosUtils
 from doted.controller.Controller import Controller
 from doted.enumeration.NodeArgs import NodeArgs
@@ -46,35 +44,25 @@ class TextGraphController(Controller):
         '''
         self.view.importGraph(text)
 
-    def onCreateNode(self, idNode, dicDotAttrs):
+    def onCreateNode(self, idNode, attr):
         '''Callback function when creating a node.
 
         Argument(s):
         idNode (str): ID of the node
-        dicDotAttrs (Dictionary[]): Dot attributes of the node
+        attr (dict): attributes
         '''
-        self.checkAndCleanAttrs(dicDotAttrs)
+        self.checkAndCleanAttrs(attr)
+        self.model.addNode(idNode, **attr)
 
-        if NodeDotAttrs.pos.value in dicDotAttrs:
-            if dicDotAttrs[NodeDotAttrs.pos.value]:
-                # Get position
-                coords = NodeDotPosUtils.getPos(
-                    dicDotAttrs[NodeDotAttrs.pos.value])
-                self.model.addNode(idNode, dicDotAttrs, coords[NodeArgs.x],
-                                   coords[NodeArgs.y])
-            else:
-                self.model.addNode(idNode, dicDotAttrs)
-
-    def onEditNode(self, idNode, dicDotAttrs):
+    def onEditNode(self, idNode, attr):
         '''Callback function when editing a label a node.
 
         Argument(s):
         idNode (str): ID of the node to edit
-        dicDotAttrs (Dictionary[]): Dot attributes of the node
+        attr (dict): attributes
         '''
-        self.checkAndCleanAttrs(dicDotAttrs)
-
-        self.model.editNode(idNode, dicDotAttrs)
+        self.checkAndCleanAttrs(attr)
+        self.model.editNode(idNode, attr)
 
     def onRemoveNode(self, idNode):
         '''Callback function when removinf a node.
@@ -100,26 +88,15 @@ class TextGraphController(Controller):
         idSourceNode (str): ID of the source node
         idDestNode (intstr): ID of the destination node
         '''
-        self.model.removeEdgeByIdNodes(idSourceNode, idDestNode)
+        self.model.removeEdge(idSourceNode, idDestNode)
 
-    def checkAndCleanAttrs(self, dicDotAttrs):
+    def checkAndCleanAttrs(self, attr):
         '''Delete unknown attributes and set known empty attributes as None
 
         Argument(s):
-        dicDotAttrs (Dictionary[]): Dot attributes of the Item
+        attr (dict): attributes
         '''
-        # Set all attrs in NodeDotAttrs as None
-        for attr in NodeDotAttrs:
-            if attr.value not in dicDotAttrs:
-                dicDotAttrs[attr.value] = None
-
-        # Delete all attrs which are not node's attrs according to pydot
-        attrToRemove = []
-        for attr in dicDotAttrs:
-            if attr not in NODE_ATTRIBUTES:
-                attrToRemove.append(attr)
-        for attr in attrToRemove:
-            dicDotAttrs.pop(attr)
+        pass
 
     def highlightItem(self, id):
         '''Inform the view that it must highlight an Item.
