@@ -105,3 +105,7 @@ class TextGraphController(Controller):
         id (str): ID of the node
         '''
         self.view.highlightItem(id)
+
+
+    def createGraphFromText(self, text):
+        raise TODO

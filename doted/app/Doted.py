@@ -48,14 +48,14 @@ class Doted(object):
         self.graphModel = Graph()
 
         # Views
-        self.graphicsGraphView = GraphicsGraphView()
-        self.textGraphView = TextGraphView()
+        self.graphicsGraphView = GraphicsGraphView(graphModel)
+        self.textGraphView = TextGraphView(graphModel)
 
         # Controllers
         self.textGraphController = TextGraphController(
             self.graphModel,
             self.textGraphView)
-        self. graphicsGraphController = GraphicsGraphController(
+        self.graphicsGraphController = GraphicsGraphController(
             self.graphModel,
             self.graphicsGraphView,
             self.textGraphController)

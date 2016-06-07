@@ -32,7 +32,7 @@ from doted.utils.EdgeUtils import EdgeUtils
 from doted.view.widget.View import View
 
 
-class TextGraphView(View, QTextEdit):
+class TextGraphView(View, QTextEdit, Observer):
     '''The TextGraphView class defines a text (dot file) representation of a
     Graph.
 
@@ -44,13 +44,16 @@ class TextGraphView(View, QTextEdit):
     checker (DotAttrsUtils): To check attributes of nodes and edges
     '''
 
-    def __init__(self):
+    def __init__(self, model):
         # Parent constructor(s)
         View.__init__(self)
         QTextEdit.__init__(self)
+        Observer.__init__(self, model)
 
         self.nodes = dict()
         self.edges = dict()
+
+        self.model = model
         
         self.acceptUpdate = True
 
@@ -115,48 +118,46 @@ class TextGraphView(View, QTextEdit):
                 decNode = cursor.selectedText()
 
                 # Find start position of attribute value
-                m = re.search("[ ,\[]" + attr + "\s*=\s*", decNode)
-                if m:
-                    indAttr = m.end()
+                # Warning: maybe not enough generic
+                m = re.search(attr + "\s*=\s*[^,\]]", decNode)
 
                 # If attribute already exist: replace value
                 if m:
-                    cursor.setPosition(infoPos[0] + indAttr,
+                    # end position of the attribute
+                    cursor.setPosition(infoPos[0] + m.end(),
                                        QTextCursor.MoveAnchor)
 
-                    # Find end position of attribute value and delete her
-                    # attrs = self.nodes[dictArgsNode[NodeArgs.id]]
-                    cursor.setPosition(cursor.position() + len(attrs[attr]),
+                    valAttrPos = re.search("=", decNode).end()
+                    # cursor.setPosition(cursor.position() + len(attrs[attr]),
+                    #                    QTextCursor.KeepAnchor)
+                    cursor.setPosition(infoPos[0] + valAttrPos
                                        QTextCursor.KeepAnchor)
+
                     cursor.removeSelectedText()
 
                     # Write new attribute's value
                     cursor.insertText(node.attr[attr])
 
+                    (s,e) = self.nodes[node]
+                    self.nodes[node] = (s,e-(m.end() - valAttrPos)+len(node.attr[attr]))
+                    
                 # If attribute not already exist: write all the attr
                 # decalration
                 else:
                     ind = decNode.find("[")
+                    textToInsert = ""
                     # If node already have parentheses
                     if ind != -1:
                         cursor.setPosition(infoPos[0] + ind + 1,
                                            QTextCursor.MoveAnchor)
-                        cursor.insertText(
-                            attr +
-                            "=" +
-                            node.attr[attr] +
-                            comma
-                        )
+                        textToInsert = attr + "=" + node.attr[attr] + comma
                     else:
                         cursor.setPosition(infoPos[1] - 1,
                                            QTextCursor.MoveAnchor)
-                        cursor.insertText(
-                            " [" +
-                            attr +
-                            "=" +
-                            node.attr[attr] +
-                            "]"
-                        )
+                        textToInsert = " [" + attr + "=" + node.attr[attr] + "]"
+                    cursor.insertText(textToInsert)
+                    self.nodes[node] = (infoPos[0],infoPos[1]+len(textToInsert))
+
 
     def removeNode(self, node):
         '''Remove a node deleted in graphic view.
@@ -171,6 +172,8 @@ class TextGraphView(View, QTextEdit):
             cursor.setPosition(infoPos[0], QTextCursor.MoveAnchor)
             cursor.setPosition(infoPos[1], QTextCursor.KeepAnchor)
             cursor.removeSelectedText()
+            
+            del self.nodes[node]
 
     def addEdge(self, sourceNode, destNode):
         '''Add an edge.
@@ -182,18 +185,22 @@ class TextGraphView(View, QTextEdit):
         if self.acceptUpdate:
             # Write new edge at the top just after graph's {
             text = [e for e in self.toPlainText().split('{', 2) if e != ""]
-            self.setPlainText(text.pop(0) + "{\n" +
-                              self.strEdge(sourceNode, destNode) +
+            strEdge = self.strEdge(sourceNode, destNode)
+            self.setPlainText(text[0] + "{\n" +
+                              strEdge +
                               ''.join(text) + "\n")
+
+            startPos = len(text[0] + "{\n" +)
+            self.edges[(sourceNode, destNode)] = (startPos, startPos + len(strEdge))
 
         # If is an update from textual view
         else:
             # Add node source and dest if they don't exist
             self.acceptUpdate = True
             if not self.model.nodeExists(sourceNode):
-                self.controller.addNode(sourceNode)
+                self.controller.onCreateNode(sourceNode)
             if not self.model.nodeExists(destNode):
-                self.controller.addNode(destNode)
+                self.controller.onCreateNode(destNode)
             self.acceptUpdate = False
 
     def removeEdge(self, sourceNode, destNode):
@@ -209,6 +216,8 @@ class TextGraphView(View, QTextEdit):
             cursor.setPosition(infoPos[0], QTextCursor.MoveAnchor)
             cursor.setPosition(infoPos[1], QTextCursor.KeepAnchor)
             cursor.removeSelectedText()
+
+            del self.edges[(sourceNode, destNode)]
 
     def strNode(self, node):
         '''Build the dot string representation of a node.
@@ -253,51 +262,18 @@ class TextGraphView(View, QTextEdit):
 
         return strEdge
 
-    def findPosItem(self, id):
+    def findPosItem(self, nodeOrEdge):
         '''return index of start and end of the item's declaration
 
         Argument(s):
         id (str): ID of the item we want to find
         '''
-
-        # index = 0
-
-        # text = self.toPlainText()
-        # text = [e + '{' for e in text.split('{') if e != ""]
-        # index += len(text[0]) + 1
-        # text.pop(0)
-        # text = ''.join(text)
-        # text = [e + '}' for e in text.split('}') if e != ""]
-        # text.pop(len(text) - 1)
-        # stats = re.split(';', ''.join(text))
-
-        # # Use pydot to get all statements of the graph (in order)
-        # for s in stats:
-        #     # Parse current statement
-        #     pydotG = graph_from_dot_data("graph {" + s + "}")
-        #     if pydotG:
-        #         # Ignore subgraph
-        #         s2 = s
-        #         while (re.match("\s*(subgraph)*\s*.*\{", s2) or
-        #                re.match("\s*\}.*", s2)):
-        #             if re.match("\s*(subgraph)*\s*.*\{", s2):
-        #                 s2 = re.split('{', s2, 1)[1]
-        #                 pydotG = graph_from_dot_data("graph {" + s2 + "}")
-        #             elif re.match("\s*\}.*", s2):
-        #                 s2 = re.split('}', s2, 1)[1]
-        #                 pydotG = graph_from_dot_data("graph {" + s2 + "}")
-
-        #         for node in pydotG.get_nodes():
-        #             if node.get_name() == id:
-        #                 return([index, index + len(s)])
-
-        #         for edge in pydotG.get_edges():
-        #             if EdgeUtils.createEdgeId(edge.get_source(),
-        #                                       edge.get_destination()) == id:
-        #                 return([index, index + len(s)])
-
-        #         index += len(s) + 1
-
+        # If it is a node
+        if isinstance(nodeOrEdge, str):
+            return self.nodes[nodeOrEdge]
+        else:
+            return self.edges[nodeOrEdge]
+        
     def highlightItem(self, id):
         '''Inform the view that it must highlight an Item.
 
@@ -335,82 +311,18 @@ class TextGraphView(View, QTextEdit):
         nodes (List[pydot_ng.Node]): List of pydot nodes
         edges (List[pydot_ng.Edge]): List of pydot edges
         '''
-        for node in nodes:
-            message = self.checker.checkNodeAttrsForm(node.get_attributes())
-            if message:
-                return "Node " + node.to_string() + "\n" + message
+        # for node in nodes:
+        #     message = self.checker.checkNodeAttrsForm(node.get_attributes())
+        #     if message:
+        #         return "Node " + node.to_string() + "\n" + message
 
-        for edge in edges:
-            message = self.checker.checkEdgeAttrsForm(edge.get_attributes())
-            if message:
-                return "Edge " + edge.to_string() + "\n" + message
+        # for edge in edges:
+        #     message = self.checker.checkEdgeAttrsForm(edge.get_attributes())
+        #     if message:
+        #         return "Edge " + edge.to_string() + "\n" + message
 
         return None
-
-    def rebuildTextModel(self, text, pydotG):
-        '''rebuild self.nodes and self.edges from text.
-
-        Argument(s):
-        text (str): Textual representation of the graph
-        pydotG (PydotGraph): pydotG from text
-        '''
-        # Get name of the graph
-        self.graphName = pydotG.get_name()
-
-        graphs = []
-        graphs.append(pydotG)
-        # Get all item in graph or subgraph
-        while len(graphs) > 0:
-            G = graphs[0]
-
-            for node in G.get_nodes():
-                if node.get_name() not in self.nodes:
-                    self.nodes[node.get_name()] = node.get_attributes()
-
-            for edge in G.get_edges():
-                idEdge = EdgeUtils.createEdgeId(edge.get_source(),
-                                                edge.get_destination())
-                if idEdge not in self.edges:
-                    self.edges[idEdge] = {
-                        EdgeArgs.sourceId: edge.get_source(),
-                        EdgeArgs.destId: edge.get_destination()
-                    }
-
-            for subG in G.get_subgraphs():
-                graphs.append(subG)
-
-            graphs.pop(0)
-
-    def importGraph(self, text):
-        '''Init text after an import.
-
-        Argument(s):
-        text (str): Textual representation of the graph
-        '''
-        self.acceptUpdate = False
-        self.setPlainText(text)
-
-        pydotGraph = graph_from_dot_data(text)
-
-        # Check that attributes are in valid form
-        message = self.checkItemsAttributes(pydotGraph.get_nodes(),
-                                            pydotGraph.get_edges())
-        if not message:
-            self.rebuildTextModel(text, pydotGraph)
-
-            # Send every elements to the model to build him
-            for id, args in self.nodes.items():
-                self.controller.onCreateNode(id, args)
-            for id, args in self.edges.items():
-                self.controller.onCreateEdge(args[EdgeArgs.sourceId],
-                                             args[EdgeArgs.destId])
-
-        # Some attributes are in invalid form
-        else:
-            QMessageBox.warning(self, "Syntax error", message)
-
-        self.acceptUpdate = True
-
+        
     def focusOutEvent(self, event):
         '''Handle focus out event.
 
@@ -419,81 +331,89 @@ class TextGraphView(View, QTextEdit):
         '''
         self.acceptUpdate = False
 
-        # Create pydot graph from text
-        pydotGraph = graph_from_dot_data(self.toPlainText())
-
-        # If the pydot graph is valid we can rewrite the text and check changes
-        if pydotGraph:
-            # If attributes are in valid form
-            message = self.checkItemsAttributes(pydotGraph.get_nodes(),
-                                                pydotGraph.get_edges())
-            if not message:
-                oldNodes = self.nodes
-                oldEdges = self.edges
-                self.nodes = {}
-                self.edges = {}
-                self.rebuildTextModel(self.toPlainText(), pydotGraph)
-
-                # Compare old and new text and send changes to the model
-                # Add nodes added
-                added = self.nodes.keys() - oldNodes.keys()
-                for idNode in added:
-                    self.controller.onCreateNode(idNode, self.nodes[idNode])
-
-                # Edit nodes changed
-                intersect = set(self.nodes.keys()).intersection(
-                    set(oldNodes.keys()))
-                for idNode in intersect:
-                    if self.nodes[idNode] != oldNodes[idNode]:
-                        self.controller.onEditNode(idNode, self.nodes[idNode])
-
-                # Remove nodes deleted
-                removed = oldNodes.keys() - self.nodes.keys()
-                for idNode in removed:
-                    self.controller.onRemoveNode(idNode)
-
-                    # Delete edges which contain the node
-                    edgeToRemove = []
-                    for edge in self.edges:
-                        if (idNode == self.edges[edge][EdgeArgs.sourceId] or
-                                idNode == self.edges[edge][EdgeArgs.destId]):
-                            edgeToRemove.append(edge)
-                    self.acceptUpdate = True
-                    for edge in edgeToRemove:
-                        self.removeEdge({
-                            EdgeArgs.id: edge,
-                            EdgeArgs.sourceId:
-                            self.edges[edge][EdgeArgs.sourceId],
-                            EdgeArgs.destId:
-                            self.edges[edge][EdgeArgs.destId]
-                        })
-                    self.acceptUpdate = False
-
-                # Remove edges deleted
-                removed = oldEdges.keys() - self.edges.keys()
-                for idEdge in removed:
-                    self.controller.onRemoveEdge(
-                        oldEdges[idEdge][EdgeArgs.sourceId],
-                        oldEdges[idEdge][EdgeArgs.destId])
-
-                # Add edges added
-                added = self.edges.keys() - oldEdges.keys()
-                for idEdge in added:
-                    nodeSource = self.edges[idEdge][EdgeArgs.sourceId]
-                    nodeDest = self.edges[idEdge][EdgeArgs.destId]
-                    self.controller.onCreateEdge(nodeSource, nodeDest)
-
-                QTextEdit.focusOutEvent(self, event)
-
-            # Some attributes are in invalid form: show an error window
-            else:
-                QMessageBox.warning(self, "Syntax error", message)
-                self.setFocus()
-
-        # Pydot graph invalid: show an error window
-        else:
-            QMessageBox.warning(self, "Syntax error",
-                                "The dot structure is invalid.")
+        # Create new graph from text
+        ok, message = self.controller.createGraphFromText(self.toPlainText())
+        
+        if not ok:
+            QMessageBox.warning(self, "Syntax error", message)
             self.setFocus()
+        else:
+            QTextEdit.focusOutEvent(self, event)
+            self.acceptUpdate = True
+            
+        # pydotGraph = graph_from_dot_data(self.toPlainText())
 
-        self.acceptUpdate = True
+        # # If the pydot graph is valid we can rewrite the text and check changes
+        # if pydotGraph:
+        #     # If attributes are in valid form
+        #     message = self.checkItemsAttributes(pydotGraph.get_nodes(),
+        #                                         pydotGraph.get_edges())
+        #     if not message:
+        #         oldNodes = self.nodes
+        #         oldEdges = self.edges
+        #         self.nodes = {}
+        #         self.edges = {}
+        #         self.rebuildTextModel(self.toPlainText(), pydotGraph)
+
+        #         # Compare old and new text and send changes to the model
+        #         # Add nodes added
+        #         added = self.nodes.keys() - oldNodes.keys()
+        #         for idNode in added:
+        #             self.controller.onCreateNode(idNode, self.nodes[idNode])
+
+        #         # Edit nodes changed
+        #         intersect = set(self.nodes.keys()).intersection(
+        #             set(oldNodes.keys()))
+        #         for idNode in intersect:
+        #             if self.nodes[idNode] != oldNodes[idNode]:
+        #                 self.controller.onEditNode(idNode, self.nodes[idNode])
+
+        #         # Remove nodes deleted
+        #         removed = oldNodes.keys() - self.nodes.keys()
+        #         for idNode in removed:
+        #             self.controller.onRemoveNode(idNode)
+
+        #             # Delete edges which contain the node
+        #             edgeToRemove = []
+        #             for edge in self.edges:
+        #                 if (idNode == self.edges[edge][EdgeArgs.sourceId] or
+        #                         idNode == self.edges[edge][EdgeArgs.destId]):
+        #                     edgeToRemove.append(edge)
+        #             self.acceptUpdate = True
+        #             for edge in edgeToRemove:
+        #                 self.removeEdge({
+        #                     EdgeArgs.id: edge,
+        #                     EdgeArgs.sourceId:
+        #                     self.edges[edge][EdgeArgs.sourceId],
+        #                     EdgeArgs.destId:
+        #                     self.edges[edge][EdgeArgs.destId]
+        #                 })
+        #             self.acceptUpdate = False
+
+        #         # Remove edges deleted
+        #         removed = oldEdges.keys() - self.edges.keys()
+        #         for idEdge in removed:
+        #             self.controller.onRemoveEdge(
+        #                 oldEdges[idEdge][EdgeArgs.sourceId],
+        #                 oldEdges[idEdge][EdgeArgs.destId])
+
+        #         # Add edges added
+        #         added = self.edges.keys() - oldEdges.keys()
+        #         for idEdge in added:
+        #             nodeSource = self.edges[idEdge][EdgeArgs.sourceId]
+        #             nodeDest = self.edges[idEdge][EdgeArgs.destId]
+        #             self.controller.onCreateEdge(nodeSource, nodeDest)
+
+        #         QTextEdit.focusOutEvent(self, event)
+
+        #     # Some attributes are in invalid form: show an error window
+        #     else:
+        #         QMessageBox.warning(self, "Syntax error", message)
+        #         self.setFocus()
+
+        # # Pydot graph invalid: show an error window
+        # else:
+        #     QMessageBox.warning(self, "Syntax error",
+        #                         "The dot structure is invalid.")
+        #     self.setFocus()
+

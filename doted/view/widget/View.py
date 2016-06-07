@@ -16,8 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
+from doted.observer.Observer import Observer
 
-class View(object):
+class View(Observer):
     '''The View class defines a base class for views.
 
 
@@ -25,10 +26,37 @@ class View(object):
     controller (Controller): Controller of the view
     '''
 
-    def __init__(self):
+    def __init__(self, model):
         self.controller = None
-        self.model = None
+        self.model = model
 
+    def update(self, node, edge, updateModeView):
+        '''Update the view.
+
+        Argument(s):
+        node (pygraphviz.Node)
+        edge (pygraphviz.Edge)
+        updateModeView (UpdateModeView) : Update mode
+        '''
+        # Update node
+        if node:
+            if updateModeView == UpdateModeView.add:
+                self.addNode(node)
+            elif updateModeView == UpdateModeView.edit:
+                self.editNode(node)
+            elif updateModeView == UpdateModeView.remove:
+                self.removeNode(node)
+
+        # Update edge
+        else:
+            if updateModeView == UpdateModeView.add:
+                self.addEdge(edge)
+            elif updateModeView == UpdateModeView.edit:
+                self.editEdge(edge)
+            elif updateModeView == UpdateModeView.remove:
+                self.removeEdge(edge)
+
+        
     def setController(self, controller):
         '''Set a controller.
 

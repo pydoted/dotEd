@@ -20,7 +20,7 @@ from doted.enumeration.UpdateModeView import UpdateModeView
 from doted.observer.Observer import Observer
 
 
-class Controller(Observer):
+class Controller(object):
     '''The Controller class defines a base class for controllers.
 
 
@@ -41,28 +41,3 @@ class Controller(Observer):
         self.view = view
         self.view.setController(self)
 
-    def update(self, node, edge, updateModeView):
-        '''Update the view.
-
-        Argument(s):
-        node (pygraphviz.Node)
-        edge (pygraphviz.Edge)
-        updateModeView (UpdateModeView) : Update mode
-        '''
-        # Update node
-        if node:
-            if updateModeView == UpdateModeView.add:
-                self.view.addNode(node)
-            elif updateModeView == UpdateModeView.edit:
-                self.view.editNode(node)
-            elif updateModeView == UpdateModeView.remove:
-                self.view.removeNode(node)
-
-        # Update edge
-        else:
-            if updateModeView == UpdateModeView.add:
-                self.view.addEdge(edge)
-            elif updateModeView == UpdateModeView.edit:
-                self.view.editEdge(edge)
-            elif updateModeView == UpdateModeView.remove:
-                self.view.removeEdge(edge)
