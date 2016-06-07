@@ -35,7 +35,7 @@ setup(
 
     packages=find_packages(),
 
-    install_requires=['pydot-ng'],
+    install_requires=['pygraphviz'],
 
     include_package_data=True,
 

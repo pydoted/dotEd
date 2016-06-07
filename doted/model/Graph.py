@@ -25,7 +25,6 @@ from pygraphviz import *
 class Graph(Subject):
     '''The Graph class defines a graph (model).
 
-
     Argument(s):
     directed (boolean): Graph directed or not (default False)
 
@@ -34,12 +33,13 @@ class Graph(Subject):
     freshId (int): the next fresh id for a node
     '''
 
-    def __init__(self, directed=False):
+    def __init__(self, name="", directed=False):
         # Parent constructor(s)
         Subject.__init__(self)
 
         self.freshId = 0
         self.graph = AGraph(directed=directed)
+        self.name = name
 
     def clear(self):
         '''Clear the graph.'''
@@ -161,3 +161,16 @@ class Graph(Subject):
         '''
         for obs in self.observers:
             obs.update(node, edge, updateModeView)
+
+    def getName(self):
+        '''Return the name of the graph'''
+        return self.name
+                        
+    def setName(self, name):
+        '''Set the name of the graph
+
+        Argument(s):
+        name (string)
+        '''
+        self.name = name
+        

@@ -27,6 +27,7 @@ class View(object):
 
     def __init__(self):
         self.controller = None
+        self.model = None
 
     def setController(self, controller):
         '''Set a controller.
@@ -36,6 +37,15 @@ class View(object):
         '''
         self.controller = controller
 
+    def setModel(self, model):
+        '''Set a model.
+
+        Argument(s):
+        model (Model): Model of the view
+        '''
+        self.model = model
+
+        
     def addNode(self, dictArgsNode):
         '''Add a node.
 

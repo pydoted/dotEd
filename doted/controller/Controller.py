@@ -50,7 +50,7 @@ class Controller(Observer):
         updateModeView (UpdateModeView) : Update mode
         '''
         # Update node
-        if dictArgsNode:
+        if node:
             if updateModeView == UpdateModeView.add:
                 self.view.addNode(node)
             elif updateModeView == UpdateModeView.edit:
