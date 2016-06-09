@@ -44,9 +44,9 @@ class GraphicsGraphView(View, QGraphicsView):
 
     factor = 2
 
-    def __init__(self):
+    def __init__(self, model):
         # Parent constructor(s)
-        View.__init__(self)
+        View.__init__(self, model)
         QGraphicsView.__init__(self)
 
         self.nodes = {}

@@ -92,7 +92,7 @@ class Graph(Subject):
         '''
         if self.nodeExists(idNode):
             self.graph.add_node(idNode, **attr)
-            self.notify(node.getArgs(), None, UpdateModeView.edit)
+            self.notify(idNode, None, UpdateModeView.edit)
         else:
             raise KeyError("Node %s not in graph." % idNode)
         
@@ -103,8 +103,8 @@ class Graph(Subject):
         Argument(s):
         idNode (str): ID of the node to remove
         '''
-        self.delete_node(idNode)
-        self.notify(node.getArgs(), None, UpdateModeView.remove)
+        self.graph.delete_node(idNode)
+        self.notify(idNode, None, UpdateModeView.remove)
 
 
         
@@ -174,3 +174,8 @@ class Graph(Subject):
         '''
         self.name = name
         
+    def nodes(self):
+        return self.graph.nodes()
+
+    def edges(self):
+        return self.graph.edges()

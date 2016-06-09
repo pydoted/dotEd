@@ -62,7 +62,7 @@ class TextGraphController(Controller):
         attr (dict): attributes
         '''
         self.checkAndCleanAttrs(attr)
-        self.model.editNode(idNode, attr)
+        self.model.editNode(idNode, **attr)
 
     def onRemoveNode(self, idNode):
         '''Callback function when removinf a node.

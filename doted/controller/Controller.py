@@ -16,10 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with dotEd.  If not, see <http://www.gnu.org/licenses/>.
 
-from doted.enumeration.UpdateModeView import UpdateModeView
-from doted.observer.Observer import Observer
-
-
 class Controller(object):
     '''The Controller class defines a base class for controllers.
 
@@ -34,9 +30,6 @@ class Controller(object):
     '''
 
     def __init__(self, model, view):
-        # Parent constructor(s)
-        Observer.__init__(self, model)
-
         self.model = model
         self.view = view
         self.view.setController(self)
